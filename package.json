@@ -2,7 +2,8 @@
   "name": "phs-proyect",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
     "start": "nodemon index",
     "lint": "eslint .",

@@ -1,6 +1,7 @@
+/* eslint-disable import/extensions */
 import express from 'express';
 import cors from 'cors';
-import mainRouter from './routes/app.routes';
+import mainRouter from './routes/app.routes.js';
 
 const app = express();
 

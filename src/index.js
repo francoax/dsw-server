@@ -1,7 +1,8 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-console */
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import app from './app';
+import app from './app.js';
 
 const { PORT } = process.env;
 

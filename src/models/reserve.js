@@ -25,4 +25,4 @@ const reserveSchema = new Schema({
   timeseries: true,
 });
 
-export default mongoose.Model('Reserve', reserveSchema);
+export default mongoose.model('Reserve', reserveSchema);

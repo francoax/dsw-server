@@ -1,8 +1,9 @@
+/* eslint-disable import/extensions */
 import { Router } from 'express';
 
 // Imports for each route below
-import usersRouter from './users.routes';
-import reserveRouter from './reserves.routes';
+import usersRouter from './users.routes.js';
+import reserveRouter from './reserves.routes.js';
 
 const router = Router();
 

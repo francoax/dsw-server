@@ -1,9 +1,11 @@
+/* eslint-disable import/extensions */
 import { Router } from 'express';
-import usersController from '../controllers/user';
+import usersController from '../controllers/user.js';
 
 const router = Router();
 
 router
-  .get('/', usersController.getAll);
+  .get('/', usersController.get)
+  .post('/add', usersController.create);
 
 export default router;

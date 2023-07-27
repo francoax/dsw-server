@@ -22,6 +22,8 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'no-underscore-dangle': 'off',
+    'no-console': 'off',
     'linebreak-style': 'off',
     'import/no-extraneous-dependencies': [
       'error', { devDependencies: false, optionalDependencies: false, peerDependencies: false },

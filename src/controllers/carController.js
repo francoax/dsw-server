@@ -12,7 +12,7 @@ carRouter.get('/', (req, res, next) => {
     if (cars) {
       return res.json(cars);
     }
-    res.status(404).send('No cars found').end();
+    res.status(404).send({ error: 'cars not found' }).end();
   }).catch((err) => {
     next(err);
   });
@@ -23,7 +23,7 @@ carRouter.get('/:id', (req, res, next) => {
     if (car) {
       return res.json(car);
     }
-    res.status(404).send('No car found').end();
+    res.status(404).send({ error: 'car not found' }).end();
   }).catch((err) => {
     next(err);
   });
@@ -32,16 +32,18 @@ carRouter.get('/:id', (req, res, next) => {
 carRouter.put('/:id', (req, res, next) => {
   const car = req.body;
 
-  const newCarInfo = new Car({
+  if (car.price) {
+    car.priceDate = new Date();
+  }
+
+  Car.findByIdAndUpdate(req.params.id, {
     brand: car.brand,
     model: car.model,
     year: car.year,
     plate: car.plate,
     price: car.price,
     locality: car.locality,
-  });
-
-  Car.findByIdAndUpdate(req.params.id, newCarInfo, { new: true })
+  }, { new: true })
     .then((result) => {
       res.json(result);
     })
@@ -51,7 +53,7 @@ carRouter.put('/:id', (req, res, next) => {
 });
 
 carRouter.delete('/:id', (req, res, next) => {
-  Car.findByIdAndRemove(req.params.id).then(() => res.status(204).end()).catch((err) => {
+  Car.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch((err) => {
     next(err);
   });
 });
@@ -64,7 +66,10 @@ carRouter.post('/', (req, res, next) => {
     model: car.model,
     year: car.year,
     plate: car.plate,
-    price: car.price,
+    price: {
+      date: new Date(),
+      value: car.price,
+    },
     locality: car.locality,
   });
 

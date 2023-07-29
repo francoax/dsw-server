@@ -22,8 +22,7 @@ const carSchema = new Schema(
       required: true,
     },
     price: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'PriceCar',
+      type: Object,
       required: true,
     },
     locality: {

@@ -73,9 +73,74 @@ const create = async (req, res) => {
   }
 };
 
-const edit = () => {};
+const edit = async (req, res) => {
+  const { id } = req.params;
+  const {
+    name, lastname, address, email, password, tel,
+  } = req.body;
 
-const remove = () => {};
+  try {
+    const userUpdated = await User.findByIdAndUpdate(
+      id,
+      {
+        name,
+        lastname,
+        address,
+        email,
+        password,
+        tel,
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (!userUpdated) {
+      res.status(404).json({
+        message: 'There is not a user with that id.',
+        data: undefined,
+        error: true,
+      }).end();
+    }
+    res.status(200).json({
+      message: 'User updated',
+      data: userUpdated,
+      error: false,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+      error: true,
+    }).end();
+  }
+};
+
+const remove = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const userDeleted = await User.findByIdAndRemove({ id });
+
+    if (!userDeleted) {
+      res.status(404).json({
+        message: 'There is not a user with that id.',
+        data: undefined,
+        error: true,
+      }).end();
+    }
+
+    res.status(200).json({
+      message: 'User deleted.',
+      data: userDeleted,
+      error: false,
+    }).end();
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+      error: true,
+    }).end();
+  }
+};
 
 export default {
   get, create, edit, remove,

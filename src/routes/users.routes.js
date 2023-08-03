@@ -6,6 +6,8 @@ const router = Router();
 
 router
   .get('/', usersController.get)
-  .post('/add', usersController.create);
+  .post('/add', usersController.create)
+  .put('/edit/:id', usersController.edit)
+  .delete('/remove/:id', usersController.remove);
 
 export default router;

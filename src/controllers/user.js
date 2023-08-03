@@ -119,7 +119,7 @@ const remove = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const userDeleted = await User.findByIdAndRemove({ id });
+    const userDeleted = await User.findByIdAndRemove(id);
 
     if (!userDeleted) {
       res.status(404).json({

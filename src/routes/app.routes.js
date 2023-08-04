@@ -1,10 +1,10 @@
-import express from 'express';
+/* eslint-disable import/extensions */
 import { Router } from 'express';
-const router = express.Router();
-
 // Imports for each route below
-import medicalAssistanceRouter from '../routes/medicalAssistance.js';
-router.use('/medicalAssistance',medicalAssistanceRouter);
+import medicalAssistanceRouter from './medicalAssistance.routes.js';
 
+const router = Router();
+
+router.use('/medicalAssistance', medicalAssistanceRouter);
 
 export default router;

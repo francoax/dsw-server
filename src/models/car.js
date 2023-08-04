@@ -22,7 +22,7 @@ const carSchema = new Schema(
       required: true,
     },
     price: {
-      type: Object,
+      type: Number,
       required: true,
     },
     locality: {

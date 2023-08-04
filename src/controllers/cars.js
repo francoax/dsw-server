@@ -1,40 +1,32 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
-import { Router } from 'express';
 import Car from '../models/car.js';
 
-const carRouter = Router();
-
-// gets all cars
-carRouter.get('/', (req, res, next) => {
+const listCars = (req, res) => {
   Car.find({}).then((cars) => {
     if (cars) {
       return res.json(cars);
     }
     res.status(404).send({ error: 'cars not found' }).end();
   }).catch((err) => {
-    next(err);
+    res.status(500).send({ error: err.message }).end();
   });
-});
+};
 
-carRouter.get('/:id', (req, res, next) => {
+const listCarById = (req, res) => {
   Car.findById(req.params.id).then((car) => {
     if (car) {
       return res.json(car);
     }
     res.status(404).send({ error: 'car not found' }).end();
   }).catch((err) => {
-    next(err);
+    res.status(500).send({ error: err.message }).end();
   });
-});
+};
 
-carRouter.put('/:id', (req, res, next) => {
+const updateCar = (req, res) => {
   const car = req.body;
-
-  if (car.price) {
-    car.priceDate = new Date();
-  }
 
   Car.findByIdAndUpdate(req.params.id, {
     brand: car.brand,
@@ -48,17 +40,17 @@ carRouter.put('/:id', (req, res, next) => {
       res.json(result);
     })
     .catch((err) => {
-      next(err);
+      res.status(500).send({ error: err.message }).end();
     });
-});
+};
 
-carRouter.delete('/:id', (req, res, next) => {
+const deleteCar = (req, res) => {
   Car.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch((err) => {
-    next(err);
+    res.status(500).send({ error: err.message }).end();
   });
-});
+};
 
-carRouter.post('/', (req, res, next) => {
+const createCar = (req, res) => {
   const car = req.body;
 
   const newCar = new Car({
@@ -66,28 +58,20 @@ carRouter.post('/', (req, res, next) => {
     model: car.model,
     year: car.year,
     plate: car.plate,
-    price: {
-      date: new Date(),
-      value: car.price,
-    },
+    price: car.price,
     locality: car.locality,
   });
 
   newCar.save().then((savedCar) => res.json(savedCar))
     .catch((err) => {
-      next(err);
+      res.status(500).send({ error: err.message }).end();
     });
-});
-// middleware for error control
+};
 
-carRouter.use((err, req, res, next) => {
-  console.error(err);
-
-  if (err.name === 'CastError') {
-    return res.status(400).send({ error: 'malformatted id' });
-  }
-
-  return res.status(500).end();
-});
-
-export default carRouter;
+export default {
+  listCars,
+  listCarById,
+  createCar,
+  updateCar,
+  deleteCar,
+};

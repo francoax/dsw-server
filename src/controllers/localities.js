@@ -1,35 +1,31 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
-import { Router } from 'express';
 import Locality from '../models/locality.js';
 
-const localityRouter = Router();
-
-// gets all localities
-localityRouter.get('/', (req, res, next) => {
+const listLocalities = (req, res) => {
   Locality.find({}).then((localities) => {
     if (localities) {
       return res.json(localities);
     }
     res.status(404).send({ error: 'localities not found' }).end();
   }).catch((err) => {
-    next(err);
+    res.status(500).send({ error: err.message }).end();
   });
-});
+};
 
-localityRouter.get('/:id', (req, res, next) => {
+const listLocalityById = (req, res) => {
   Locality.findById(req.params.id).then((locality) => {
     if (locality) {
       return res.json(locality);
     }
     res.status(404).send({ error: 'locality not found' }).end();
   }).catch((err) => {
-    next(err);
+    res.status(500).send({ error: err.message }).end();
   });
-});
+};
 
-localityRouter.put('/:id', (req, res, next) => {
+const updateLocality = (req, res) => {
   const locality = req.body;
 
   Locality.findByIdAndUpdate(req.params.id, {
@@ -39,17 +35,17 @@ localityRouter.put('/:id', (req, res, next) => {
       res.json(result);
     })
     .catch((err) => {
-      next(err);
+      res.status(500).send({ error: err.message }).end();
     });
-});
+};
 
-localityRouter.delete('/:id', (req, res, next) => {
+const deleteLocality = (req, res) => {
   Locality.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch((err) => {
-    next(err);
+    res.status(500).send({ error: err.message }).end();
   });
-});
+};
 
-localityRouter.post('/', (req, res, next) => {
+const createLocality = (req, res) => {
   const locality = req.body;
 
   const newLocality = new Locality({
@@ -58,19 +54,14 @@ localityRouter.post('/', (req, res, next) => {
 
   newLocality.save().then((savedLocality) => res.json(savedLocality))
     .catch((err) => {
-      next(err);
+      res.status(500).send({ error: err.message }).end();
     });
-});
-// middleware for error control
+};
 
-localityRouter.use((err, req, res, next) => {
-  console.error(err);
-
-  if (err.name === 'CastError') {
-    return res.status(400).send({ error: 'malformatted id' });
-  }
-
-  return res.status(500).end();
-});
-
-export default localityRouter;
+export default {
+  createLocality,
+  deleteLocality,
+  updateLocality,
+  listLocalities,
+  listLocalityById,
+};

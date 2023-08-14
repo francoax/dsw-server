@@ -1,27 +1,28 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
+import { json } from 'express';
 import Car from '../models/car.js';
 
 const listCars = (req, res) => {
   Car.find({}).then((cars) => {
     if (cars) {
-      return res.json(cars);
+      return res.json({ message: '', data: cars, error: false });
     }
-    res.status(404).send({ error: 'cars not found' }).end();
+    res.status(404).send({ message: 'cars not found', data: null, error: true }).end();
   }).catch((err) => {
-    res.status(500).send({ error: err.message }).end();
+    res.status(500).send({ message: err.message, data: null, error: true }).end();
   });
 };
 
 const listCarById = (req, res) => {
   Car.findById(req.params.id).then((car) => {
     if (car) {
-      return res.json(car);
+      return res.json({ message: '', data: car, error: false });
     }
-    res.status(404).send({ error: 'car not found' }).end();
+    res.status(404).send({ message: 'car not found', data: null, error: true }).end();
   }).catch((err) => {
-    res.status(500).send({ error: err.message }).end();
+    res.status(500).send({ message: err.message, data: null, error: true }).end();
   });
 };
 
@@ -42,10 +43,10 @@ const updateCar = (req, res) => {
       locality: car.locality,
     }, { new: true })
       .then((result) => {
-        res.json(result);
+        res.json({ message: '', data: result, error: false });
       })
       .catch((err) => {
-        res.status(500).send({ error: err.message }).end();
+        res.status(500).send({ message: err.message, data: null, error: true }).end();
       });
   } else {
     (
@@ -57,10 +58,10 @@ const updateCar = (req, res) => {
         locality: car.locality,
       }, { new: true })
         .then((result) => {
-          res.json(result);
+          res.json({ message: '', data: result, error: false });
         })
         .catch((err) => {
-          res.status(500).send({ error: err.message }).end();
+          res.status(500).send({ message: err.message, data: null, error: true }).end();
         })
     );
   }
@@ -68,7 +69,7 @@ const updateCar = (req, res) => {
 
 const deleteCar = (req, res) => {
   Car.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch((err) => {
-    res.status(500).send({ error: err.message }).end();
+    res.status(500).send({ message: err.message, data: null, error: true }).end();
   });
 };
 
@@ -91,9 +92,9 @@ const createCar = (req, res) => {
     locality: car.locality,
   });
 
-  newCar.save().then((savedCar) => res.json(savedCar))
+  newCar.save().then((savedCar) => res.json({ message: '', data: savedCar, error: false }))
     .catch((err) => {
-      res.status(500).send({ error: err.message }).end();
+      res.status(500).send({ message: err.message, data: null, error: true }).end();
     });
 };
 

@@ -16,7 +16,7 @@ const reserveSchema = new Schema({
     ref: 'User',
     required: true,
   },
-  package: {
+  packageReserved: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Package',
     required: true,

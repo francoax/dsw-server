@@ -31,8 +31,9 @@ const create = async (req, res) => {
 };
 
 const editData = async (req, res) => {
+  const { id } = req.params;
   try {
-    const medicalAUpdated = await MedicalAsistance.updateOne({ _id: req.body._id }, { ...req.body });
+    const medicalAUpdated = await MedicalAsistance.updateOne({ _id: id }, { ...req.body });
     res.status(201).json({
       message: 'Data updated succesfuly',
       data: medicalAUpdated,
@@ -44,8 +45,9 @@ const editData = async (req, res) => {
 };
 
 const deleteData = async (req, res) => {
+  const { id } = req.params;
   try {
-    await MedicalAsistance.deleteOne({ _id: req.body._id });
+    await MedicalAsistance.deleteOne({ _id: id });
     res.status(200).json({
       message: 'Data deleated succesfuly',
     });

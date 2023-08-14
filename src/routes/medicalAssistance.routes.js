@@ -4,13 +4,13 @@ import MedicalAssistanceController from '../controllers/medicalAssistanceControl
 
 const router = express.Router();
 
-router.get('/all', MedicalAssistanceController.getAll);
+router.get('/', MedicalAssistanceController.getAll);
 
-router.post('/add', MedicalAssistanceController.create);
+router.post('/', MedicalAssistanceController.create);
 
-router.put('/edit', MedicalAssistanceController.editData);
+router.put('/:id', MedicalAssistanceController.editData);
 
-router.delete('/delete', MedicalAssistanceController.deleteData);
+router.delete('/:id', MedicalAssistanceController.deleteData);
 
 router.get('/:id', MedicalAssistanceController.getOne);
 

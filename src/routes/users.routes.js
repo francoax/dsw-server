@@ -7,9 +7,10 @@ import verifyMongoId from '../middlewares/mongoIdField.js';
 const router = Router();
 
 router
-  .get('/', usersController.get)
-  .post('/add', usersController.create)
-  .put('/edit/:id', [verifyMongoId], usersController.edit)
-  .delete('/remove/:id', [verifyMongoId], usersController.remove);
+  .get('/:id', [verifyMongoId], usersController.get)
+  .get('/', usersController.getAll)
+  .post('/', usersController.create)
+  .put('/:id', [verifyMongoId], usersController.edit)
+  .delete('/:id', [verifyMongoId], usersController.remove);
 
 export default router;

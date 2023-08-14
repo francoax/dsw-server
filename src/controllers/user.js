@@ -2,6 +2,31 @@
 import User from '../models/user.js';
 
 const get = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).json({
+        message: `User with the id ${id} not found`,
+        data: user,
+        error: true,
+      }).end();
+    }
+
+    res.status(404).json({
+      message: 'User found.',
+      data: user,
+      error: false,
+    }).end();
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+      error: true,
+    }).end();
+  }
+};
+
+const getAll = async (req, res) => {
   const filter = req.query;
 
   try {
@@ -143,5 +168,5 @@ const remove = async (req, res) => {
 };
 
 export default {
-  get, create, edit, remove,
+  get, getAll, create, edit, remove,
 };

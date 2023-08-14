@@ -27,21 +27,43 @@ const listCarById = (req, res) => {
 
 const updateCar = (req, res) => {
   const car = req.body;
+  if (car.price) {
+    car.date = new Date();
 
-  Car.findByIdAndUpdate(req.params.id, {
-    brand: car.brand,
-    model: car.model,
-    year: car.year,
-    plate: car.plate,
-    price: car.price,
-    locality: car.locality,
-  }, { new: true })
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      res.status(500).send({ error: err.message }).end();
-    });
+    Car.findByIdAndUpdate(req.params.id, {
+      brand: car.brand,
+      model: car.model,
+      year: car.year,
+      plate: car.plate,
+      price: {
+        date: car.date,
+        value: car.price,
+      },
+      locality: car.locality,
+    }, { new: true })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.status(500).send({ error: err.message }).end();
+      });
+  } else {
+    (
+      Car.findByIdAndUpdate(req.params.id, {
+        brand: car.brand,
+        model: car.model,
+        year: car.year,
+        plate: car.plate,
+        locality: car.locality,
+      }, { new: true })
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((err) => {
+          res.status(500).send({ error: err.message }).end();
+        })
+    );
+  }
 };
 
 const deleteCar = (req, res) => {
@@ -53,12 +75,19 @@ const deleteCar = (req, res) => {
 const createCar = (req, res) => {
   const car = req.body;
 
+  if (car.price) {
+    car.date = new Date();
+  }
+
   const newCar = new Car({
     brand: car.brand,
     model: car.model,
     year: car.year,
     plate: car.plate,
-    price: car.price,
+    price: {
+      date: car.date,
+      value: car.price,
+    },
     locality: car.locality,
   });
 

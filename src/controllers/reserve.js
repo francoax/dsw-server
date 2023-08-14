@@ -12,7 +12,7 @@ const getAll = async (req, res) => {
 const get = async (req, res) => {
   const { id } = req.params;
   const reserve = await Reserve.findById(id);
-  if (reserve) {
+  if (!reserve) {
     res.stauts(404).json({
       message: `Reserve with the Id ${id} not found.`,
       data: reserve,
@@ -58,7 +58,7 @@ const put = async (req, res) => {
     const reserveUpdated = await Reserve.findByIdAndUpdate(id, {
       date_start, date_end, user, packageReserved,
     }, { new: true });
-    if (reserveUpdated) {
+    if (!reserveUpdated) {
       res.stauts(404).json({
         message: `Reserve with the Id ${id} not found.`,
         data: reserveUpdated,
@@ -83,7 +83,7 @@ const remove = async (req, res) => {
   const { id } = req.params;
   try {
     const reserveRemoved = await Reserve.findByIdAndRemove(id);
-    if (reserveRemoved) {
+    if (!reserveRemoved) {
       res.stauts(404).json({
         message: `Reserve with the Id ${id} not found.`,
         data: reserveRemoved,

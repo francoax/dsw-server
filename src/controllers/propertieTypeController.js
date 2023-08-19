@@ -3,38 +3,94 @@ import propertieType from '../models/propertieType.js';
 const propertieTypeABM = {};
 
 propertieTypeABM.getAll = (req, res)=>{
-  propertieType.find().then(propertieType =>{
-    res.json(propertieType);
-  });
-}
+  try{
+    propertieType.find().then(propertieTypes =>{
+      if (propertieTypes.length === 0) {
+        throw new Error('There are not propertie types');
+      }
+      res.status(200).json({
+        message: 'Propertie types list.',
+        data: propertieTypes,
+        error: false,
+      });
+    });
+  }catch (err) {
+    return res.status(400).json({
+      message: err.message,
+      error: true,
+    });
+  }
+
+  
+};
 
 propertieTypeABM.getOne = (req, res, next)=>{
   const { id }  = req.params;
 
   propertieType.findById(id).then(propertie =>{
     if(propertie){
+      res.status(200).json({
+        message: 'Propertie type found.',
+        data: propertie,
+        error: false,
+      }).end();
       return res.json(propertie);
     }else{
-      res.status(404).end();
+      res.stauts(404).json({
+        message: `Propertie type with the Id ${id} not found.`,
+        data: propertie,
+        error: true,
+      }).end();
     }
-  }).catch(err =>{
-    next(err)
+  }).catch(error =>{
+    res.status(400).json({
+      message: error.message,
+      error: true,
+    }).end();
   });
 }
 
 propertieTypeABM.add = (req, res)=>{
-  const propertie = req.body;
-  
-  if(!propertie.description){
-    return res.status(400).json({
-      error:'required "description" field is missing'
-    })
-  }
+  const { description } = req.body;
+  const propertieType = req.body;
 
-  const newpropertieType = new propertieType(propertie);
-  newpropertieType.save().then(newpropertieType =>{
-    res.json(newpropertieType);
-  });
+  try{
+    if(propertieType.description === ""){
+      console.log('entré');
+      return res.status(400).json({
+        message: 'required "description" field is missing.',
+        data: undefined,
+        error: true,
+      })
+    }
+    propertieType.findOne({ description }).then(propertie=>{
+      if (propertie) {
+        return res.status(400).json({
+          message: 'The propertie type already exists.',
+          data: undefined,
+          error: true,
+        });
+      }else{
+        const newpropertieType = new propertieType(propertieType);
+        newpropertieType.save().then(newpropertieType =>{
+        res.status(201).json({
+          message: 'propertie type created.',
+          data: newpropertieType,
+          error: true,
+        });
+      });
+      }
+    });
+    
+    
+    
+  }catch (err) {
+    return res.status(400).json({
+      message: err.message,
+      err,
+      error: true,
+    });
+  }
 }
 
 propertieTypeABM.update = (req, res)=>{

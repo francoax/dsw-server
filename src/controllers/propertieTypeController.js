@@ -20,8 +20,6 @@ propertieTypeABM.getAll = (req, res)=>{
       error: true,
     });
   }
-
-  
 };
 
 propertieTypeABM.getOne = (req, res, next)=>{
@@ -36,7 +34,7 @@ propertieTypeABM.getOne = (req, res, next)=>{
       }).end();
       return res.json(propertie);
     }else{
-      res.stauts(404).json({
+      res.status(404).json({
         message: `Propertie type with the Id ${id} not found.`,
         data: propertie,
         error: true,
@@ -52,10 +50,10 @@ propertieTypeABM.getOne = (req, res, next)=>{
 
 propertieTypeABM.add = (req, res)=>{
   const { description } = req.body;
-  const propertieType = req.body;
+  const propertieTypeNew = req.body;
 
   try{
-    if(propertieType.description === ""){
+    if(propertieTypeNew.description === ""){
       console.log('entré');
       return res.status(400).json({
         message: 'required "description" field is missing.',
@@ -71,19 +69,16 @@ propertieTypeABM.add = (req, res)=>{
           error: true,
         });
       }else{
-        const newpropertieType = new propertieType(propertieType);
+        const newpropertieType = new propertieType(propertieTypeNew);
         newpropertieType.save().then(newpropertieType =>{
-        res.status(201).json({
-          message: 'propertie type created.',
-          data: newpropertieType,
-          error: true,
+          res.status(201).json({
+            message: 'propertie type created.',
+            data: newpropertieType,
+            error: false,
+          });
         });
-      });
       }
-    });
-    
-    
-    
+    }); 
   }catch (err) {
     return res.status(400).json({
       message: err.message,
@@ -100,22 +95,40 @@ propertieTypeABM.update = (req, res)=>{
   const newPropertyType = {
     description: data.description
   }
-
-  propertieType.findByIdAndUpdate(id, newPropertyType, {new:true})
-  .then(result =>{
-    res.json(result);
+  try{
+    propertieType.findByIdAndUpdate(id, newPropertyType, {new:true})
+    .then(result =>{
+    res.json({
+      message: 'propertie type updated.',
+      data: newPropertyType,
+      error: false,
+    });
   })
+  }catch (err) {
+    return res.status(400).json({
+      message: err.message,
+      err,
+      error: true,
+    });
+  }
+  
 }
 
 propertieTypeABM.delete = (req, res)=>{
   const {id} = req.params;
   propertieType.findByIdAndRemove(id).then(result=>{
-    res.status(204).end();
+    res.status(204).json({
+      message: 'propertie type deleted.',
+      data: result,
+      error: false,
+    });
   }).catch(err=>{
-    next(err);
-  })
-  
-  
+    res.status(400).json({
+      message: err.message,
+      err,
+      error: true,
+    });
+  }) 
 }
 
 export default propertieTypeABM;

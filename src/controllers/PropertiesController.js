@@ -1,4 +1,4 @@
-import Property from '../models/Property';
+import Property from '../models/Property.js';
 
 const getAll = async (req, res) => {
   try {
@@ -20,7 +20,10 @@ const create = async (req, res) => {
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
-      pricePerNight: req.body.pricePerNight,
+      pricePerNight: {
+        price: req.body.pricePerNight.price,
+        date: req.body.pricePerNight.date,
+      },
       propertyType: req.body.propertyType,
     });
     res.status(200).json({

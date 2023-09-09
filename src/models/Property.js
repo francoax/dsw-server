@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
 
+const propertyPriceSchema = new mongoose.Schema({
+  price: {
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+
+});
+
 const PropertiesSchema = new mongoose.Schema({
   capacity: {
     type: Number,
@@ -9,10 +21,7 @@ const PropertiesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pricePerNight: {
-    type: Number,
-    required: true,
-  },
+  pricePerNight: propertyPriceSchema,
   propertyType: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

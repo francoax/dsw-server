@@ -1,4 +1,4 @@
-import PropertyPrice from '../models/PropertyPrice';
+import PropertyPrice from '../models/PropertyPrice.js';
 
 const getAll = async (req, res) => {
   try {

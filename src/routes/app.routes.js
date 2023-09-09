@@ -7,9 +7,11 @@ import carsRouter from './cars.routes.js';
 import localitiesRouter from './locality.routes.js';
 import usersRouter from './users.routes.js';
 import reserveRouter from './reserves.routes.js';
+import propertieTypeRouter from './propertieType.routes.js';
 
 const router = Router();
 
+router.use('/propertie-types', propertieTypeRouter);
 router.use('/medicalAssistance', medicalAssistanceRouter);
 router.use('/cars', carsRouter);
 router.use('/localities', localitiesRouter);

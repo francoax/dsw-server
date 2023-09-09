@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
-import Reserve from '../models/reserve';
+// eslint-disable-next-line import/extensions
+import Reserve from '../models/reserve.js';
 
 const getAll = async (req, res) => {
   res.status(200).json({

@@ -1,7 +1,9 @@
 import { Router } from 'express';
-import reserveController from '../controllers/reserve';
+// eslint-disable-next-line import/extensions
+import reserveController from '../controllers/reserve.js';
 
-import verifyMongoId from '../middlewares/mongoIdField';
+// eslint-disable-next-line import/extensions
+import verifyMongoId from '../middlewares/mongoIdField.js';
 
 const router = Router();
 

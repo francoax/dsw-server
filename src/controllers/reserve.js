@@ -1,5 +1,8 @@
 /* eslint-disable camelcase */
-// eslint-disable-next-line import/extensions
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable consistent-return */
+import jwt from 'jsonwebtoken';
 import Reserve from '../models/reserve.js';
 
 const getAll = async (req, res) => {
@@ -29,8 +32,34 @@ const get = async (req, res) => {
 
 const post = async (req, res) => {
   const {
-    date_start, date_end, user, packageReserved,
+    date_start, date_end, packageReserved,
   } = req.body;
+
+  //  jwt token check
+  const authorization = req.get('authorization');
+  let token = '';
+  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
+    token = authorization.substring(7);
+  }
+
+  let decodedToken = {};
+
+  try {
+    decodedToken = jwt.verify(token, process.env.SECRET);
+  } catch (e) {
+    console.log(e);
+  }
+
+  if (!token || !decodedToken.id) {
+    return res.status(401).json({
+      message: 'Token missing or invalid.',
+      data: null,
+      error: true,
+    });
+  }
+  // obtengo la id de user a traves del token
+  const { id: user } = decodedToken;
+  // end token check
 
   try {
     const newReserve = await Reserve.create({

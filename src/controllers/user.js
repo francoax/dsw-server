@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable import/extensions */
+import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
 const get = async (req, res) => {
@@ -167,6 +169,36 @@ const remove = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  const passwordCorrect = user === null
+    ? false
+    : password === user.password;
+
+  if (!(user && passwordCorrect)) {
+    res.status(401).json({
+      message: 'Invalid user or password',
+      error: true,
+
+    });
+  }
+
+  const userForToken = {
+    id: user._id,
+    email: user.email,
+  };
+
+  const token = jwt.sign(userForToken, process.env.SECRET);
+
+  res.status(200).json({
+    message: 'User logged in',
+    data: token,
+    error: false,
+  });
+};
+
 export default {
-  get, getAll, create, edit, remove,
+  get, getAll, create, edit, remove, login,
 };

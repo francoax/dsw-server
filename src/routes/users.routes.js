@@ -9,6 +9,7 @@ const router = Router();
 router
   .get('/:id', [verifyMongoId], usersController.get)
   .get('/', usersController.getAll)
+  .post('/login', usersController.login)
   .post('/', usersController.create)
   .put('/:id', [verifyMongoId], usersController.edit)
   .delete('/:id', [verifyMongoId], usersController.remove);

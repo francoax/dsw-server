@@ -68,7 +68,7 @@ const getAll = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, lastname, address, email, password, tel,
+    name, lastname, address, email, password, tel, role,
   } = req.body;
 
   try {
@@ -83,7 +83,7 @@ const create = async (req, res) => {
     }
 
     const newUser = await User.create({
-      name, lastname, address, email, password, tel,
+      name, lastname, address, email, password, tel, role,
     });
 
     return res.status(201).json({
@@ -103,7 +103,7 @@ const create = async (req, res) => {
 const edit = async (req, res) => {
   const { id } = req.params;
   const {
-    name, lastname, address, email, password, tel,
+    name, lastname, address, email, password, tel, role,
   } = req.body;
 
   try {
@@ -116,6 +116,7 @@ const edit = async (req, res) => {
         email,
         password,
         tel,
+        role,
       },
       {
         new: true,
@@ -186,7 +187,6 @@ const login = async (req, res) => {
   } else {
     const userForToken = {
       id: user._id,
-      name: user.name,
       email: user.email,
     };
 
@@ -194,7 +194,10 @@ const login = async (req, res) => {
 
     res.status(200).json({
       message: 'User logged in',
-      data: token,
+      data: {
+        name: user.name,
+        token,
+      },
       error: false,
     });
   }

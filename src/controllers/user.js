@@ -183,20 +183,21 @@ const login = async (req, res) => {
       error: true,
 
     });
+  } else {
+    const userForToken = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
+    res.status(200).json({
+      message: 'User logged in',
+      data: token,
+      error: false,
+    });
   }
-
-  const userForToken = {
-    id: user._id,
-    email: user.email,
-  };
-
-  const token = jwt.sign(userForToken, process.env.SECRET);
-
-  res.status(200).json({
-    message: 'User logged in',
-    data: token,
-    error: false,
-  });
 };
 
 export default {

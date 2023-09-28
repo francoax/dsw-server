@@ -101,7 +101,7 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
   const {
     name, lastname, address, email, password, tel, role,
   } = req.body;

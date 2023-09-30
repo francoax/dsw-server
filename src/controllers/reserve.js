@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
-// eslint-disable-next-line import/extensions
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable consistent-return */
 import Reserve from '../models/reserve.js';
 
 const getAll = async (req, res) => {
@@ -28,8 +30,9 @@ const get = async (req, res) => {
 };
 
 const post = async (req, res) => {
+  const { user } = req.user.id;
   const {
-    date_start, date_end, user, packageReserved,
+    date_start, date_end, packageReserved,
   } = req.body;
 
   try {

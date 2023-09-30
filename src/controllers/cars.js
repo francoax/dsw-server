@@ -11,7 +11,7 @@ const listCars = (req, res) => {
     }
     res.status(404).send({ message: 'cars not found', data: null, error: true }).end();
   }).catch((err) => {
-    res.status(500).send({ message: err.message, data: null, error: true }).end();
+    res.status(400).send({ message: err.message, data: null, error: true }).end();
   });
 };
 
@@ -22,49 +22,30 @@ const listCarById = (req, res) => {
     }
     res.status(404).send({ message: 'car not found', data: null, error: true }).end();
   }).catch((err) => {
-    res.status(500).send({ message: err.message, data: null, error: true }).end();
+    res.status(400).send({ message: err.message, data: null, error: true }).end();
   });
 };
 
 const updateCar = (req, res) => {
   const car = req.body;
-  if (car.price) {
-    car.date = new Date();
 
-    Car.findByIdAndUpdate(req.params.id, {
-      brand: car.brand,
-      model: car.model,
-      year: car.year,
-      plate: car.plate,
-      price: {
-        date: car.date,
-        value: car.price,
-      },
-      locality: car.locality,
-    }, { new: true })
-      .then((result) => {
-        res.json({ message: '', data: result, error: false });
-      })
-      .catch((err) => {
-        res.status(500).send({ message: err.message, data: null, error: true }).end();
-      });
-  } else {
-    (
-      Car.findByIdAndUpdate(req.params.id, {
-        brand: car.brand,
-        model: car.model,
-        year: car.year,
-        plate: car.plate,
-        locality: car.locality,
-      }, { new: true })
-        .then((result) => {
-          res.json({ message: '', data: result, error: false });
-        })
-        .catch((err) => {
-          res.status(500).send({ message: err.message, data: null, error: true }).end();
-        })
-    );
-  }
+  Car.findByIdAndUpdate(req.params.id, {
+    brand: car.brand,
+    model: car.model,
+    year: car.year,
+    plate: car.plate,
+    price: {
+      date: car.price.date,
+      value: car.price.value,
+    },
+    locality: car.locality,
+  }, { new: true })
+    .then((result) => {
+      res.json({ message: '', data: result, error: false });
+    })
+    .catch((err) => {
+      res.status(400).send({ message: err.message, data: null, error: true }).end();
+    });
 };
 
 const deleteCar = (req, res) => {
@@ -76,25 +57,21 @@ const deleteCar = (req, res) => {
 const createCar = (req, res) => {
   const car = req.body;
 
-  if (car.price) {
-    car.date = new Date();
-  }
-
   const newCar = new Car({
     brand: car.brand,
     model: car.model,
     year: car.year,
     plate: car.plate,
     price: {
-      date: car.date,
-      value: car.price,
+      date: car.price.date,
+      value: car.price.value,
     },
     locality: car.locality,
   });
 
   newCar.save().then((savedCar) => res.json({ message: '', data: savedCar, error: false }))
     .catch((err) => {
-      res.status(500).send({ message: err.message, data: null, error: true }).end();
+      res.status(400).send({ message: err.message, data: null, error: true }).end();
     });
 };
 

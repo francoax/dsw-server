@@ -1,8 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable import/extensions */
+import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
 const get = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -13,7 +15,7 @@ const get = async (req, res) => {
       }).end();
     }
 
-    res.status(404).json({
+    res.status(200).json({
       message: 'User found.',
       data: user,
       error: false,
@@ -66,7 +68,7 @@ const getAll = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, lastname, address, email, password, tel,
+    name, lastname, address, email, password, tel, role,
   } = req.body;
 
   try {
@@ -81,7 +83,7 @@ const create = async (req, res) => {
     }
 
     const newUser = await User.create({
-      name, lastname, address, email, password, tel,
+      name, lastname, address, email, password, tel, role,
     });
 
     return res.status(201).json({
@@ -99,9 +101,9 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
   const {
-    name, lastname, address, email, password, tel,
+    name, lastname, address, email, password, tel, role,
   } = req.body;
 
   try {
@@ -114,6 +116,7 @@ const edit = async (req, res) => {
         email,
         password,
         tel,
+        role,
       },
       {
         new: true,
@@ -141,7 +144,7 @@ const edit = async (req, res) => {
 };
 
 const remove = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
 
   try {
     const userDeleted = await User.findByIdAndRemove(id);
@@ -167,6 +170,39 @@ const remove = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  const passwordCorrect = user === null
+    ? false
+    : password === user.password;
+
+  if (!(user && passwordCorrect)) {
+    res.status(401).json({
+      message: 'Invalid user or password',
+      error: true,
+
+    });
+  } else {
+    const userForToken = {
+      id: user._id,
+      email: user.email,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
+    res.status(200).json({
+      message: 'User logged in',
+      data: {
+        name: user.name,
+        token,
+      },
+      error: false,
+    });
+  }
+};
+
 export default {
-  get, getAll, create, edit, remove,
+  get, getAll, create, edit, remove, login,
 };

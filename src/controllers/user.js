@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
 const get = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -15,7 +15,7 @@ const get = async (req, res) => {
       }).end();
     }
 
-    res.status(404).json({
+    res.status(200).json({
       message: 'User found.',
       data: user,
       error: false,
@@ -144,7 +144,7 @@ const edit = async (req, res) => {
 };
 
 const remove = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.user;
 
   try {
     const userDeleted = await User.findByIdAndRemove(id);

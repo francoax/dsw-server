@@ -54,7 +54,6 @@ propertieTypeABM.add = (req, res)=>{
 
   try{
     if(propertieTypeNew.description === ""){
-      console.log('entré');
       return res.status(400).json({
         message: 'required "description" field is missing.',
         data: undefined,

@@ -16,14 +16,13 @@ const getAll = async (req, res) => {
 const create = async (req, res) => {
   try {
     const newMedicalA = await MedicalAsistance.create({
-      startDate: req.body.startDate,
-      endDate: req.body.endDate,
       description: req.body.description,
       coverageType: req.body.coverageType,
     });
     res.status(200).json({
       message: 'Data added succesfully',
       data: newMedicalA,
+      error: false
     });
   } catch (e) {
     console.log(e.message);

@@ -1,0 +1,9 @@
+POST http://localhost:4000/api/reserves
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MGJiODc2ZGViODJhYjY4MGNmMTRlMCIsImVtYWlsIjoib2N0YUBtYWlsLmNvbSIsImlhdCI6MTY5NTQxMDcwMH0.mzbdsWKvNH4nZ-SBC_ovvurW_xiHQnBtrNrXPOg4YzQ
+
+{
+  "date_start": "2023-07-23",
+  "date_end": "2023-08-01",
+  "packageReserved": "64dac8df375f334f2a2f4943"
+}

@@ -9,6 +9,7 @@ import localitiesRouter from './locality.routes.js';
 import usersRouter from './users.routes.js';
 import reserveRouter from './reserves.routes.js';
 import propertieTypeRouter from './propertieType.routes.js';
+import packageRouter from './package.routes.js';
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use('/cars', carsRouter);
 router.use('/localities', localitiesRouter);
 router.use('/users', usersRouter);
 router.use('/reserves', reserveRouter);
+router.use('/packages', packageRouter);
 
 export default router;

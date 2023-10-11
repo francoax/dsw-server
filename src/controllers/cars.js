@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 /* eslint-disable consistent-return */
-import { json } from 'express';
 import Car from '../models/car.js';
 
 const listCars = (req, res) => {

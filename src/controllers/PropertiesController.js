@@ -37,12 +37,14 @@ const create = async (req, res) => {
     });
   }
 };
+/* await Property.updateOne({ _id: id }, { ...req.body }) */
 const editData = async (req, res) => {
   const { id } = req.params;
   try {
-    await Property.updateOne({ _id: id }, { ...req.body });
+    const prop = await Property.findByIdAndUpdate(id, { ...req.body }, { new: true });
     res.status(201).json({
       message: 'Data updated succesfully',
+      data: prop,
     });
   } catch (e) {
     res.status(400).json({

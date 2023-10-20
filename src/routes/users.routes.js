@@ -6,8 +6,10 @@ import authenticateToken from '../middlewares/authenticateToken.js';
 
 const router = Router();
 
+router.get('/me', [authenticateToken], usersController.get);
+
 /**
- * @swagger
+ * @openapi
  * /api/users:
  *   get:
  *     description: Get all Users
@@ -16,8 +18,6 @@ const router = Router();
  *         description: Success
  *
  */
-router.get('/me', [authenticateToken], usersController.get);
-
 router.get('/', usersController.getAll);
 
 router.post('/login', usersController.login);

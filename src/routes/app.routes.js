@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable import/extensions */
 import { Router } from 'express';
 
@@ -11,7 +12,30 @@ import reserveRouter from './reserves.routes.js';
 import propertieTypeRouter from './propertieType.routes.js';
 import packageRouter from './package.routes.js';
 
+// Swagger
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API de mi proyecto',
+      version: '1.0.0',
+      description: 'Documentación de la API de mi proyecto',
+    },
+    tags: [
+      {
+        name: 'Users',
+        description: 'Everything about users.',
+      },
+    ],
+  },
+  apis: ['./src/routes/*.js'],
+};
+
 const router = Router();
+const swaggerSpec = swaggerJSDoc(options);
 
 router.use('/propertie-types', propertieTypeRouter);
 router.use('/medicalAssistance', medicalAssistanceRouter);
@@ -21,5 +45,7 @@ router.use('/localities', localitiesRouter);
 router.use('/users', usersRouter);
 router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);
+
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default router;

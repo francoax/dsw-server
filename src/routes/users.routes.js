@@ -6,6 +6,27 @@ import authenticateToken from '../middlewares/authenticateToken.js';
 
 const router = Router();
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Login:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: El email del usuario.
+ *         password:
+ *           type: string
+ *           description: La contraseña del usuario.
+ *       example:
+ *         email: email
+ *         password: contraseña
+ */
+
 router.get('/me', [authenticateToken], usersController.get);
 
 /**
@@ -23,24 +44,23 @@ router.get('/me', [authenticateToken], usersController.get);
  */
 router.get('/', usersController.getAll);
 /**
- * @openapi
+ * @swagger
  * /api/users/login:
  *   post:
  *     summary: Logs user into the system
  *     tags:
  *       - Users
- *     parameters:
- *       - name: email
- *         required: false
- *         schema:
- *           type: string
- *       - name: password
- *         required: false
- *         schema:
- *           type: string
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Login'
  *     responses:
- *       200:
+ *        200:
  *         description: Success
+ *        401:
+ *         description: Unauthorized
  *
  */
 router.post('/login', usersController.login);

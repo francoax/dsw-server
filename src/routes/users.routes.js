@@ -9,6 +9,11 @@ const router = Router();
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  *   schemas:
  *     Login:
  *       type: object
@@ -25,6 +30,76 @@ const router = Router();
  *       example:
  *         email: email
  *         password: contraseña
+ *     Create:
+ *       type: object
+ *       required:
+ *         - name
+ *         - lastname
+ *         - address
+ *         - email
+ *         - password
+ *         - tel
+ *         - role
+ *       properties:
+ *         name:
+ *           type: string
+ *         lastname:
+ *           type: string
+ *         address:
+ *           type: string
+ *         email:
+ *           type: string
+ *         password:
+ *           type: string
+ *         tel:
+ *           type: string
+ *         role:
+ *           type: string
+ *       example:
+ *         name: tomas
+ *         lastname: lopez
+ *         address: email
+ *         email: email@gmail.com
+ *         password: contraseña         
+ *         tel: "1234567"
+ *         role: "1"
+ *     Update:
+ *       type: object
+ *       required:
+ *         - id
+ *         - name
+ *         - lastname
+ *         - address
+ *         - email
+ *         - password
+ *         - tel
+ *         - role
+ *       properties:
+ *         id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         lastname:
+ *           type: string
+ *         address:
+ *           type: string
+ *         email:
+ *           type: string
+ *         password:
+ *           type: string
+ *         tel:
+ *           type: string
+ *         role:
+ *           type: string
+ *       example:
+ *         id: "1"
+ *         name: tomas
+ *         lastname: lopez
+ *         address: email
+ *         email: email@gmail.com
+ *         password: contraseña         
+ *         tel: "1234567"
+ *         role: "1"
  */
 
 router.get('/me', [authenticateToken], usersController.get);
@@ -69,44 +144,43 @@ router.post('/login', usersController.login);
  * /api/users:
  *   post:
  *     summary: Create user
+ *     security:
+ *       - bearerAuth: []
  *     tags:
  *       - Users
- *     parameters:
- *       - name: name
- *         required: true
- *         schema:
- *           type: string
- *       - name: lastname
- *         required: true
- *         schema:
- *           type: string
- *       - name: address
- *         required: true
- *         schema:
- *           type: string
- *       - name: email
- *         required: true
- *         schema:
- *           type: string
- *       - name: password
- *         required: true
- *         schema:
- *           type: string
- *       - name: tel
- *         required: true
- *         schema:
- *           type: string
- *       - name: role
- *         required: true
- *         schema:
- *           type: string
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Create'
  *     responses:
  *       200:
  *         description: Success
- *
+ *       401:
+ *         description: Unauthorized
  */
 router.post('/', usersController.create);
-
+/**
+ * @openapi
+ * /api/users:
+ *   put:
+ *     summary: Edit user
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Update'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       401:
+ *         description: Unauthorized
+ *
+ */
 router.put('/', [authenticateToken], usersController.edit);
 
 router.delete('/', [authenticateToken], usersController.remove);

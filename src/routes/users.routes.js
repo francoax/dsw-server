@@ -6,12 +6,26 @@ import authenticateToken from '../middlewares/authenticateToken.js';
 
 const router = Router();
 
-router
-  .get('/me', [authenticateToken], usersController.get)
-  .get('/', usersController.getAll)
-  .post('/login', usersController.login)
-  .post('/', usersController.create)
-  .put('/', [authenticateToken], usersController.edit)
-  .delete('/', [authenticateToken], usersController.remove);
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     description: Get all Users
+ *     responses:
+ *       200:
+ *         description: Success
+ *
+ */
+router.get('/me', [authenticateToken], usersController.get);
+
+router.get('/', usersController.getAll);
+
+router.post('/login', usersController.login);
+
+router.post('/', usersController.create);
+
+router.put('/', [authenticateToken], usersController.edit);
+
+router.delete('/', [authenticateToken], usersController.remove);
 
 export default router;

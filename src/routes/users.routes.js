@@ -60,13 +60,12 @@ const router = Router();
  *         lastname: lopez
  *         address: email
  *         email: email@gmail.com
- *         password: contraseña         
+ *         password: contraseña
  *         tel: "1234567"
  *         role: "1"
  *     Update:
  *       type: object
  *       required:
- *         - id
  *         - name
  *         - lastname
  *         - address
@@ -75,8 +74,6 @@ const router = Router();
  *         - tel
  *         - role
  *       properties:
- *         id:
- *           type: string
  *         name:
  *           type: string
  *         lastname:
@@ -92,14 +89,29 @@ const router = Router();
  *         role:
  *           type: string
  *       example:
- *         id: "1"
  *         name: tomas
  *         lastname: lopez
  *         address: email
  *         email: email@gmail.com
- *         password: contraseña         
+ *         password: contraseña
  *         tel: "1234567"
  *         role: "1"
+ */
+
+/**
+ * @openapi
+ * /api/users/me:
+ *   get:
+ *     summary: Get logged user
+ *     security:
+ *      - bearerAuth: []
+ *     description: Get logged user
+ *     tags:
+ *       - Users
+ *     responses:
+ *       200:
+ *         description: Success
+ *
  */
 
 router.get('/me', [authenticateToken], usersController.get);
@@ -115,6 +127,8 @@ router.get('/me', [authenticateToken], usersController.get);
  *     responses:
  *       200:
  *         description: Success
+ *       401:
+ *         description: Unauthorized
  *
  */
 router.get('/', usersController.getAll);
@@ -144,8 +158,6 @@ router.post('/login', usersController.login);
  * /api/users:
  *   post:
  *     summary: Create user
- *     security:
- *       - bearerAuth: []
  *     tags:
  *       - Users
  *     requestBody:
@@ -162,10 +174,12 @@ router.post('/login', usersController.login);
  */
 router.post('/', usersController.create);
 /**
- * @openapi
+ * @swagger
  * /api/users:
  *   put:
- *     summary: Edit user
+ *     summary: Edit user data.
+ *     security:
+ *       - bearerAuth: []
  *     tags:
  *       - Users
  *     requestBody:
@@ -182,7 +196,22 @@ router.post('/', usersController.create);
  *
  */
 router.put('/', [authenticateToken], usersController.edit);
-
+/**
+ * @swagger
+ * /api/users:
+ *   delete:
+ *     summary: Delete user.
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Users
+ *     responses:
+ *       200:
+ *         description: Success
+ *       401:
+ *         description: Unauthorized
+ *
+ */
 router.delete('/', [authenticateToken], usersController.remove);
 
 export default router;

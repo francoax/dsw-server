@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable import/extensions */
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import User from '../models/user.js';
 
 const get = async (req, res) => {
@@ -68,8 +69,9 @@ const getAll = async (req, res) => {
 
 const create = async (req, res) => {
   const {
-    name, lastname, address, email, password, tel, role,
+    name, lastname, address, email, tel, role,
   } = req.body;
+  let { password } = req.body;
 
   try {
     const userExisting = await User.findOne({ email });
@@ -82,6 +84,7 @@ const create = async (req, res) => {
       });
     }
 
+    password = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       name, lastname, address, email, password, tel, role,
     });
@@ -103,10 +106,11 @@ const create = async (req, res) => {
 const edit = async (req, res) => {
   const { id } = req.user;
   const {
-    name, lastname, address, email, password, tel, role,
+    name, lastname, address, email, tel, role,
   } = req.body;
-
+  let { password } = req.body;
   try {
+    password = await bcrypt.hash(password, 10);
     const userUpdated = await User.findByIdAndUpdate(
       id,
       {
@@ -176,7 +180,7 @@ const login = async (req, res) => {
   const user = await User.findOne({ email });
   const passwordCorrect = user === null
     ? false
-    : password === user.password;
+    : await bcrypt.compare(password, user.password);
 
   if (!(user && passwordCorrect)) {
     res.status(401).json({

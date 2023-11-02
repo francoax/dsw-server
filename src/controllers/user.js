@@ -190,7 +190,7 @@ const login = async (req, res) => {
     });
   } else {
     const userForToken = {
-      id: user._id,
+      userId: user._id,
       email: user.email,
     };
 

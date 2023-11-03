@@ -1,4 +1,21 @@
 import Property from '../models/Property.js';
+import multer from 'multer';
+
+let fileNameNow = "";
+//Multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    fileNameNow = `${Date.now()}-${file.originalname}`;
+    cb(null, fileNameNow)
+  }
+});
+const upload = multer({ storage: storage });
+
+const uploadExport = upload.single('image');
+//Multer
 
 const getAll = async (req, res) => {
   try {
@@ -25,6 +42,7 @@ const create = async (req, res) => {
         date: req.body.pricePerNight.date,
       },
       propertyType: req.body.propertyType,
+      urlImage: fileNameNow,
     });
     res.status(200).json({
       message: 'Data added succesfully',
@@ -85,5 +103,5 @@ const getOne = async (req, res) => {
 };
 
 export default {
-  getOne, getAll, create, editData, deleteData,
+  getOne, getAll, create, editData, deleteData, uploadExport
 };

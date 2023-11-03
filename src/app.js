@@ -2,6 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import mainRouter from './routes/app.routes.js';
+import multer from 'multer';
 
 const app = express();
 app.disable('x-powered-by');

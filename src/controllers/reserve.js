@@ -36,8 +36,9 @@ const post = async (req, res) => {
   } = req.body;
 
   try {
+    const user = userId;
     const newReserve = await Reserve.create({
-      date_start, date_end, userId, packageReserved,
+      date_start, date_end, user, packageReserved,
     });
 
     res.status(201).json({
@@ -67,9 +68,9 @@ const put = async (req, res) => {
         error: true,
       }).end();
     }
-
+    const user = userId;
     const reserveUpdated = await Reserve.findByIdAndUpdate(id, {
-      date_start, date_end, userId, packageReserved,
+      date_start, date_end, user, packageReserved,
     }, { new: true });
     if (!reserveUpdated) {
       res.stauts(404).json({

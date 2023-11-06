@@ -1,21 +1,21 @@
-import Property from '../models/Property.js';
 import multer from 'multer';
+import Property from '../models/Property.js';
 
-let fileNameNow = "";
-//Multer
+let fileNameNow = '';
+// Multer
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads')
+  destination(req, file, cb) {
+    cb(null, 'uploads');
   },
   filename: (req, file, cb) => {
     fileNameNow = `${Date.now()}-${file.originalname}`;
-    cb(null, fileNameNow)
-  }
+    cb(null, fileNameNow);
+  },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 const uploadExport = upload.single('image');
-//Multer
+// Multer
 
 const getAll = async (req, res) => {
   try {
@@ -38,8 +38,8 @@ const create = async (req, res) => {
       capacity: req.body.capacity,
       address: req.body.address,
       pricePerNight: {
-        price: req.body.pricePerNight.price,
-        date: req.body.pricePerNight.date,
+        price: req.body.price,
+        date: req.body.date,
       },
       propertyType: req.body.propertyType,
       urlImage: fileNameNow,
@@ -103,5 +103,5 @@ const getOne = async (req, res) => {
 };
 
 export default {
-  getOne, getAll, create, editData, deleteData, uploadExport
+  getOne, getAll, create, editData, deleteData, uploadExport,
 };

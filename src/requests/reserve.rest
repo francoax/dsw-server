@@ -7,3 +7,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MGJiODc2Z
   "date_end": "2023-08-01",
   "packageReserved": "64dac8df375f334f2a2f4943"
 }
+
+###Delete reserve
+DELETE http://localhost:4000/api/reserves/652768d1741ea0f3ee501e18

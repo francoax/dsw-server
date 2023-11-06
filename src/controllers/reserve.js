@@ -30,12 +30,13 @@ const get = async (req, res) => {
 };
 
 const post = async (req, res) => {
-  const { user } = req.user.id;
+  const { userId } = req.user;
   const {
     date_start, date_end, packageReserved,
   } = req.body;
 
   try {
+    const user = userId;
     const newReserve = await Reserve.create({
       date_start, date_end, user, packageReserved,
     });
@@ -56,9 +57,18 @@ const post = async (req, res) => {
 const put = async (req, res) => {
   const { id } = req.params;
   const {
-    date_start, date_end, user, packageReserved,
+    date_start, date_end, packageReserved,
   } = req.body;
+  const { userId } = req.user;
   try {
+    if (!userId) {
+      res.status(403).json({
+        message: 'Unauthorized.',
+        data: undefined,
+        error: true,
+      }).end();
+    }
+    const user = userId;
     const reserveUpdated = await Reserve.findByIdAndUpdate(id, {
       date_start, date_end, user, packageReserved,
     }, { new: true });
@@ -85,7 +95,15 @@ const put = async (req, res) => {
 
 const remove = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req.user;
   try {
+    if (!userId) {
+      res.status(403).json({
+        message: 'Unauthorized.',
+        data: undefined,
+        error: true,
+      }).end();
+    }
     const reserveRemoved = await Reserve.findByIdAndRemove(id);
     if (!reserveRemoved) {
       res.stauts(404).json({

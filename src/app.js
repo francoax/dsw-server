@@ -6,10 +6,10 @@ import mainRouter from './routes/app.routes.js';
 const app = express();
 app.disable('x-powered-by');
 
-const corsOptions = {
-  origin: 'https://poncho-home-and-stay-git-dev-francoax.vercel.app',
-  optionsSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: 'https://poncho-home-and-stay-git-dev-francoax.vercel.app',
+//   optionsSuccessStatus: 200,
+// };
 
 // app.use(cors(corsOptions));
 app.use(cors());

@@ -1,4 +1,5 @@
 import multer from 'multer';
+// eslint-disable-next-line import/extensions
 import Property from '../models/Property.js';
 
 let fileNameNow = '';

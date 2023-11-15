@@ -27,7 +27,9 @@ const PropertiesSchema = new mongoose.Schema({
     required: true,
     ref: 'propertieType',
   },
-
+  urlImage: {
+    type: String,
+  }
 });
 
 export default mongoose.model('Propertie', PropertiesSchema);

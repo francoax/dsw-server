@@ -25,6 +25,7 @@ const create = async (req, res) => {
         date: req.body.pricePerNight.date,
       },
       propertyType: req.body.propertyType,
+      locality: req.body.locality
     });
     res.status(200).json({
       message: 'Data added succesfully',

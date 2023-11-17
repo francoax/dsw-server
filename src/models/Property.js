@@ -31,8 +31,10 @@ const PropertiesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required:true,
     ref: 'locality',
+  },
+  urlImage: {
+    type: String,
   }
-
 });
 
 export default mongoose.model('Propertie', PropertiesSchema);

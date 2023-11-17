@@ -7,8 +7,9 @@ import authenticateToken from '../middlewares/authenticateToken.js';
 const router = Router();
 
 router
-  .get('/:id', [verifyMongoId], reserveController.get)
   .get('/', reserveController.getAll)
+  .get('/user', [authenticateToken], reserveController.getByUser)
+  .get('/:id', [verifyMongoId], reserveController.get)
   .post('/', [authenticateToken], reserveController.post)
   .put('/:id', [verifyMongoId, authenticateToken], reserveController.put)
   .delete('/:id', [verifyMongoId, authenticateToken], reserveController.remove);

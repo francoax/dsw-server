@@ -29,6 +29,23 @@ const get = async (req, res) => {
   }).end();
 };
 
+const getByUser = async (req, res) => {
+  const { userId } = req.user;
+  try {
+    const reserves = await Reserve.find({ user: userId });
+    res.status(200).json({
+      message: 'Reserves found.',
+      data: reserves,
+      error: false,
+    }).end();
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+      error: true,
+    }).end();
+  }
+};
+
 const post = async (req, res) => {
   const { userId } = req.user;
   const {
@@ -128,6 +145,7 @@ const remove = async (req, res) => {
 export default {
   getAll,
   get,
+  getByUser,
   post,
   put,
   remove,

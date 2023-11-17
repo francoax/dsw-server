@@ -29,6 +29,10 @@ const packageSchema = new Schema(
       ref: 'MedicalAssistance',
       required: false,
     },
+    nameImage: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,

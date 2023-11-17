@@ -1,4 +1,22 @@
+import multer from 'multer';
+// eslint-disable-next-line import/extensions
 import Property from '../models/Property.js';
+
+let fileNameNow = '';
+// Multer
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, 'uploads');
+  },
+  filename: (req, file, cb) => {
+    fileNameNow = `${Date.now()}-${file.originalname}`;
+    cb(null, fileNameNow);
+  },
+});
+const upload = multer({ storage });
+
+const uploadExport = upload.single('image');
+// Multer
 
 const getAll = async (req, res) => {
   try {
@@ -21,11 +39,12 @@ const create = async (req, res) => {
       capacity: req.body.capacity,
       address: req.body.address,
       pricePerNight: {
-        price: req.body.pricePerNight.price,
-        date: req.body.pricePerNight.date,
+        price: req.body.price,
+        date: req.body.date,
       },
       propertyType: req.body.propertyType,
-      locality: req.body.locality
+      locality: req.body.locality,
+      urlImage: fileNameNow,
     });
     res.status(200).json({
       message: 'Data added succesfully',
@@ -86,5 +105,5 @@ const getOne = async (req, res) => {
 };
 
 export default {
-  getOne, getAll, create, editData, deleteData,
+  getOne, getAll, create, editData, deleteData, uploadExport,
 };

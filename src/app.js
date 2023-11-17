@@ -4,6 +4,7 @@ import cors from 'cors';
 import mainRouter from './routes/app.routes.js';
 
 const app = express();
+app.disable('x-powered-by');
 
 app.use(cors());
 app.use(express.json());

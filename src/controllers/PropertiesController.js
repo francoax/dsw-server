@@ -43,6 +43,7 @@ const create = async (req, res) => {
         date: req.body.date,
       },
       propertyType: req.body.propertyType,
+      locality: req.body.locality,
       urlImage: fileNameNow,
     });
     res.status(200).json({

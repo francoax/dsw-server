@@ -9,4 +9,4 @@ const propertytypeSchema = new Schema({
   timestamps: true,
 });
 
-export default mongoose.model('PropertyType', propertytypeSchema);
+export default mongoose.model('propertyType', propertytypeSchema);

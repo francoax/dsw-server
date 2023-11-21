@@ -20,7 +20,7 @@ const uploadExport = upload.single('image');
 
 const getAll = async (req, res) => {
   try {
-    const properties = await Property.find().populate('location');
+    const properties = await Property.find().populate(['location', 'propertyType']);
     res.status(200).json({
       message: 'Data received successfully',
       data: properties,
@@ -62,6 +62,7 @@ const create = async (req, res) => {
     return res.status(200).json({
       message: 'Data added succesfully',
       data: newProperty,
+      error: false,
     });
   } catch (e) {
     return res.status(400).json({
@@ -105,7 +106,7 @@ const deleteData = async (req, res) => {
 const getOne = async (req, res) => {
   const { id } = req.params;
   try {
-    const property = await Property.findOne({ _id: id });
+    const property = await Property.findOne({ _id: id }).populate(['location', 'propertyType']);
     res.status(200).json({
       message: 'Data obtained successfully',
       data: property,

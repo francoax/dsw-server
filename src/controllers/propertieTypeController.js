@@ -65,7 +65,7 @@ propertieTypeABM.add = (req, res) => {
           error: true,
         });
       }
-      const newpropertieType = new propertieType(propertieTypeNew);
+      const newpropertieType = new propertyType(propertieTypeNew);
       newpropertieType.save().then((newpropertieType) => {
         res.status(201).json({
           message: 'propertie type created.',

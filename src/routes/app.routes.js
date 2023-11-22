@@ -13,11 +13,11 @@ import packageRouter from './package.routes.js';
 
 const router = Router();
 
-router.use('/propertie-types', propertieTypeRouter);
+router.use('/property-types', propertieTypeRouter);
 router.use('/medicalAssistance', medicalAssistanceRouter);
 router.use('/property', PropertyRouter);
 router.use('/cars', carsRouter);
-router.use('/localities', localitiesRouter);
+router.use('/locations', localitiesRouter);
 router.use('/users', usersRouter);
 router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);

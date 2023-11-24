@@ -104,7 +104,8 @@ const create = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-  const { userId } = req.user;
+  const { userId } = req.user ?? {};
+  const { id } = req.params;
   const {
     name, lastname, address, email, tel, role,
   } = req.body;
@@ -113,7 +114,7 @@ const edit = async (req, res) => {
     if (password) { password = await bcrypt.hash(password, 10); }
 
     const userUpdated = await User.findByIdAndUpdate(
-      userId,
+      userId ?? id,
       {
         name,
         lastname,

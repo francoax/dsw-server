@@ -2,15 +2,40 @@
 /* eslint-disable import/extensions */
 import Package from '../models/package.js';
 
-const listPackages = (req, res) => {
-  Package.find({}).then((packages) => {
-    if (packages) {
-      return res.json({ message: 'Packages found', data: packages, error: false });
+// const listPackages = (req, res) => {
+//   Package.find({}).then((packages) => {
+//     if (packages) {
+//       return res.json({ message: 'Packages found', data: packages, error: false });
+//     }
+//     res.status(404).send({ message: 'packages not found', data: null, error: true }).end();
+//   }).catch((err) => {
+//     res.status(400).send({ message: err.message, data: null, error: true }).end();
+//   });
+// };
+
+const listConcept = async (req, res) => {
+  try {
+    const packages = await Package.find().populate(['property', 'car', 'medicalAssistance']);
+    if (!packages) {
+      return res.status(404).json({
+        message: 'Sin paquetes por el momento.',
+        data: packages,
+        error: false,
+      });
     }
-    res.status(404).send({ message: 'packages not found', data: null, error: true }).end();
-  }).catch((err) => {
-    res.status(400).send({ message: err.message, data: null, error: true }).end();
-  });
+
+    return res.status(200).json({
+      message: 'Lista de paquetes',
+      data: packages,
+      error: false,
+    });
+  } catch (e) {
+    return res.status(400).json({
+      message: e.message,
+      data: e,
+      error: true,
+    });
+  }
 };
 
 const getPackage = (req, res) => {
@@ -66,7 +91,7 @@ const createPackage = (req, res) => {
 };
 
 export default {
-  listPackages,
+  listConcept,
   getPackage,
   updatePackage,
   deletePackage,

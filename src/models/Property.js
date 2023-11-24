@@ -25,16 +25,16 @@ const PropertiesSchema = new mongoose.Schema({
   propertyType: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'propertieType',
+    ref: 'propertyType',
   },
-  locality:{
+  location: {
     type: mongoose.Schema.Types.ObjectId,
-    required:true,
+    required: true,
     ref: 'locality',
   },
   urlImage: {
     type: String,
-  }
+  },
 });
 
-export default mongoose.model('Propertie', PropertiesSchema);
+export default mongoose.model('Property', PropertiesSchema);

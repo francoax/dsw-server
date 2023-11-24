@@ -20,10 +20,11 @@ const uploadExport = upload.single('image');
 
 const getAll = async (req, res) => {
   try {
-    const properties = await Property.find();
+    const properties = await Property.find().populate(['location', 'propertyType']);
     res.status(200).json({
       message: 'Data received successfully',
       data: properties,
+      error: false,
     });
   } catch (e) {
     res.status(400).json({
@@ -38,21 +39,35 @@ const create = async (req, res) => {
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
-      pricePerNight: {
-        price: req.body.price,
-        date: req.body.date,
-      },
+      // pricePerNight: {
+      //   price: req.body.price,
+      //   date: req.body.date,
+      // },
+      pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,
-      locality: req.body.locality,
+      location: req.body.location,
       urlImage: fileNameNow,
     });
-    res.status(200).json({
+
+    if (!newProperty) {
+      return res.status(400).json({
+        message: 'property not created.',
+        data: req.body,
+        error: true,
+      });
+    }
+
+    uploadExport();
+
+    return res.status(200).json({
       message: 'Data added succesfully',
       data: newProperty,
+      error: false,
     });
   } catch (e) {
-    res.status(400).json({
+    return res.status(400).json({
       message: e.message,
+      data: e,
       error: true,
     });
   }
@@ -91,7 +106,7 @@ const deleteData = async (req, res) => {
 const getOne = async (req, res) => {
   const { id } = req.params;
   try {
-    const property = await Property.findOne({ _id: id });
+    const property = await Property.findOne({ _id: id }).populate(['location', 'propertyType']);
     res.status(200).json({
       message: 'Data obtained successfully',
       data: property,

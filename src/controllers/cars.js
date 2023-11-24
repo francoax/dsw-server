@@ -4,7 +4,8 @@
 import Car from '../models/car.js';
 
 const listCars = (req, res) => {
-  Car.find({}).then((cars) => {
+  const filter = req.query;
+  Car.find({ ...filter }).then((cars) => {
     if (cars) {
       return res.json({ message: '', data: cars, error: false });
     }

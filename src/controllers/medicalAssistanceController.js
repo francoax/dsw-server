@@ -5,11 +5,15 @@ const getAll = async (req, res) => {
   try {
     const mediA = await MedicalAsistance.find();
     res.status(200).json({
-      message: 'Data sent successfully',
+      message: 'Asistencias medicas encontradas',
       data: mediA,
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(500).json({
+      message: 'Error al buscar asistencias medicas',
+      error: true,
+      data: null,
+    });
   }
 };
 
@@ -22,11 +26,15 @@ const create = async (req, res) => {
       coverageType: req.body.coverageType,
     });
     res.status(200).json({
-      message: 'Data added succesfully',
+      message: 'Asistencia medica creada',
       data: newMedicalA,
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(500).json({
+      message: 'Error al crear asistencia medica',
+      error: true,
+      data: null,
+    });
   }
 };
 
@@ -35,12 +43,16 @@ const editData = async (req, res) => {
   try {
     const medicalAUpdated = await MedicalAsistance.updateOne({ _id: id }, { ...req.body });
     res.status(201).json({
-      message: 'Data updated succesfuly',
+      message: 'Asistencia medica actualizada',
       data: medicalAUpdated,
 
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(500).json({
+      message: 'Error al actualizar asistencia medica',
+      error: true,
+      data: null,
+    });
   }
 };
 
@@ -49,10 +61,14 @@ const deleteData = async (req, res) => {
   try {
     await MedicalAsistance.deleteOne({ _id: id });
     res.status(200).json({
-      message: 'Data deleated succesfuly',
+      message: 'Asistencia medica eliminada',
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(500).json({
+      message: 'Error al eliminar asistencia medica',
+      error: true,
+      data: null,
+    });
   }
 };
 
@@ -61,11 +77,15 @@ const getOne = async (req, res) => {
   try {
     const medicalA = await MedicalAsistance.findOne({ _id: id });
     res.status(200).json({
-      message: 'Data sent successfully',
+      message: 'Asistencia medica encontrada',
       data: medicalA,
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(500).json({
+      message: 'Error al encontrar asistencia medica',
+      error: true,
+      data: null,
+    });
   }
 };
 export default {

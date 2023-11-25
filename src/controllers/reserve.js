@@ -6,7 +6,7 @@ import Reserve from '../models/reserve.js';
 
 const getAll = async (req, res) => {
   res.status(200).json({
-    message: 'Reserves list',
+    message: 'Lista de reservas',
     data: await Reserve.find().populate('user package'),
     error: false,
   });
@@ -17,13 +17,13 @@ const get = async (req, res) => {
   const reserve = await Reserve.findById(id);
   if (!reserve) {
     res.stauts(404).json({
-      message: `Reserve with the Id ${id} not found.`,
+      message: `Reserva con el id: ${id} no encontrada`,
       data: reserve,
       error: true,
     }).end();
   }
   res.status(200).json({
-    message: 'Reserve found.',
+    message: 'Reserva encontrada',
     data: reserve,
     error: false,
   }).end();
@@ -34,13 +34,13 @@ const getByUser = async (req, res) => {
   try {
     const reserves = await Reserve.find({ user: userId });
     res.status(200).json({
-      message: 'Reserves found.',
+      message: 'Reserva encontrada',
       data: reserves,
       error: false,
     }).end();
   } catch (error) {
     res.status(400).json({
-      message: error.message,
+      message: 'Error al buscar reserva por usuario',
       error: true,
     }).end();
   }
@@ -59,13 +59,13 @@ const post = async (req, res) => {
     });
 
     res.status(201).json({
-      message: 'Reserve done.',
+      message: 'Reserva creada',
       data: newReserve,
       error: false,
     }).end();
   } catch (error) {
     res.status(400).json({
-      message: error.message,
+      message: 'Error al crear reserva',
       error: true,
     }).end();
   }
@@ -80,7 +80,7 @@ const put = async (req, res) => {
   try {
     if (!userId) {
       res.status(403).json({
-        message: 'Unauthorized.',
+        message: 'No autorizado',
         data: undefined,
         error: true,
       }).end();
@@ -91,20 +91,20 @@ const put = async (req, res) => {
     }, { new: true });
     if (!reserveUpdated) {
       res.stauts(404).json({
-        message: `Reserve with the Id ${id} not found.`,
+        message: `Reserva con el id: ${id} no encontrada`,
         data: reserveUpdated,
         error: true,
       }).end();
     }
 
     res.status(200).json({
-      message: 'Reserve updated',
+      message: 'Reserva actualizada',
       data: reserveUpdated,
       error: false,
     }).end();
   } catch (error) {
     res.status(400).json({
-      message: error.message,
+      message: 'Error al editar reserva',
       error: true,
     }).end();
   }
@@ -116,7 +116,7 @@ const remove = async (req, res) => {
   try {
     if (!userId) {
       res.status(403).json({
-        message: 'Unauthorized.',
+        message: 'No autorizado',
         data: undefined,
         error: true,
       }).end();
@@ -124,19 +124,19 @@ const remove = async (req, res) => {
     const reserveRemoved = await Reserve.findByIdAndRemove(id);
     if (!reserveRemoved) {
       res.stauts(404).json({
-        message: `Reserve with the Id ${id} not found.`,
+        message: `Reserva con el Id: ${id} no encontrada`,
         data: reserveRemoved,
         error: true,
       }).end();
     }
     res.status(200).json({
-      message: 'Reserve deleted.',
+      message: 'Reserva eliminada',
       data: reserveRemoved,
       error: false,
     }).end();
   } catch (error) {
     res.status(400).json({
-      message: error.message,
+      message: 'Error al eliminar reserva',
       error: true,
     }).end();
   }

@@ -1,6 +1,6 @@
+/* eslint-disable import/extensions */
 import { Router } from 'express';
 import propertieTypeABM from '../controllers/propertieTypeController.js';
-
 
 const router = Router();
 

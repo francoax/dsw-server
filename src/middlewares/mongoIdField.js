@@ -5,7 +5,7 @@ const verifyMongoId = async (req, res, next) => {
 
   if (!mongoose.isValidObjectId(id)) {
     res.status(400).json({
-      message: 'Invalid id.',
+      message: 'ID invalido',
       data: id,
       error: true,
     });

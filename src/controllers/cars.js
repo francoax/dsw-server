@@ -7,22 +7,22 @@ const listCars = (req, res) => {
   const filter = req.query;
   Car.find({ ...filter }).then((cars) => {
     if (cars) {
-      return res.json({ message: '', data: cars, error: false });
+      return res.json({ message: 'Vehiculos encontrados', data: cars, error: false });
     }
-    res.status(404).send({ message: 'cars not found', data: null, error: true }).end();
-  }).catch((err) => {
-    res.status(400).send({ message: err.message, data: null, error: true }).end();
+    res.status(404).send({ message: 'No se encontraron vehiculos', data: null, error: true }).end();
+  }).catch(() => {
+    res.status(400).send({ message: 'Error al buscar vehiculos', data: null, error: true }).end();
   });
 };
 
 const listCarById = (req, res) => {
   Car.findById(req.params.id).then((car) => {
     if (car) {
-      return res.json({ message: '', data: car, error: false });
+      return res.json({ message: 'Vehiculo encontrado', data: car, error: false });
     }
-    res.status(404).send({ message: 'car not found', data: null, error: true }).end();
-  }).catch((err) => {
-    res.status(400).send({ message: err.message, data: null, error: true }).end();
+    res.status(404).send({ message: 'El vehiculo no existe', data: null, error: true }).end();
+  }).catch(() => {
+    res.status(400).send({ message: 'Error al buscar vehiculo', data: null, error: true }).end();
   });
 };
 
@@ -41,16 +41,16 @@ const updateCar = (req, res) => {
     locality: car.locality,
   }, { new: true })
     .then((result) => {
-      res.json({ message: '', data: result, error: false });
+      res.json({ message: 'Vehiculo actualizado', data: result, error: false });
     })
-    .catch((err) => {
-      res.status(400).send({ message: err.message, data: null, error: true }).end();
+    .catch(() => {
+      res.status(400).send({ message: 'Error al actualizar vehiculo', data: null, error: true }).end();
     });
 };
 
 const deleteCar = (req, res) => {
-  Car.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch((err) => {
-    res.status(500).send({ message: err.message, data: null, error: true }).end();
+  Car.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch(() => {
+    res.status(400).send({ message: 'Error al eliminar vehiculo', data: null, error: true }).end();
   });
 };
 
@@ -69,9 +69,9 @@ const createCar = (req, res) => {
     locality: car.locality,
   });
 
-  newCar.save().then((savedCar) => res.json({ message: '', data: savedCar, error: false }))
-    .catch((err) => {
-      res.status(400).send({ message: err.message, data: null, error: true }).end();
+  newCar.save().then((savedCar) => res.json({ message: 'Vehiculo creado', data: savedCar, error: false }))
+    .catch(() => {
+      res.status(400).send({ message: 'Error al crear vehiculo', data: null, error: true }).end();
     });
 };
 

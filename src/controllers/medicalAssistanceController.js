@@ -5,11 +5,14 @@ const getAll = async (req, res) => {
   try {
     const mediA = await MedicalAsistance.find();
     res.status(200).json({
-      message: 'Data sent successfully',
+      message: 'Información obtenida con exito',
       data: mediA,
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(404).json({
+      message: "Hubo un error con la solicitud, intente nuevamente",
+      error: true,
+    }).end();
   }
 };
 
@@ -22,11 +25,14 @@ const create = async (req, res) => {
       coverageType: req.body.coverageType,
     });
     res.status(200).json({
-      message: 'Data added succesfully',
+      message: 'Asistencia médica guardada con exito',
       data: newMedicalA,
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(404).json({
+      message: "Hubo un error con la solicitud, intente nuevamente",
+      error: true,
+    }).end();
   }
 };
 
@@ -35,12 +41,15 @@ const editData = async (req, res) => {
   try {
     const medicalAUpdated = await MedicalAsistance.updateOne({ _id: id }, { ...req.body });
     res.status(201).json({
-      message: 'Data updated succesfuly',
+      message: 'Asistencia médica actualizada con exito',
       data: medicalAUpdated,
 
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(404).json({
+      message: "Hubo un error con la solicitud, intente nuevamente",
+      error: true,
+    }).end();
   }
 };
 
@@ -49,10 +58,13 @@ const deleteData = async (req, res) => {
   try {
     await MedicalAsistance.deleteOne({ _id: id });
     res.status(200).json({
-      message: 'Data deleated succesfuly',
+      message: 'Asistencia médica eliminada con exito',
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(404).json({
+      message: "Hubo un error con la solicitud, intente nuevamente",
+      error: true,
+    }).end();
   }
 };
 
@@ -61,11 +73,14 @@ const getOne = async (req, res) => {
   try {
     const medicalA = await MedicalAsistance.findOne({ _id: id });
     res.status(200).json({
-      message: 'Data sent successfully',
+      message: 'Asistencia médica obtenida con exito',
       data: medicalA,
     });
   } catch (e) {
-    console.log(e.message);
+    res.status(404).json({
+      message: "Hubo un error con la solicitud, intente nuevamente",
+      error: true,
+    }).end();
   }
 };
 export default {

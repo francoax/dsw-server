@@ -1,3 +1,7 @@
+/* eslint-disable no-shadow */
+/* eslint-disable new-cap */
+/* eslint-disable consistent-return */
+/* eslint-disable import/extensions */
 import propertyType from '../models/propertieType.js';
 
 const propertieTypeABM = {};
@@ -5,40 +9,40 @@ const propertieTypeABM = {};
 propertieTypeABM.getAll = (req, res) => {
   propertyType.find().then((propertieTypes) => {
     if (propertieTypes.length === 0) {
-      throw new Error('There are not propertie types');
+      throw new Error('Tipos de propiedad no encontrados');
     }
     res.status(200).json({
-      message: 'Propertie types list.',
+      message: 'Lista de tipos de propiedad',
       data: propertieTypes,
       error: false,
     });
   })
-    .catch((e) => res.status(400).json({
-      message: e.message,
+    .catch(() => res.status(400).json({
+      message: 'Error al buscar tipos de propiedad',
       error: true,
     }));
 };
 
-propertieTypeABM.getOne = (req, res, next) => {
+propertieTypeABM.getOne = (req, res) => {
   const { id } = req.params;
 
   propertyType.findById(id).then((propertie) => {
     if (propertie) {
       res.status(200).json({
-        message: 'Propertie type found.',
+        message: 'Tipo de propiedad encontrado',
         data: propertie,
         error: false,
       }).end();
       return res.json(propertie);
     }
     res.status(404).json({
-      message: `Propertie type with the Id ${id} not found.`,
+      message: `Tipo de propiedad con id: ${id} no encontrado.`,
       data: propertie,
       error: true,
     }).end();
-  }).catch((error) => {
+  }).catch(() => {
     res.status(400).json({
-      message: error.message,
+      message: 'Error al buscar tipo de propiedad',
       error: true,
     }).end();
   });
@@ -50,9 +54,8 @@ propertieTypeABM.add = (req, res) => {
 
   try {
     if (propertieTypeNew.description === '') {
-      console.log('entré');
       return res.status(400).json({
-        message: 'required "description" field is missing.',
+        message: 'Falta el campo requerido "descripcion"',
         data: undefined,
         error: true,
       });
@@ -60,7 +63,7 @@ propertieTypeABM.add = (req, res) => {
     propertyType.findOne({ description }).then((propertie) => {
       if (propertie) {
         return res.status(400).json({
-          message: 'The propertie type already exists.',
+          message: 'El tipo de propiedad ya existe',
           data: undefined,
           error: true,
         });
@@ -68,7 +71,7 @@ propertieTypeABM.add = (req, res) => {
       const newpropertieType = new propertyType(propertieTypeNew);
       newpropertieType.save().then((newpropertieType) => {
         res.status(201).json({
-          message: 'propertie type created.',
+          message: 'Tipo de propiedad creado',
           data: newpropertieType,
           error: false,
         });
@@ -76,8 +79,7 @@ propertieTypeABM.add = (req, res) => {
     });
   } catch (err) {
     return res.status(400).json({
-      message: err.message,
-      err,
+      message: 'Error al crear tipo de propiedad',
       error: true,
     });
   }
@@ -92,17 +94,16 @@ propertieTypeABM.update = (req, res) => {
   };
   try {
     propertyType.findByIdAndUpdate(id, newPropertyType, { new: true })
-      .then((result) => {
+      .then(() => {
         res.json({
-          message: 'propertie type updated.',
+          message: 'Tipo de propiedad actualizado',
           data: newPropertyType,
           error: false,
         });
       });
   } catch (err) {
     return res.status(400).json({
-      message: err.message,
-      err,
+      message: 'Error al editar tipo de propiedad',
       error: true,
     });
   }
@@ -112,14 +113,13 @@ propertieTypeABM.delete = (req, res) => {
   const { id } = req.params;
   propertyType.findByIdAndRemove(id).then((result) => {
     res.status(204).json({
-      message: 'propertie type deleted.',
+      message: 'Tipo de propiedad eliminado',
       data: result,
       error: false,
     });
-  }).catch((err) => {
+  }).catch(() => {
     res.status(400).json({
-      message: err.message,
-      err,
+      message: 'Error al eliminar tipo de propiedad',
       error: true,
     });
   });

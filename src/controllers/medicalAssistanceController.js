@@ -5,14 +5,15 @@ const getAll = async (req, res) => {
   try {
     const mediA = await MedicalAsistance.find();
     res.status(200).json({
-      message: 'Información obtenida con exito',
+      message: 'Asistencias medicas encontradas',
       data: mediA,
     });
   } catch (e) {
-    res.status(404).json({
-      message: "Hubo un error con la solicitud, intente nuevamente",
+    res.status(500).json({
+      message: 'Error al buscar asistencias medicas',
       error: true,
-    }).end();
+      data: null,
+    });
   }
 };
 
@@ -25,14 +26,15 @@ const create = async (req, res) => {
       coverageType: req.body.coverageType,
     });
     res.status(200).json({
-      message: 'Asistencia médica guardada con exito',
+      message: 'Asistencia medica creada',
       data: newMedicalA,
     });
   } catch (e) {
-    res.status(404).json({
-      message: "Hubo un error con la solicitud, intente nuevamente",
+    res.status(500).json({
+      message: 'Error al crear asistencia medica',
       error: true,
-    }).end();
+      data: null,
+    });
   }
 };
 
@@ -41,15 +43,16 @@ const editData = async (req, res) => {
   try {
     const medicalAUpdated = await MedicalAsistance.updateOne({ _id: id }, { ...req.body });
     res.status(201).json({
-      message: 'Asistencia médica actualizada con exito',
+      message: 'Asistencia medica actualizada',
       data: medicalAUpdated,
 
     });
   } catch (e) {
-    res.status(404).json({
-      message: "Hubo un error con la solicitud, intente nuevamente",
+    res.status(500).json({
+      message: 'Error al actualizar asistencia medica',
       error: true,
-    }).end();
+      data: null,
+    });
   }
 };
 
@@ -58,13 +61,14 @@ const deleteData = async (req, res) => {
   try {
     await MedicalAsistance.deleteOne({ _id: id });
     res.status(200).json({
-      message: 'Asistencia médica eliminada con exito',
+      message: 'Asistencia medica eliminada',
     });
   } catch (e) {
-    res.status(404).json({
-      message: "Hubo un error con la solicitud, intente nuevamente",
+    res.status(500).json({
+      message: 'Error al eliminar asistencia medica',
       error: true,
-    }).end();
+      data: null,
+    });
   }
 };
 
@@ -73,14 +77,15 @@ const getOne = async (req, res) => {
   try {
     const medicalA = await MedicalAsistance.findOne({ _id: id });
     res.status(200).json({
-      message: 'Asistencia médica obtenida con exito',
+      message: 'Asistencia medica encontrada',
       data: medicalA,
     });
   } catch (e) {
-    res.status(404).json({
-      message: "Hubo un error con la solicitud, intente nuevamente",
+    res.status(500).json({
+      message: 'Error al encontrar asistencia medica',
       error: true,
-    }).end();
+      data: null,
+    });
   }
 };
 export default {

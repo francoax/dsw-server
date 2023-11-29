@@ -22,13 +22,13 @@ const getAll = async (req, res) => {
   try {
     const properties = await Property.find().populate(['location', 'propertyType']);
     res.status(200).json({
-      message: 'Data received successfully',
+      message: 'Lista de propiedades',
       data: properties,
       error: false,
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al buscar propiedades',
       error: true,
     });
   }
@@ -51,7 +51,7 @@ const create = async (req, res) => {
 
     if (!newProperty) {
       return res.status(400).json({
-        message: 'property not created.',
+        message: 'Error al crear propiedad',
         data: req.body,
         error: true,
       });
@@ -60,13 +60,13 @@ const create = async (req, res) => {
     uploadExport();
 
     return res.status(200).json({
-      message: 'Data added succesfully',
+      message: 'Propiedad creada',
       data: newProperty,
       error: false,
     });
   } catch (e) {
     return res.status(400).json({
-      message: e.message,
+      message: 'Error al crear propiedad',
       data: e,
       error: true,
     });
@@ -78,12 +78,12 @@ const editData = async (req, res) => {
   try {
     const prop = await Property.findByIdAndUpdate(id, { ...req.body }, { new: true });
     res.status(201).json({
-      message: 'Data updated succesfully',
+      message: 'Propiedad editada',
       data: prop,
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al editar propiedad',
       error: true,
     });
   }
@@ -93,11 +93,11 @@ const deleteData = async (req, res) => {
   try {
     await Property.deleteOne({ _id: id });
     res.status(200).json({
-      message: 'Data deleted succesfully',
+      message: 'Propiedad eliminada',
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al eliminar propiedad',
       error: true,
     });
   }
@@ -108,12 +108,12 @@ const getOne = async (req, res) => {
   try {
     const property = await Property.findOne({ _id: id }).populate(['location', 'propertyType']);
     res.status(200).json({
-      message: 'Data obtained successfully',
+      message: 'Propiedad encontrada',
       data: property,
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al buscar propiedad',
       error: true,
     });
   }

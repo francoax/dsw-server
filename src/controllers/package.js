@@ -18,7 +18,7 @@ const listConcept = async (req, res) => {
     const packages = await Package.find().populate(['property', 'car', 'medicalAssistance']);
     if (!packages) {
       return res.status(404).json({
-        message: 'Sin paquetes por el momento.',
+        message: 'Sin paquetes por el momento',
         data: packages,
         error: false,
       });
@@ -31,7 +31,7 @@ const listConcept = async (req, res) => {
     });
   } catch (e) {
     return res.status(400).json({
-      message: e.message,
+      message: 'Error al buscar paquetes',
       data: e,
       error: true,
     });
@@ -41,11 +41,11 @@ const listConcept = async (req, res) => {
 const getPackage = (req, res) => {
   Package.findById(req.params.id).then((pack) => {
     if (pack) {
-      return res.json({ message: 'Package found', data: pack, error: false });
+      return res.json({ message: 'Paquete encontrado', data: pack, error: false });
     }
-    res.status(404).send({ message: 'package not found', data: null, error: true }).end();
-  }).catch((err) => {
-    res.status(400).send({ message: err.message, data: null, error: true }).end();
+    res.status(404).send({ message: 'Paquete no encontrado', data: null, error: true }).end();
+  }).catch(() => {
+    res.status(400).send({ message: 'Error al buscar paquete', data: null, error: true }).end();
   });
 };
 
@@ -60,16 +60,16 @@ const updatePackage = (req, res) => {
     medicalAssistance: pack.medicalAssistance,
   }, { new: true })
     .then((result) => {
-      res.json({ message: 'Package updated', data: result, error: false });
+      res.json({ message: 'Paquete actualizado', data: result, error: false });
     })
-    .catch((err) => {
-      res.status(400).send({ message: err.message, data: null, error: true }).end();
+    .catch(() => {
+      res.status(400).send({ message: 'Error al actualizar paquete', data: null, error: true }).end();
     });
 };
 
 const deletePackage = (req, res) => {
-  Package.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch((err) => {
-    res.status(500).send({ message: err.message, data: null, error: true }).end();
+  Package.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch(() => {
+    res.status(500).send({ message: 'Error al eliminar paquete', data: null, error: true }).end();
   });
 };
 
@@ -84,9 +84,9 @@ const createPackage = (req, res) => {
     medicalAssistance: pack.medicalAssistance,
   });
 
-  newCar.save().then((savedCar) => res.json({ message: 'Package created', data: savedCar, error: false }))
-    .catch((err) => {
-      res.status(400).send({ message: err.message, data: null, error: true }).end();
+  newCar.save().then((savedCar) => res.json({ message: 'Paquete creado', data: savedCar, error: false }))
+    .catch(() => {
+      res.status(400).send({ message: 'Error al crear paquete', data: null, error: true }).end();
     });
 };
 

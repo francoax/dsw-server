@@ -14,8 +14,8 @@ import packageRouter from './package.routes.js';
 const router = Router();
 
 router.use('/property-types', propertyTypeRouter);
-router.use('/medicalAssistance', medicalAssistanceRouter);
-router.use('/property', PropertyRouter);
+router.use('/medicalAssistances', medicalAssistanceRouter);
+router.use('/properties', PropertyRouter);
 router.use('/cars', carsRouter);
 router.use('/locations', locationsRouter);
 router.use('/users', usersRouter);

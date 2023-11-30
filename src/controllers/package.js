@@ -39,7 +39,7 @@ const listConcept = async (req, res) => {
 };
 
 const getPackage = (req, res) => {
-  Package.findById(req.params.id).then((pack) => {
+  Package.findById(req.params.id).populate(['property', 'car', 'medicalAssistance']).then((pack) => {
     if (pack) {
       return res.json({ message: 'Paquete encontrado', data: pack, error: false });
     }

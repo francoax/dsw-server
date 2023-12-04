@@ -201,6 +201,7 @@ const login = async (req, res) => {
       message: 'Usuario logueado',
       data: {
         name: user.name,
+        role: user.role,
         token,
       },
       error: false,

@@ -21,7 +21,10 @@ const PropertiesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pricePerNight: propertyPriceSchema,
+  pricePerNight: {
+    type: propertyPriceSchema,
+    required: true,
+  },
   propertyType: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

@@ -1,22 +1,19 @@
-import multer from 'multer';
 // eslint-disable-next-line import/extensions
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 import Property from '../models/Property.js';
 
-let fileNameNow = '';
-// Multer
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads');
+  destination: (req, file, cb) => {
+    cb(null, 'images');
   },
   filename: (req, file, cb) => {
-    fileNameNow = `${Date.now()}-${file.originalname}`;
-    cb(null, fileNameNow);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-const upload = multer({ storage });
 
-const uploadExport = upload.single('image');
-// Multer
+const upload = multer({ storage });
 
 const getAll = async (req, res) => {
   try {
@@ -39,14 +36,10 @@ const create = async (req, res) => {
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
-      // pricePerNight: {
-      //   price: req.body.price,
-      //   date: req.body.date,
-      // },
       pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,
       location: req.body.location,
-      urlImage: fileNameNow,
+      image: req.file.filename,
     });
 
     if (!newProperty) {
@@ -57,14 +50,16 @@ const create = async (req, res) => {
       });
     }
 
-    uploadExport();
-
     return res.status(200).json({
       message: 'Propiedad creada',
       data: newProperty,
       error: false,
     });
   } catch (e) {
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+      console.log('Eliminando archivo', req.file.path);
+    }
     return res.status(400).json({
       message: 'Error al crear propiedad',
       data: e,
@@ -120,5 +115,5 @@ const getOne = async (req, res) => {
 };
 
 export default {
-  getOne, getAll, create, editData, deleteData, uploadExport,
+  getOne, getAll, create, editData, deleteData, upload,
 };

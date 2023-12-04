@@ -32,7 +32,7 @@ const PropertiesSchema = new mongoose.Schema({
     required: true,
     ref: 'locality',
   },
-  urlImage: {
+  image: {
     type: String,
   },
 });

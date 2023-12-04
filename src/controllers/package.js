@@ -2,20 +2,10 @@
 /* eslint-disable import/extensions */
 import Package from '../models/package.js';
 
-// const listPackages = (req, res) => {
-//   Package.find({}).then((packages) => {
-//     if (packages) {
-//       return res.json({ message: 'Packages found', data: packages, error: false });
-//     }
-//     res.status(404).send({ message: 'packages not found', data: null, error: true }).end();
-//   }).catch((err) => {
-//     res.status(400).send({ message: err.message, data: null, error: true }).end();
-//   });
-// };
-
 const listConcept = async (req, res) => {
+  const filter = req.query;
   try {
-    const packages = await Package.find().populate(['property', 'car', 'medicalAssistance']);
+    const packages = await Package.find({ ...filter }).populate(['property', 'car', 'medicalAssistance']);
     if (!packages) {
       return res.status(404).json({
         message: 'Sin paquetes por el momento',

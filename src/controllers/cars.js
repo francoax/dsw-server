@@ -48,12 +48,31 @@ const updateCar = (req, res) => {
     });
 };
 
-const deleteCar = (req, res) => {
-  Car.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch(() => {
-    res.status(400).send({ message: 'Error al eliminar vehiculo', data: null, error: true }).end();
-  });
-};
+const deleteCar = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const carDeleted = await Car.findByIdAndDelete(id);
 
+    if (!carDeleted) {
+      return res.status(400).json({
+        message: 'Error al intentar borrar.',
+        data: id,
+        error: true,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Auto eliminado',
+      data: carDeleted,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      messsage: error.message,
+      error: true,
+    });
+  }
+};
 const createCar = (req, res) => {
   const car = req.body;
 

@@ -107,6 +107,7 @@ const deleteData = async (req, res) => {
     fs.unlinkSync(`images/${propertyDeleted.image}`);
     res.status(200).json({
       message: 'Propiedad eliminada',
+      error: false,
     });
   } catch (e) {
     res.status(400).json({

@@ -3,20 +3,19 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import sharp from 'sharp';
 import Property from '../models/Property.js';
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'images');
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
 
-const upload = multer({
-  // storage,
+const multerInitilizer = multer({
+  storage,
   limits: {
     fileSize: 2500000,
   },
@@ -27,6 +26,25 @@ const upload = multer({
     return cb(undefined, true);
   },
 });
+
+const uploadFile = (req, res, next) => {
+  const upload = multerInitilizer.single('image');
+
+  upload(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).json({
+        message: err.message,
+        error: true,
+      });
+    } if (err) {
+      return res.status(500).json({
+        message: err.message,
+        error: true,
+      });
+    }
+    return next();
+  });
+};
 
 const getAll = async (req, res) => {
   try {
@@ -45,22 +63,15 @@ const getAll = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const imageName = Date.now() + path.extname(req.file.originalname);
   try {
-    await sharp(req.file.buffer).resize({ width: 1920, height: 1080 }).png().toFile(`images/${imageName}`);
-    console.log(imageName);
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
       pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,
       location: req.body.location,
-      image: imageName,
+      image: req.file.filename,
     });
-
-    if (!newProperty) {
-      throw new Error();
-    }
 
     return res.status(200).json({
       message: 'Propiedad creada',
@@ -69,7 +80,7 @@ const create = async (req, res) => {
     });
   } catch (e) {
     if (req.file) {
-      fs.unlinkSync(`images/${imageName}`);
+      fs.unlinkSync(`${req.file.path}`);
     }
     return res.status(400).json({
       message: 'Error al crear propiedad',
@@ -134,5 +145,5 @@ const getOne = async (req, res) => {
 };
 
 export default {
-  getOne, getAll, create, editData, deleteData, upload,
+  getOne, getAll, create, editData, deleteData, uploadFile,
 };

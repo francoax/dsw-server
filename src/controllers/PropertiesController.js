@@ -98,7 +98,13 @@ const editData = async (req, res) => {
 const deleteData = async (req, res) => {
   const { id } = req.params;
   try {
-    await Property.deleteOne({ _id: id });
+    const propertyDeleted = await Property.findByIdAndDelete({ _id: id });
+
+    if (!propertyDeleted) {
+      throw new Error();
+    }
+
+    fs.unlinkSync(`images/${propertyDeleted.image}`);
     res.status(200).json({
       message: 'Propiedad eliminada',
     });

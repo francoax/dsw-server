@@ -21,7 +21,10 @@ const PropertiesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pricePerNight: propertyPriceSchema,
+  pricePerNight: {
+    type: propertyPriceSchema,
+    required: true,
+  },
   propertyType: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -32,7 +35,7 @@ const PropertiesSchema = new mongoose.Schema({
     required: true,
     ref: 'locality',
   },
-  urlImage: {
+  image: {
     type: String,
   },
 });

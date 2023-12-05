@@ -1,5 +1,7 @@
+/* eslint-disable import/no-duplicates */
 /* eslint-disable import/extensions */
 import { Router } from 'express';
+import express from 'express';
 
 // Imports for each route below
 import medicalAssistanceRouter from './medicalAssistance.routes.js';
@@ -21,5 +23,6 @@ router.use('/locations', locationsRouter);
 router.use('/users', usersRouter);
 router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);
+router.use('/images', express.static('images'));
 
 export default router;

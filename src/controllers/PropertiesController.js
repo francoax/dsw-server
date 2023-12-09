@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable max-len */
 // eslint-disable-next-line import/extensions
 import multer from 'multer';
@@ -7,7 +8,7 @@ import Property from '../models/Property.js';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'images');
+    cb(null, 'public\\images');
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -67,10 +68,10 @@ const create = async (req, res) => {
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
-      pricePerNight: req.body.pricePerNight,
+      pricePerNight: JSON.parse(req.body.pricePerNight),
       propertyType: req.body.propertyType,
       location: req.body.location,
-      image: req.file.filename,
+      image: req.file !== undefined ? req.file.filename : '',
     });
 
     return res.status(200).json({

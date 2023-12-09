@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-undef */
 /* eslint-disable import/extensions */
 import express from 'express';
 import cors from 'cors';

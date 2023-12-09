@@ -68,7 +68,7 @@ const create = async (req, res) => {
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
-      pricePerNight: JSON.parse(req.body.pricePerNight),
+      pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,
       location: req.body.location,
       image: req.file !== undefined ? req.file.filename : '',

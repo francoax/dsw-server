@@ -76,17 +76,18 @@ const deletePackage = (req, res) => {
 const createPackage = (req, res) => {
   const pack = req.body;
 
+
   const newCar = new Package({
     type: pack.type,
     property: pack.property,
     reserve: pack.reserve,
-    car: pack.car,
-    medicalAssistance: pack.medicalAssistance,
+    car: pack.car === '' ? null : pack.car,
+    medicalAssistance: pack.medicalAssistance === '' ? null : pack.medicalAssistance,
   });
 
   newCar.save().then((savedCar) => res.json({ message: 'Paquete creado', data: savedCar, error: false }))
-    .catch(() => {
-      res.status(400).send({ message: 'Error al crear paquete', data: null, error: true }).end();
+    .catch((e) => {
+      res.status(400).send({ message: 'Error al crear paquete', data: e.message, error: true }).end();
     });
 };
 

@@ -7,7 +7,10 @@ import Reserve from '../models/reserve.js';
 const getAll = async (req, res) => {
   res.status(200).json({
     message: 'Lista de reservas',
-    data: await Reserve.find().populate('user package'),
+    data: await Reserve.find().populate([
+      { path: 'user'},
+      { path: 'packageReserved', populate: 'property'}
+    ]),
     error: false,
   });
 };

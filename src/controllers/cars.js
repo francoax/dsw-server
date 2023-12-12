@@ -5,7 +5,8 @@ import Car from '../models/car.js';
 
 const listCars = async (req, res) => {
   try {
-    const cars = await Car.find().populate(['locality']);
+    const filter = req.query;
+    const cars = await Car.find({ ...filter }).populate(['locality']);
     res.status(200).json({
       message: 'Lista de Vehiculos',
       data: cars,

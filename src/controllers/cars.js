@@ -3,16 +3,20 @@
 /* eslint-disable consistent-return */
 import Car from '../models/car.js';
 
-const listCars = (req, res) => {
-  const filter = req.query;
-  Car.find({ ...filter }).then((cars) => {
-    if (cars) {
-      return res.json({ message: 'Vehiculos encontrados', data: cars, error: false });
-    }
-    res.status(404).send({ message: 'No se encontraron vehiculos', data: null, error: true }).end();
-  }).catch(() => {
-    res.status(400).send({ message: 'Error al buscar vehiculos', data: null, error: true }).end();
-  });
+const listCars = async (req, res) => {
+  try {
+    const cars = await Car.find().populate(['locality']);
+    res.status(200).json({
+      message: 'Lista de Vehiculos',
+      data: cars,
+      error: false,
+    });
+  } catch (e) {
+    res.status(400).json({
+      message: 'Error al buscar vehiculos',
+      error: true,
+    });
+  }
 };
 
 const listCarById = (req, res) => {

@@ -6,15 +6,15 @@
   "editor.guides.bracketPairs": "active",
   "editor.guides.bracketPairsHorizontal": "active",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.format.enable": true,
   "[javascript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "json.schemaDownload.enable": true,
-  "git.mergeEditor": false,
+  "git.mergeEditor": false
 }

@@ -11,7 +11,6 @@ import usersRouter from './users.routes.js';
 import reserveRouter from './reserves.routes.js';
 import propertyTypeRouter from './propertieType.routes.js';
 import packageRouter from './package.routes.js';
-// import { resend } from '../app.js';
 
 const router = Router();
 
@@ -23,18 +22,5 @@ router.use('/locations', locationsRouter);
 router.use('/users', usersRouter);
 router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);
-// router.use('/test-email', async (req, res) => {
-//   try {
-//     const data = await resend.emails.send({
-//       from: 'PonchoH&S <messsages-ponchohomeandstay@phs-noreply.com>',
-//       to: ['francoa.duarte2001@gmail.com'],
-//       subject: 'testing',
-//       html: '<strong> testing </strong>',
-//     });
-//     res.status(200).json({ data });
-//   } catch (error) {
-//     res.status(400).json({ error });
-//   }
-// });
 
 export default router;

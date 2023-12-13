@@ -34,8 +34,8 @@ const updatePropertiesOnEnd = async () => {
 };
 
 const scheduleTasks = () => {
-  cron.schedule('*/10 * * * * *', updatePropertiesOnStart);
-  cron.schedule('*/10 * * * * *', updatePropertiesOnEnd);
+  cron.schedule('0 0 * * * ', updatePropertiesOnStart);
+  cron.schedule('0 0 * * * ', updatePropertiesOnEnd);
 };
 
 export default { scheduleTasks };

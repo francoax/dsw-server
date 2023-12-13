@@ -1,19 +1,16 @@
 /* eslint-disable import/extensions */
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import mainRouter from './routes/app.routes.js';
-import { Resend } from 'resend';
-import dotenv from 'dotenv'
 import schedules from './schedules.js';
 
-dotenv.config()
+dotenv.config();
 
 const app = express();
-export const resend = new Resend(process.env.RESEND_API_KEY)
 app.disable('x-powered-by');
 
-schedules.scheduleTasks()
-
+schedules.scheduleTasks();
 
 // const corsOptions = {
 //   origin: 'https://poncho-home-and-stay-git-dev-francoax.vercel.app',

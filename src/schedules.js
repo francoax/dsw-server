@@ -1,7 +1,8 @@
 /* eslint-disable import/extensions */
 /* eslint-disable max-len */
 import cron from 'node-cron';
-import { getReservesByScope, updateProperties } from './services/reserves.service.js';
+import { getReservesByScope, getReservesToRemind, updateProperties } from './services/reserves.service.js';
+import { sendReminder } from './controllers/mail.js';
 
 const updatePropertiesOnStart = async () => {
   try {
@@ -33,9 +34,23 @@ const updatePropertiesOnEnd = async () => {
   }
 };
 
+const reserveReminder = async () => {
+  try {
+    const reserves = await getReservesToRemind();
+
+    reserves.forEach((r) => {
+      sendReminder(r);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const scheduleTasks = () => {
   cron.schedule('0 0 * * * ', updatePropertiesOnStart);
   cron.schedule('0 0 * * * ', updatePropertiesOnEnd);
+
+  cron.schedule('0 0 * * * ', reserveReminder);
 };
 
 export default { scheduleTasks };

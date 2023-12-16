@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 app.disable('x-powered-by');
 
-schedules.scheduleTasks();
+// schedules.scheduleTasks();
 
 // const corsOptions = {
 //   origin: 'https://poncho-home-and-stay-git-dev-francoax.vercel.app',

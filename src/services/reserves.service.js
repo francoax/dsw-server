@@ -4,6 +4,7 @@ import Property from '../models/Property.js';
 import Reserve from '../models/reserve.js';
 
 const today = moment.tz('America/Argentina/Buenos_Aires').format('YYYY-MM-DD');
+const todayDate = new Date(today);
 
 const getReservesByScope = async (scope) => {
   try {
@@ -36,4 +37,50 @@ const updateProperties = async (properties) => {
   });
 };
 
-export { getReservesByScope, updateProperties };
+const getReservesToRemind = async () => {
+  try {
+    let reserves = await Reserve.aggregate([
+      {
+        $addFields: {
+          daysDifference: {
+            $dateDiff: {
+              startDate: todayDate,
+              endDate: '$date_start',
+              unit: 'day',
+            },
+          },
+        },
+      },
+      {
+        $match: {
+          daysDifference: 5,
+        },
+      },
+    ]).lookup({
+      from: 'users',
+      localField: 'user',
+      foreignField: '_id',
+      as: 'user',
+    }).lookup({
+      from: 'packages',
+      localField: 'packageReserved',
+      foreignField: '_id',
+      as: 'packageReserved',
+    }).lookup({
+      from: 'properties',
+      localField: 'packageReserved.property',
+      foreignField: '_id',
+      as: 'property',
+    });
+
+    reserves = reserves.map((r) => ({
+      ...r, user: r.user[0], property: r.property[0], packageReserved: r.packageReserved[0],
+    }));
+
+    return reserves;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export { getReservesByScope, updateProperties, getReservesToRemind };

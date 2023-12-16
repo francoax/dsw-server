@@ -83,7 +83,26 @@ const sendMail = (req, res) => {
   });
 };
 
+export const sendReserveConfirmation = (user) => {
+  try {
+    const mailOptions = {
+      from: {
+        name: 'Poncho Home & Stay',
+        address: process.env.EU_SENDER,
+      },
+      to: user.email,
+      subject: 'Reserva confirmada.',
+      html: '<b>Le informamos que su reserva fue completada con exito.</b>',
+    };
+
+    transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default {
   sendMail,
   sendReminder,
+  sendReserveConfirmation,
 };

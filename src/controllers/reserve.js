@@ -64,7 +64,7 @@ const post = async (req, res) => {
 
     const user = await getUserById(userId);
 
-    sendReserveConfirmation(user);
+    sendReserveConfirmation(user, newReserve);
 
     res.status(201).json({
       message: 'Reserva creada',

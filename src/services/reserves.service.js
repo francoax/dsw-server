@@ -56,22 +56,47 @@ const getReservesToRemind = async () => {
           daysDifference: 5,
         },
       },
-    ]).lookup({
-      from: 'users',
-      localField: 'user',
-      foreignField: '_id',
-      as: 'user',
-    }).lookup({
-      from: 'packages',
-      localField: 'packageReserved',
-      foreignField: '_id',
-      as: 'packageReserved',
-    }).lookup({
-      from: 'properties',
-      localField: 'packageReserved.property',
-      foreignField: '_id',
-      as: 'property',
-    });
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $lookup: {
+          from: 'packages',
+          localField: 'packageReserved',
+          foreignField: '_id',
+          as: 'packageReserved',
+        },
+      },
+      {
+        $lookup: {
+          from: 'properties',
+          localField: 'packageReserved.property',
+          foreignField: '_id',
+          as: 'property',
+        },
+      },
+      {
+        $lookup: {
+          from: 'localities',
+          localField: 'property.location',
+          foreignField: '_id',
+          as: 'location',
+        },
+      },
+      {
+        $addFields: {
+          'property.location': { $arrayElemAt: ['$location', 0] },
+        },
+      },
+      {
+        $unset: 'location',
+      },
+    ]);
 
     reserves = reserves.map((r) => ({
       ...r, user: r.user[0], property: r.property[0], packageReserved: r.packageReserved[0],

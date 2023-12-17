@@ -3,6 +3,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable consistent-return */
 import Reserve from '../models/reserve.js';
+import getPackageById from '../services/packages.service.js';
 import getUserById from '../services/users.service.js';
 import { sendReserveConfirmation } from './mail.js';
 
@@ -63,8 +64,12 @@ const post = async (req, res) => {
     });
 
     const user = await getUserById(userId);
+    const packageR = await getPackageById(packageReserved);
 
-    sendReserveConfirmation(user, newReserve);
+    newReserve.user = user;
+    newReserve.packageReserved = packageR;
+
+    sendReserveConfirmation(newReserve);
 
     res.status(201).json({
       message: 'Reserva creada',

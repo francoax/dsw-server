@@ -14,8 +14,9 @@ import Package from '../models/package.js';
 // };
 
 const listConcept = async (req, res) => {
+  const filter = req.query;
   try {
-    const packages = await Package.find().populate(['property', 'car', 'medicalAssistance']);
+    const packages = await Package.find({...filter}).populate(['property', 'car', 'medicalAssistance']);
     if (!packages) {
       return res.status(404).json({
         message: 'Sin paquetes por el momento',

@@ -16,7 +16,7 @@ import Package from '../models/package.js';
 const listConcept = async (req, res) => {
   const filter = req.query;
   try {
-    const packages = await Package.find({...filter}).populate(['property', 'car', 'medicalAssistance']);
+    let packages = await Package.find({ ...filter }).populate(['property', 'car', 'medicalAssistance']).lean();
     if (!packages) {
       return res.status(404).json({
         message: 'Sin paquetes por el momento',
@@ -24,6 +24,13 @@ const listConcept = async (req, res) => {
         error: false,
       });
     }
+
+    packages = packages.map((p) => {
+      const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${p.property._id}/image`;
+      p.property.image = imageUrl;
+
+      return { ...p };
+    });
 
     return res.status(200).json({
       message: 'Lista de paquetes',

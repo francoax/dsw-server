@@ -36,7 +36,14 @@ const PropertiesSchema = new mongoose.Schema({
     ref: 'locality',
   },
   image: {
+    data: Buffer,
+    contentType: String,
+  },
+  status: {
     type: String,
+    required: true,
+    enum: ['occupied', 'available'],
+    default: 'available',
   },
 });
 

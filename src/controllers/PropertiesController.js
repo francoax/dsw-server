@@ -1,54 +1,16 @@
 /* eslint-disable max-len */
 // eslint-disable-next-line import/extensions
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 import Property from '../models/Property.js';
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/images');
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-
-const multerInitilizer = multer({
-  storage,
-  limits: {
-    fileSize: 2500000,
-  },
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-      return cb(new Error('Por favor, suba un archivo de imagen valido'));
-    }
-    return cb(undefined, true);
-  },
-});
-
-const uploadFile = (req, res, next) => {
-  const upload = multerInitilizer.single('image');
-
-  upload(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      return res.status(400).json({
-        message: err.message,
-        error: true,
-      });
-    } if (err) {
-      return res.status(500).json({
-        message: err.message,
-        error: true,
-      });
-    }
-    return next();
-  });
-};
 
 const getAll = async (req, res) => {
   try {
-    const properties = await Property.find().populate(['location', 'propertyType']);
+    let properties = await Property.find().populate(['location', 'propertyType']).lean();
+
+    properties = properties.map((p) => {
+      const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${p._id}/image`;
+
+      return { ...p, image: imageUrl };
+    });
     res.status(200).json({
       message: 'Lista de propiedades',
       data: properties,
@@ -62,15 +24,35 @@ const getAll = async (req, res) => {
   }
 };
 
+const getImage = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const property = await Property.findById(id);
+
+    if (!property || !property.image.data) {
+      return res.status(400).send('Imagen no encontrada');
+    }
+
+    res.set('Content-Type', property.image.contentType);
+    return res.send(property.image.data);
+  } catch (error) {
+    return res.status(400).send('Error al mostrar la imagen');
+  }
+};
+
 const create = async (req, res) => {
   try {
+    const { buffer, mimetype } = req.file;
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
       pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,
       location: req.body.location,
-      image: req.file.filename,
+      image: {
+        data: buffer,
+        contentType: mimetype,
+      },
     });
 
     return res.status(200).json({
@@ -79,9 +61,6 @@ const create = async (req, res) => {
       error: false,
     });
   } catch (e) {
-    if (req.file) {
-      fs.unlinkSync(`${req.file.path}`);
-    }
     return res.status(400).json({
       message: 'Error al crear propiedad',
       data: e,
@@ -115,7 +94,6 @@ const deleteData = async (req, res) => {
       throw new Error();
     }
 
-    fs.unlinkSync(`images/${propertyDeleted.image}`);
     res.status(200).json({
       message: 'Propiedad eliminada',
       error: false,
@@ -131,19 +109,25 @@ const deleteData = async (req, res) => {
 const getOne = async (req, res) => {
   const { id } = req.params;
   try {
-    const property = await Property.findOne({ _id: id }).populate(['location', 'propertyType']);
+    const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${req.params.id}/image`;
+
+    let property = await Property.findOne({ _id: id }).populate(['location', 'propertyType']).lean();
+    property = { ...property, image: imageUrl };
+
     res.status(200).json({
       message: 'Propiedad encontrada',
       data: property,
+      error: false,
     });
   } catch (e) {
     res.status(400).json({
       message: 'Error al buscar propiedad',
+      data: e,
       error: true,
     });
   }
 };
 
 export default {
-  getOne, getAll, create, editData, deleteData, uploadFile,
+  getOne, getAll, create, editData, deleteData, getImage,
 };

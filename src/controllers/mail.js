@@ -13,7 +13,7 @@ const transporterOptions = JSON.parse(process.env.ES_OPTS.replace(/\$\{([^}]+)\}
 
 const transporter = nodemailer.createTransport(transporterOptions);
 
-// - Mails
+// Mails:
 //  - recordatorios
 //  - confirmacion de reserva
 export const sendReminder = ({
@@ -147,7 +147,7 @@ export const sendReserveConfirmation = ({
         name: 'Poncho Home & Stay',
         address: process.env.EU_SENDER,
       },
-      to: 'francoa.duarte2001@gmail.com',
+      to: user.email,
       subject: 'Reserva confirmada.',
       html:
       `

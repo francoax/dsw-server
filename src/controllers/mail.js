@@ -196,13 +196,13 @@ export const sendReserveConfirmation = ({
                 margin-top: 1rem;"
               >
                 <li style="margin-bottom: 10px;">
-                  <b>Propiedad:</b> ${property.address},
+                  <b>Propiedad:</b> ${packageReserved.property.address},
                 </li>
                 <li style="margin-bottom: 10px;">
-                  <b>Ubicación:</b> ${property.location.name}
+                  <b>Ubicación:</b> ${packageReserved.property.location.name}
                 </li>
                 <li style="margin-bottom: 10px;">
-                  <b>Capacidad:</b> ${property.capacity} personas
+                  <b>Capacidad:</b> ${packageReserved.property.capacity} personas
                 </li>
                 <li style="margin-bottom: 10px;">
                   <b>Fecha entrante:</b> ${date_start}

@@ -10,15 +10,14 @@ dotenv.config();
 const app = express();
 app.disable('x-powered-by');
 
-// schedules.scheduleTasks();
+schedules.scheduleTasks();
 
-// const corsOptions = {
-//   origin: 'https://poncho-home-and-stay-git-dev-francoax.vercel.app',
-//   optionsSuccessStatus: 200,
-// };
+if (process.env.NODE_ENV === 'development') {
+  app.use(cors(process.env.CORS_DEV));
+} else {
+  app.use(cors(process.env.CORS_PROD));
+}
 
-// app.use(cors(corsOptions));
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api', mainRouter);

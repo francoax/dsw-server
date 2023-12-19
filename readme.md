@@ -6,6 +6,9 @@ Proyecto creado en la asignatura de Desarrollo de software 2023.
 - Express.js
 - Mongoose
 
+#Seguimiento Del Proyecto
+- https://trello.com/b/MFViuKQH/poncho-homestay
+
 # Autores
 | | Name  | Github
 | :-----: | :-----: | :-----: |

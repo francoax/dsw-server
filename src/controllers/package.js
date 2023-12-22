@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
 /* eslint-disable import/extensions */
 import Package from '../models/package.js';
@@ -27,8 +28,9 @@ const listConcept = async (req, res) => {
 
     packages = packages.map((p) => {
       const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${p.property._id}/image`;
-      p.property.image = imageUrl;
-
+      p.property = { ...p.property, image: imageUrl };
+      p.id = p._id;
+      delete p._id;
       return { ...p };
     });
 
@@ -47,14 +49,17 @@ const listConcept = async (req, res) => {
 };
 
 const getPackage = (req, res) => {
-  Package.findById(req.params.id).populate(['property', 'car', 'medicalAssistance']).then((pack) => {
+  Package.findById(req.params.id).populate(['property', 'car', 'medicalAssistance']).lean().then((pack) => {
     if (pack) {
+      const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${pack.property._id}/image`;
+      pack.property = { ...pack.property, image: imageUrl };
       return res.json({ message: 'Paquete encontrado', data: pack, error: false });
     }
     res.status(404).send({ message: 'Paquete no encontrado', data: null, error: true }).end();
-  }).catch(() => {
-    res.status(400).send({ message: 'Error al buscar paquete', data: null, error: true }).end();
-  });
+  })
+    .catch(() => {
+      res.status(400).send({ message: 'Error al buscar paquete', data: null, error: true }).end();
+    });
 };
 
 const updatePackage = (req, res) => {
@@ -83,7 +88,6 @@ const deletePackage = (req, res) => {
 
 const createPackage = (req, res) => {
   const pack = req.body;
-
 
   const newCar = new Package({
     type: pack.type,

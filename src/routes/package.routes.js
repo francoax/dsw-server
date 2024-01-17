@@ -5,7 +5,7 @@ import packageController from '../controllers/package.js';
 const router = Router();
 
 router
-  .get('/', packageController.listPackages)
+  .get('/', packageController.listConcept)
   .get('/:id', packageController.getPackage)
   .post('/', packageController.createPackage)
   .put('/:id', packageController.updatePackage)

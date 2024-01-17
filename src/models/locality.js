@@ -23,4 +23,4 @@ localitySchema.set('toJSON', {
   },
 });
 
-export default mongoose.model('Locality', localitySchema);
+export default mongoose.model('locality', localitySchema);

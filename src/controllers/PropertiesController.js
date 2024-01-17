@@ -1,68 +1,106 @@
+/* eslint-disable max-len */
+// eslint-disable-next-line import/extensions
 import Property from '../models/Property.js';
 
 const getAll = async (req, res) => {
   try {
-    const properties = await Property.find();
+    let properties = await Property.find().populate(['location', 'propertyType']).lean();
+
+    properties = properties.map((p) => {
+      const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${p._id}/image`;
+
+      return { ...p, image: imageUrl };
+    });
     res.status(200).json({
-      message: 'Data received successfully',
+      message: 'Lista de propiedades',
       data: properties,
+      error: false,
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al buscar propiedades',
       error: true,
     });
+  }
+};
+
+const getImage = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const property = await Property.findById(id);
+
+    if (!property || !property.image.data) {
+      return res.status(400).send('Imagen no encontrada');
+    }
+
+    res.set('Content-Type', property.image.contentType);
+    return res.send(property.image.data);
+  } catch (error) {
+    return res.status(400).send('Error al mostrar la imagen');
   }
 };
 
 const create = async (req, res) => {
   try {
+    const { buffer, mimetype } = req.file;
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,
-      pricePerNight: {
-        price: req.body.pricePerNight.price,
-        date: req.body.pricePerNight.date,
-      },
+      pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,
+      location: req.body.location,
+      image: {
+        data: buffer,
+        contentType: mimetype,
+      },
     });
-    res.status(200).json({
-      message: 'Data added succesfully',
+
+    return res.status(200).json({
+      message: 'Propiedad creada',
       data: newProperty,
+      error: false,
     });
   } catch (e) {
-    res.status(400).json({
-      message: e.message,
+    return res.status(400).json({
+      message: 'Error al crear propiedad',
+      data: e,
       error: true,
     });
   }
 };
-/* await Property.updateOne({ _id: id }, { ...req.body }) */
+
 const editData = async (req, res) => {
   const { id } = req.params;
   try {
     const prop = await Property.findByIdAndUpdate(id, { ...req.body }, { new: true });
     res.status(201).json({
-      message: 'Data updated succesfully',
+      message: 'Propiedad editada',
       data: prop,
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al editar propiedad',
       error: true,
     });
   }
 };
+
 const deleteData = async (req, res) => {
   const { id } = req.params;
   try {
-    await Property.deleteOne({ _id: id });
+    const propertyDeleted = await Property.findByIdAndDelete({ _id: id });
+
+    if (!propertyDeleted) {
+      throw new Error();
+    }
+
     res.status(200).json({
-      message: 'Data deleted succesfully',
+      message: 'Propiedad eliminada',
+      error: false,
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al eliminar propiedad',
       error: true,
     });
   }
@@ -71,19 +109,25 @@ const deleteData = async (req, res) => {
 const getOne = async (req, res) => {
   const { id } = req.params;
   try {
-    const property = await Property.findOne({ _id: id });
+    const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${req.params.id}/image`;
+
+    let property = await Property.findOne({ _id: id }).populate(['location', 'propertyType']).lean();
+    property = { ...property, image: imageUrl };
+
     res.status(200).json({
-      message: 'Data obtained successfully',
+      message: 'Propiedad encontrada',
       data: property,
+      error: false,
     });
   } catch (e) {
     res.status(400).json({
-      message: e.message,
+      message: 'Error al buscar propiedad',
+      data: e,
       error: true,
     });
   }
 };
 
 export default {
-  getOne, getAll, create, editData, deleteData,
+  getOne, getAll, create, editData, deleteData, getImage,
 };

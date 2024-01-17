@@ -1,17 +1,17 @@
+/* eslint-disable import/extensions */
 import { Router } from 'express';
-// eslint-disable-next-line import/extensions
 import reserveController from '../controllers/reserve.js';
-
-// eslint-disable-next-line import/extensions
 import verifyMongoId from '../middlewares/mongoIdField.js';
+import authenticateToken from '../middlewares/authenticateToken.js';
 
 const router = Router();
 
 router
-  .get('/:id', [verifyMongoId], reserveController.get)
   .get('/', reserveController.getAll)
-  .post('/', reserveController.post)
-  .put('/:id', [verifyMongoId], reserveController.put)
-  .delete('/:id', [verifyMongoId], reserveController.remove);
+  .get('/user', [authenticateToken], reserveController.getByUser)
+  .get('/:id', [verifyMongoId], reserveController.get)
+  .post('/', [authenticateToken], reserveController.post)
+  .put('/:id', [verifyMongoId, authenticateToken], reserveController.put)
+  .delete('/:id', [verifyMongoId, authenticateToken], reserveController.remove);
 
 export default router;

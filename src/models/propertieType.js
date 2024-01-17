@@ -1,12 +1,12 @@
-import mongoose, {Schema, model} from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
-const propertietypeSchema = new Schema({
+const propertytypeSchema = new Schema({
   description: {
     type: String,
     required: true,
-  }
-},{
-  timestamps:true
+  },
+}, {
+  timestamps: true,
 });
 
-export default mongoose.model('propertieType', propertietypeSchema);
+export default mongoose.model('propertyType', propertytypeSchema);

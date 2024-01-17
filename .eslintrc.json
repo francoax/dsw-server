@@ -18,5 +18,6 @@
         "error", { "devDependencies": false, "optionalDependencies": false, "peerDependencies": false }
       ],
     "max-len": ["error", { "code": 120 }]
-    }
+    },
+    "plugins": ["jest"]
 }

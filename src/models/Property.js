@@ -21,13 +21,30 @@ const PropertiesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pricePerNight: propertyPriceSchema,
+  pricePerNight: {
+    type: propertyPriceSchema,
+    required: true,
+  },
   propertyType: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'propertieType',
+    ref: 'propertyType',
   },
-
+  location: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'locality',
+  },
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
+  status: {
+    type: String,
+    required: true,
+    enum: ['occupied', 'available'],
+    default: 'available',
+  },
 });
 
-export default mongoose.model('Propertie', PropertiesSchema);
+export default mongoose.model('Property', PropertiesSchema);

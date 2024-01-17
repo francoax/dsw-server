@@ -213,5 +213,14 @@ router.put('/', [authenticateToken], usersController.edit);
  *
  */
 router.delete('/', [authenticateToken], usersController.remove);
+router
+  .get('/me', [authenticateToken], usersController.get)
+  .get('/', usersController.getAll)
+  .post('/login', usersController.login)
+  .post('/', usersController.create)
+  .put('/', [authenticateToken], usersController.edit)
+  .put('/:id', usersController.edit)
+  .delete('/:id', [authenticateToken], usersController.remove)
+  .delete('/', [authenticateToken], usersController.remove);
 
 export default router;

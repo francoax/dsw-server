@@ -3,20 +3,33 @@ POST http://localhost:4000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "octa@mail.com.ar",
+  "email": "octa@gmail.com",
   "password": "12345678"
+}
+### User register
+POST http://localhost:4000/api/users/
+Content-Type: application/json
+
+{
+  "name": "Octavio",
+  "lastname": "Pereyra",
+  "address": "calle falsa",
+  "email": "octa@gmail.com",
+  "password": "12345678",
+  "tel": "123",
+  "role": "user"
 }
 
 ### Update user
 PUT http://localhost:4000/api/users/
 Content-Type: application/json
-Authorization: Bearer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQ0NDE4NzE2YzVmODg2ZTdkOTRkOTYiLCJlbWFpbCI6Im9jdGFAZ21haWwuY29tIiwiaWF0IjoxNjk4OTcyMDU5fQ.JVG2MlAAaEJ41okwaM9ugFBEa5xybIgmy4AU8ABDvHY
 
 {
-  "address": "montevideo 1234"
+  "name": "Octavio"
 }
 
-## Delete user
+### Delete user
 DELETE http://localhost:4000/api/users/
 Content-Type: application/json
 Authorization: Bearer

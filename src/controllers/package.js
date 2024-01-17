@@ -2,25 +2,58 @@
 /* eslint-disable import/extensions */
 import Package from '../models/package.js';
 
-const listPackages = (req, res) => {
-  Package.find({}).then((packages) => {
-    if (packages) {
-      return res.json({ message: 'Packages found', data: packages, error: false });
+// const listPackages = (req, res) => {
+//   Package.find({}).then((packages) => {
+//     if (packages) {
+//       return res.json({ message: 'Packages found', data: packages, error: false });
+//     }
+//     res.status(404).send({ message: 'packages not found', data: null, error: true }).end();
+//   }).catch((err) => {
+//     res.status(400).send({ message: err.message, data: null, error: true }).end();
+//   });
+// };
+
+const listConcept = async (req, res) => {
+  const filter = req.query;
+  try {
+    let packages = await Package.find({ ...filter }).populate(['property', 'car', 'medicalAssistance']).lean();
+    if (!packages) {
+      return res.status(404).json({
+        message: 'Sin paquetes por el momento',
+        data: packages,
+        error: false,
+      });
     }
-    res.status(404).send({ message: 'packages not found', data: null, error: true }).end();
-  }).catch((err) => {
-    res.status(400).send({ message: err.message, data: null, error: true }).end();
-  });
+
+    packages = packages.map((p) => {
+      const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${p.property._id}/image`;
+      p.property.image = imageUrl;
+
+      return { ...p };
+    });
+
+    return res.status(200).json({
+      message: 'Lista de paquetes',
+      data: packages,
+      error: false,
+    });
+  } catch (e) {
+    return res.status(400).json({
+      message: 'Error al buscar paquetes',
+      data: e,
+      error: true,
+    });
+  }
 };
 
 const getPackage = (req, res) => {
-  Package.findById(req.params.id).then((pack) => {
+  Package.findById(req.params.id).populate(['property', 'car', 'medicalAssistance']).then((pack) => {
     if (pack) {
-      return res.json({ message: 'Package found', data: pack, error: false });
+      return res.json({ message: 'Paquete encontrado', data: pack, error: false });
     }
-    res.status(404).send({ message: 'package not found', data: null, error: true }).end();
-  }).catch((err) => {
-    res.status(400).send({ message: err.message, data: null, error: true }).end();
+    res.status(404).send({ message: 'Paquete no encontrado', data: null, error: true }).end();
+  }).catch(() => {
+    res.status(400).send({ message: 'Error al buscar paquete', data: null, error: true }).end();
   });
 };
 
@@ -35,38 +68,39 @@ const updatePackage = (req, res) => {
     medicalAssistance: pack.medicalAssistance,
   }, { new: true })
     .then((result) => {
-      res.json({ message: 'Package updated', data: result, error: false });
+      res.json({ message: 'Paquete actualizado', data: result, error: false });
     })
-    .catch((err) => {
-      res.status(400).send({ message: err.message, data: null, error: true }).end();
+    .catch(() => {
+      res.status(400).send({ message: 'Error al actualizar paquete', data: null, error: true }).end();
     });
 };
 
 const deletePackage = (req, res) => {
-  Package.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch((err) => {
-    res.status(500).send({ message: err.message, data: null, error: true }).end();
+  Package.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch(() => {
+    res.status(500).send({ message: 'Error al eliminar paquete', data: null, error: true }).end();
   });
 };
 
 const createPackage = (req, res) => {
   const pack = req.body;
 
+
   const newCar = new Package({
     type: pack.type,
     property: pack.property,
     reserve: pack.reserve,
-    car: pack.car,
-    medicalAssistance: pack.medicalAssistance,
+    car: pack.car === '' ? null : pack.car,
+    medicalAssistance: pack.medicalAssistance === '' ? null : pack.medicalAssistance,
   });
 
-  newCar.save().then((savedCar) => res.json({ message: 'Package created', data: savedCar, error: false }))
-    .catch((err) => {
-      res.status(400).send({ message: err.message, data: null, error: true }).end();
+  newCar.save().then((savedCar) => res.json({ message: 'Paquete creado', data: savedCar, error: false }))
+    .catch((e) => {
+      res.status(400).send({ message: 'Error al crear paquete', data: e.message, error: true }).end();
     });
 };
 
 export default {
-  listPackages,
+  listConcept,
   getPackage,
   updatePackage,
   deletePackage,

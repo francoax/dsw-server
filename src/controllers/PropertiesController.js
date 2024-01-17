@@ -37,18 +37,13 @@ const getAll = async (req, res) => {
 const create = async (req, res) => {
   try {
     const newProperty = await Property.create({
-      capacity: req.body.capacity,
+      capacity: parseInt(req.body.capacity),
       address: req.body.address,
-      // pricePerNight: {
-      //   price: req.body.price,
-      //   date: req.body.date,
-      // },
       pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,
       location: req.body.location,
-      urlImage: fileNameNow,
+      urlImage: fileNameNow? fileNameNow : "",
     });
-
     if (!newProperty) {
       return res.status(400).json({
         message: 'Error al crear propiedad',
@@ -56,9 +51,6 @@ const create = async (req, res) => {
         error: true,
       });
     }
-
-    uploadExport();
-
     return res.status(200).json({
       message: 'Propiedad creada',
       data: newProperty,

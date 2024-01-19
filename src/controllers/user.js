@@ -110,19 +110,23 @@ const edit = async (req, res) => {
   } = req.body;
   let { password } = req.body;
   try {
-    if (password) { password = await bcrypt.hash(password, 10); }
+    const updateFields = {
+      name,
+      lastname,
+      address,
+      email,
+      tel,
+      role,
+    };
+
+    if (password) {
+      password = await bcrypt.hash(password, 10);
+      updateFields.password = password;
+    }
 
     const userUpdated = await User.findByIdAndUpdate(
       userId ?? id,
-      {
-        name,
-        lastname,
-        address,
-        email,
-        password,
-        tel,
-        role,
-      },
+      updateFields,
       {
         new: true,
       },
@@ -143,32 +147,37 @@ const edit = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: 'Error al editar usuario',
+      data: error,
       error: true,
     }).end();
   }
 };
 
 const remove = async (req, res) => {
-  const { userId } = req.user;
-
+  let id = '';
+  if (req.params) {
+    id = req.params.id;
+  } else {
+    id = req.user.userId;
+  }
   try {
-    const userDeleted = await User.findByIdAndRemove(userId);
+    const userDeleted = await User.findByIdAndRemove(id);
 
     if (!userDeleted) {
-      res.status(404).json({
+      return res.status(404).json({
         message: 'No existe usuario con ese ID',
         data: undefined,
         error: true,
       }).end();
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Usuario eliminado',
       data: userDeleted,
       error: false,
     }).end();
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'Error al eliminar usuario',
       error: true,
     }).end();
@@ -201,6 +210,7 @@ const login = async (req, res) => {
       message: 'Usuario logueado',
       data: {
         name: user.name,
+        role: user.role,
         token,
       },
       error: false,

@@ -13,6 +13,7 @@ router
   .post('/', usersController.create)
   .put('/', [authenticateToken], usersController.edit)
   .put('/:id', usersController.edit)
+  .delete('/:id', [authenticateToken], usersController.remove)
   .delete('/', [authenticateToken], usersController.remove);
 
 export default router;

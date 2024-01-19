@@ -3,11 +3,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable consistent-return */
 import Reserve from '../models/reserve.js';
+import getPackageById from '../services/packages.service.js';
+import getUserById from '../services/users.service.js';
+import { sendReserveConfirmation } from './mail.js';
 
 const getAll = async (req, res) => {
   res.status(200).json({
     message: 'Lista de reservas',
-    data: await Reserve.find().populate('user package'),
+    data: await Reserve.find().populate([
+      { path: 'user' },
+      { path: 'packageReserved', populate: 'property' },
+    ]),
     error: false,
   });
 };
@@ -53,10 +59,17 @@ const post = async (req, res) => {
   } = req.body;
 
   try {
-    const user = userId;
     const newReserve = await Reserve.create({
-      date_start, date_end, user, packageReserved,
+      date_start, date_end, user: userId, packageReserved,
     });
+
+    const user = await getUserById(userId);
+    const packageR = await getPackageById(packageReserved);
+
+    newReserve.user = user;
+    newReserve.packageReserved = packageR;
+
+    sendReserveConfirmation(newReserve);
 
     res.status(201).json({
       message: 'Reserva creada',

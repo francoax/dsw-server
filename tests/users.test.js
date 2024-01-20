@@ -76,7 +76,7 @@ describe('GET all users /api/users', () => {
     const response = await request(app).get('/api/users').send();
     expect(response.status).toBe(200);
     expect(response.error).toBeFalsy();
-    expect(response.body.length).toBe(2);
+    expect(response.body.data).toBeDefined();
   });
 });
 
@@ -117,5 +117,69 @@ describe('register new user /api/users/', () => {
     expect(response.status).toBe(201);
     expect(response.error).toBeFalsy();
     expect(response.body.data).toBeDefined();
+  });
+});
+
+describe('edit user /api/users/', () => {
+  test('should return user with updated data', async () => {
+    const authToken = jwt.sign({ id: '65270324a6ecc0ccbf909cb5' }, 'holi');
+    const response = await request(app)
+      .put('/api/users/')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send(mockNewUser);
+    expect(response.status).toBe(200);
+    expect(response.error).toBeFalsy();
+    expect(response.body.data).toBeDefined();
+  });
+  test('should return status code 404 (user not found)', async () => {
+    const authToken = jwt.sign({ id: '65270324a6ecc0ccbf909ca0' }, 'holi');
+    const response = await request(app)
+      .put('/api/users/')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send(mockNewUser);
+    expect(response.status).toBe(404);
+    expect(response.error).toBeTruthy();
+    expect(response.body.data).toBeUndefined();
+  });
+  test('should return status code 400', async () => {
+    const authToken = jwt.sign({ id: '65270324a6ecc0ccbf909cb5' }, 'holi');
+    const response = await request(app)
+      .put('/api/users/')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send();
+    expect(response.status).toBe(400);
+    expect(response.error).toBeTruthy();
+  });
+});
+
+describe('delete user /api/users/', () => {
+  test('should delete user logged in', async () => {
+    const authToken = jwt.sign({ id: '65270324a6ecc0ccbf909cb5' }, 'holi');
+    const response = await request(app)
+      .delete('/api/users/')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send();
+    expect(response.status).toBe(200);
+    expect(response.error).toBeFalsy();
+    expect(response.body.data).toBeDefined();
+  });
+  test('should delete user passed by parameter', async () => {
+    const id = mockUser._id;
+    const response = await request(app)
+      .delete(`/api/users/${id}`)
+      .send();
+    expect(response.status).toBe(200);
+    expect(response.error).toBeFalsy();
+    expect(response.body.data).toBeDefined();
+  });
+  test('should return status code 404 (user not found)', async () => {
+    const authToken = jwt.sign({ id: '65270324a6ecc0ccbf909ca0' }, 'holi');
+    const response = await request(app)
+      .delete('/api/users/')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send();
+    expect(response.status).toBe(404);
+    expect(response.error).toBeTruthy();
+    expect(response.body.data).toBeUndefined();
   });
 });

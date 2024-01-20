@@ -10,8 +10,6 @@ export default [
     password: "12345678",
     tel: "12345678",
     role: "admin",
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },
   {
     _id: mongoose.Types.ObjectId("65270324a6ecc0ccbf909c8u"),
@@ -22,8 +20,6 @@ export default [
     password: "12345678",
     tel: "12345678",
     role: "user",
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   },{
     _id: mongoose.Types.ObjectId("65270324a6ecc0ccbf909cp0"),
     name: "Juan",
@@ -33,7 +29,5 @@ export default [
     password: "12345678",
     tel: "12345678",
     role: "admin",
-    createdAt: Date.now(),
-    updatedAt: Date.now()
   }
 ]

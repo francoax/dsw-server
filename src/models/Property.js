@@ -1,17 +1,5 @@
 import mongoose from 'mongoose';
 
-const propertyPriceSchema = new mongoose.Schema({
-  price: {
-    type: Number,
-    required: true,
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-
-});
-
 const PropertiesSchema = new mongoose.Schema({
   capacity: {
     type: Number,
@@ -22,7 +10,7 @@ const PropertiesSchema = new mongoose.Schema({
     required: true,
   },
   pricePerNight: {
-    type: propertyPriceSchema,
+    type: Number,
     required: true,
   },
   propertyType: {
@@ -36,8 +24,8 @@ const PropertiesSchema = new mongoose.Schema({
     ref: 'locality',
   },
   image: {
-    data: Buffer,
-    contentType: String,
+    type: String,
+    required: true,
   },
   status: {
     type: String,

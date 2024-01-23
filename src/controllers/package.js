@@ -3,17 +3,6 @@
 /* eslint-disable import/extensions */
 import Package from '../models/package.js';
 
-// const listPackages = (req, res) => {
-//   Package.find({}).then((packages) => {
-//     if (packages) {
-//       return res.json({ message: 'Packages found', data: packages, error: false });
-//     }
-//     res.status(404).send({ message: 'packages not found', data: null, error: true }).end();
-//   }).catch((err) => {
-//     res.status(400).send({ message: err.message, data: null, error: true }).end();
-//   });
-// };
-
 const listConcept = async (req, res) => {
   const filter = req.query;
   try {
@@ -27,8 +16,6 @@ const listConcept = async (req, res) => {
     }
 
     packages = packages.map((p) => {
-      const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${p.property._id}/image`;
-      p.property = { ...p.property, image: imageUrl };
       p.id = p._id;
       delete p._id;
       return { ...p };
@@ -51,8 +38,6 @@ const listConcept = async (req, res) => {
 const getPackage = (req, res) => {
   Package.findById(req.params.id).populate(['property', 'car', 'medicalAssistance']).lean().then((pack) => {
     if (pack) {
-      const imageUrl = `${req.protocol}://${req.get('host')}/api/properties/${pack.property._id}/image`;
-      pack.property = { ...pack.property, image: imageUrl };
       return res.json({ message: 'Paquete encontrado', data: pack, error: false });
     }
     res.status(404).send({ message: 'Paquete no encontrado', data: null, error: true }).end();

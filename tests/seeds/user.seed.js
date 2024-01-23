@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 export default [
   {
@@ -7,7 +8,7 @@ export default [
     lastname: 'Doe',
     address: 'Fake Street 123',
     email: 'JhonDoe@Gmail.com',
-    password: '12345678',
+    password: bcrypt.hashSync('12345678', 10),
     tel: '12345678',
     role: 'admin',
   },
@@ -17,7 +18,7 @@ export default [
     lastname: 'Bottoni',
     address: 'Zeit Street 123',
     email: 'Bottoni@Gmail.com',
-    password: '12345678',
+    password: bcrypt.hashSync('12345678', 10),
     tel: '12345678',
     role: 'user',
   }, {
@@ -26,7 +27,7 @@ export default [
     lastname: 'Perez',
     address: 'Super Street 123',
     email: 'Perez@Gmail.com',
-    password: '12345678',
+    password: bcrypt.hashSync('12345678', 10),
     tel: '12345678',
     role: 'admin',
   },

@@ -13,44 +13,8 @@ const router = Router();
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
- *   schemas:
- *     Login:
- *       type: object
- *       required:
- *         - email
- *         - password
- *       properties:
- *         email:
- *           type: string
- *           description: El email del usuario.
- *         password:
- *           type: string
- *           description: La contraseña del usuario.
- *       example:
- *         email: email
- *         password: contraseña
- *     Create:
- *       type: object
- *       required:
- *         -date_start
- *         -date_end
- *         -user
- *         -packageReserved
- *       properties:
- *         date_start:
- *           type: date
- *         date_end:
- *           type: date
- *         user:
- *           type: string
- *         packageReserved:
- *           type:string
- *       example:
- *         date_start: 2024-01-20
- *         date_end : 2024-01-24
- *         user: 656f40d9c4b971717e5e8b6e
- *         packageReserved: 65553e5c8483bcb1dda7d61f
  */
+
 /**
  * @openapi
  * /api/reserves:
@@ -66,6 +30,7 @@ const router = Router();
  *         description: Unauthorized
  */
 router.get('/', reserveController.getAll);
+
 /**
  * @openapi
  * /api/reserves/user:
@@ -85,12 +50,18 @@ router.get('/', reserveController.getAll);
 router.get('/user', [authenticateToken], reserveController.getByUser);
 /**
  * @openapi
- * /api/reserves/:id:
+ * /api/reserves/{id}:
  *   get:
  *     summary: Get reserves from User id
  *     security:
  *      - bearerAuth: []
  *     description: Get reserves from User id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
  *     tags:
  *       - Reserves
  *     responses:
@@ -144,11 +115,17 @@ router.get('/:id', [verifyMongoId], reserveController.get);
 router.post('/', [authenticateToken], reserveController.post);
 /**
  * @swagger
- * /api/reserves/:id:
+ * /api/reserves/{id}:
  *   put:
  *     summary: Edit Reserve data.
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
  *     tags:
  *       - Reserves
  *     requestBody:
@@ -187,11 +164,17 @@ router.post('/', [authenticateToken], reserveController.post);
 router.put('/:id', [verifyMongoId, authenticateToken], reserveController.put);
 /**
  * @swagger
- * /api/reserves/:id:
+ * /api/reserves/{id}:
  *   delete:
  *     summary: Delete Reserve.
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
  *     tags:
  *       - Reserves
  *     responses:

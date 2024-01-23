@@ -73,7 +73,7 @@ const updatePackage = (req, res) => {
     medicalAssistance: pack.medicalAssistance,
   }, { new: true })
     .then((result) => {
-      res.json({ message: 'Paquete actualizado', data: result, error: false });
+      res.status(200).json({ message: 'Paquete actualizado', data: result, error: false });
     })
     .catch(() => {
       res.status(400).send({ message: 'Error al actualizar paquete', data: null, error: true }).end();

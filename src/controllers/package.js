@@ -18,7 +18,7 @@ const listConcept = async (req, res) => {
   const filter = req.query;
   try {
     let packages = await Package.find({ ...filter }).populate(['property', 'car', 'medicalAssistance']).lean();
-    if (!packages) {
+    if (packages.length === 0) {
       return res.status(404).json({
         message: 'Sin paquetes por el momento',
         data: packages,

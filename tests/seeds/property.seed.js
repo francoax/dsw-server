@@ -7,7 +7,7 @@ export default [
     address: 'san juan 1400',
     pricePerNight: {
       price: 200,
-      date: '18-01-2024',
+      date: '2024-01-18',
     },
     propertyType: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf1'),
     location: new mongoose.Types.ObjectId('655428e63b3608e49996f230'),
@@ -20,7 +20,7 @@ export default [
     address: 'tucuman 2300',
     pricePerNight: {
       price: 350,
-      date: '18-01-2024',
+      date: '2024-01-18',
     },
     propertyType: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf2'),
     location: new mongoose.Types.ObjectId('655428e63b3608e49996f231'),
@@ -33,7 +33,7 @@ export default [
     address: 'rioja 800',
     pricePerNight: {
       price: 500,
-      date: '18-01-2024',
+      date: '2024-01-18',
     },
     propertyType: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf3'),
     location: new mongoose.Types.ObjectId('655428e63b3608e49996f232'),
@@ -46,7 +46,7 @@ export default [
     address: 'mendoza 3200',
     pricePerNight: {
       price: 150,
-      date: '18-01-2024',
+      date: '2024-01-18',
     },
     propertyType: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf4'),
     location: new mongoose.Types.ObjectId('655428e63b3608e49996f233'),

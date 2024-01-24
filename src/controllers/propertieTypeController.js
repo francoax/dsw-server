@@ -94,10 +94,10 @@ propertieTypeABM.update = (req, res) => {
   };
   try {
     propertyType.findByIdAndUpdate(id, newPropertyType, { new: true })
-      .then(() => {
+      .then((propertyUpdated) => {
         res.json({
           message: 'Tipo de propiedad actualizado',
-          data: newPropertyType,
+          data: propertyUpdated,
           error: false,
         });
       });
@@ -112,7 +112,7 @@ propertieTypeABM.update = (req, res) => {
 propertieTypeABM.delete = (req, res) => {
   const { id } = req.params;
   propertyType.findByIdAndRemove(id).then((result) => {
-    res.status(204).json({
+    res.status(200).json({
       message: 'Tipo de propiedad eliminado',
       data: result,
       error: false,

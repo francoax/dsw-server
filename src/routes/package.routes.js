@@ -20,6 +20,19 @@ const router = Router();
  *          type: string
  *        reserve:
  *          type: string
+ *          description: Only if it's custom
+ *        medicalAssistance:
+ *          type: string
+ *        nameImage:
+ *          type: string
+ *    UpdatePackage:
+ *      type: object
+ *      properties:
+ *        property:
+ *          type: string
+ *          description: Id of the property
+ *        car:
+ *          type: string
  *        medicalAssistance:
  *          type: string
  *        nameImage:
@@ -94,6 +107,33 @@ router.get('/:id', packageController.getPackage);
  *        description: Error during creation
  */
 router.post('/', packageController.createPackage);
+
+/**
+ * @openapi
+ * /api/packages/{id}:
+ *  put:
+ *    summary: Update package
+ *    tags:
+ *      - Packages
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: PackageId to update
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/UpdatePackage'
+ *    responses:
+ *      200:
+ *        description: Package updated
+ *      400:
+ *        description: Error during update
+ */
 router.put('/:id', packageController.updatePackage);
 
 /**

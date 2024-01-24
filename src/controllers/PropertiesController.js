@@ -44,7 +44,7 @@ const create = async (req, res) => {
   try {
     const { buffer, mimetype } = req.file;
     const newProperty = await Property.create({
-      capacity: parseInt(req.body.capacity),
+      capacity: req.body.capacity,
       address: req.body.address,
       pricePerNight: req.body.pricePerNight,
       propertyType: req.body.propertyType,

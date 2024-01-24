@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export default [
   {
-    _id: mongoose.Types.ObjectId("65270324a6ecc0ccbf909cb5"),
+    _id: new mongoose.Types.ObjectId("65270324a6ecc0ccbf909cb5"),
     name: "John",
     lastname: "Doe",
     address: "Fake Street 123",
@@ -12,7 +12,7 @@ export default [
     role: "admin",
   },
   {
-    _id: mongoose.Types.ObjectId("65270324a6ecc0ccbf909c8u"),
+    _id: new mongoose.Types.ObjectId("65270324a6ecc0ccbf909c8u"),
     name: "Tomás",
     lastname: "Bottoni",
     address: "Zeit Street 123",
@@ -21,7 +21,7 @@ export default [
     tel: "12345678",
     role: "user",
   },{
-    _id: mongoose.Types.ObjectId("65270324a6ecc0ccbf909cp0"),
+    _id: new mongoose.Types.ObjectId("65270324a6ecc0ccbf909cp0"),
     name: "Juan",
     lastname: "Perez",
     address: "Super Street 123",

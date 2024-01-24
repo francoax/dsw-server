@@ -2,7 +2,6 @@
 import express from 'express';
 // eslint-disable-next-line import/extensions
 import PropertiesController from '../controllers/PropertiesController.js';
-import uploadFile from '../middlewares/imageUpload.js';
 
 const router = express.Router();
 
@@ -115,7 +114,7 @@ router.get('/', PropertiesController.getAll);
  *         description: Bad request
  *
  */
-router.post('/', uploadFile, PropertiesController.create);
+router.post('/', PropertiesController.create);
 
 /**
  * @swagger
@@ -196,29 +195,5 @@ router.delete('/:id', PropertiesController.deleteData);
  *
  */
 router.get('/:id', PropertiesController.getOne);
-
-/**
- * @openapi
- * /api/properties/{id}/image:
- *   get:
- *     summary: Get image of property by id
- *     description: Get image of property with input id
- *     tags:
- *       - Property
- *     parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: PropertyId to get
- *     responses:
- *       200:
- *         description: Success
- *       404:
- *         description: Not found
- *
- */
-router.get('/:id/image', PropertiesController.getImage);
 
 export default router;

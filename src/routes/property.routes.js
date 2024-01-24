@@ -26,7 +26,7 @@ const router = express.Router();
  *         address:
  *           type: string
  *         pricePerNight:
- *           type: string
+ *           type: number
  *         propertyType:
  *           type: string
  *         location:
@@ -38,7 +38,7 @@ const router = express.Router();
  *       example:
  *         capacity: 3
  *         address: 'Avenida 15'
- *         pricePerNight: '5000'
+ *         pricePerNight: 5000
  *         propertyType: 'apartamento'
  *         location: 'Rosario'
  *         image: 'imagen'
@@ -59,7 +59,7 @@ const router = express.Router();
  *         address:
  *           type: string
  *         pricePerNight:
- *           type: string
+ *           type: number
  *         propertyType:
  *           type: string
  *         location:
@@ -71,7 +71,7 @@ const router = express.Router();
  *       example:
  *         capacity: 3
  *         address: 'Avenida 15'
- *         pricePerNight: '5000'
+ *         pricePerNight: 5000
  *         propertyType: 'apartamento'
  *         location: 'Rosario'
  *         image: 'imagen'

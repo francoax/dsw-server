@@ -4,7 +4,7 @@ import Property from '../models/Property.js';
 
 const getAll = async (req, res) => {
   try {
-    const properties = await Property.find().populate(['location', 'propertyType']).lean();
+    const properties = await Property.find().populate(['location', 'propertyType']);
     res.status(200).json({
       message: 'Lista de propiedades',
       data: properties,
@@ -29,9 +29,11 @@ const create = async (req, res) => {
       image: req.body.image,
     });
 
+    const propertyCreated = await Property.findOne({ _id: newProperty._id }).populate(['propertyType', 'location']);
+
     return res.status(200).json({
       message: 'Propiedad creada',
-      data: newProperty,
+      data: propertyCreated,
       error: false,
     });
   } catch (e) {
@@ -46,7 +48,7 @@ const create = async (req, res) => {
 const editData = async (req, res) => {
   const { id } = req.params;
   try {
-    const prop = await Property.findByIdAndUpdate(id, { ...req.body }, { new: true });
+    const prop = await Property.findByIdAndUpdate(id, { ...req.body }, { new: true }).populate(['propertyType', 'location']);
     res.status(201).json({
       message: 'Propiedad editada',
       data: prop,

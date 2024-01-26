@@ -31,6 +31,10 @@ const options = {
         description: 'Documentation about user endpoints',
       },
       {
+        name: 'Reserves',
+        description: 'Documentation about reserves endpoints',
+      },
+      {
         name: 'Packages',
         description: 'Documentation about package endpoints.',
       },

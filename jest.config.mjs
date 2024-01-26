@@ -32,7 +32,7 @@ const config = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -137,7 +137,7 @@ const config = {
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
-    './jest.setup.js'
+    './jest.setup.js',
   ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
@@ -176,9 +176,9 @@ const config = {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  transform: {
-      "\\.[jt]sx?$": "babel-jest"
-    },
+  // transform: {
+  //   '\\.[jt]sx?$': 'babel-jest',
+  // },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

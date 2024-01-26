@@ -34,6 +34,10 @@ const options = {
         name: 'Reserves',
         description: 'Documentation about reserves endpoints',
       },
+      {
+        name: 'Packages',
+        description: 'Documentation about package endpoints.',
+      },
     ],
   },
   apis: ['./src/routes/*.js'],

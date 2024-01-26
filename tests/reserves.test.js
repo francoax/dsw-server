@@ -28,7 +28,6 @@ beforeAll(async () => {
   await reserve.insertMany(reserveSeed);
 });
 
-// falta en el controller en caso que falle el 404
 describe('GET all reserves /api/reserves', () => {
   test('should return status 200', async () => {
     const response = await request(app).get('/api/reserves').send();
@@ -87,7 +86,7 @@ describe('DELETE logic by id /api/reserves/:id', () => {
     expect(response.error).toBeTruthy();
   });
 });
-// como probar si mando una reserva ya existente , como el ejemplo de users?
+
 describe('POST new reserve /api/reserves/', () => {
   test('should create a reserve with status 201', async () => {
     const authToken = jwt.sign({ userId: '6580ce85751be545d7bebad1' }, 'holi');

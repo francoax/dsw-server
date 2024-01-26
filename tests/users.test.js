@@ -136,15 +136,6 @@ describe('edit user /api/users/', () => {
     expect(response.error).toBeTruthy();
     expect(response.body.data).toBeUndefined();
   });
-  // test('should return status code 400', async () => {
-  //   const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909cb5' }, 'holi');
-  //   const response = await request(app)
-  //     .put('/api/users/')
-  //     .set('Authorization', `Bearer ${authToken}`)
-  //     .send({ corruptJson: null, email: 123 });
-  //   expect(response.status).toBe(400);
-  //   expect(response.error).toBeTruthy();
-  // });
 });
 
 describe('delete user /api/users/', () => {

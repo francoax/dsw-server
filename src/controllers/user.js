@@ -9,23 +9,23 @@ const get = async (req, res) => {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         message: `Usuario con el id ${userId} no encontrado`,
         data: user,
         error: true,
-      }).end();
+      });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Usuario encontrado',
       data: user,
       error: false,
-    }).end();
+    });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'Error al buscar usuario',
       error: true,
-    }).end();
+    });
   }
 };
 
@@ -133,54 +133,51 @@ const edit = async (req, res) => {
     );
 
     if (!userUpdated) {
-      res.status(404).json({
+      return res.status(404).json({
         message: 'No existe un usuario con ese ID',
         data: undefined,
         error: true,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Usuario editado',
       data: userUpdated,
       error: false,
     });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'Error al editar usuario',
       data: error,
       error: true,
-    }).end();
+    });
   }
 };
 
 const remove = async (req, res) => {
-  let id = '';
-  if (req.params) {
-    id = req.params.id;
-  } else {
-    id = req.user.userId;
-  }
+  const { userId } = req.user ?? {};
+  const { id } = req.params;
+
   try {
-    const userDeleted = await User.findByIdAndRemove(id);
+    const userDeleted = await User.findByIdAndRemove(userId ?? id);
 
     if (!userDeleted) {
       return res.status(404).json({
         message: 'No existe usuario con ese ID',
         data: undefined,
         error: true,
-      }).end();
+      });
     }
 
     return res.status(200).json({
       message: 'Usuario eliminado',
       data: userDeleted,
       error: false,
-    }).end();
+    });
   } catch (error) {
     return res.status(400).json({
       message: 'Error al eliminar usuario',
       error: true,
-    }).end();
+    });
   }
 };
 

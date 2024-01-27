@@ -7,21 +7,17 @@ const packageSchema = new Schema(
   {
     type: {
       type: String,
+      enum: ['completo', 'custom'],
       required: true,
     },
     property: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Property',
-      required: false,
+      required: true,
     },
     car: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Car',
-      required: false,
-    },
-    reserve: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: 'Reserve',
       required: false,
     },
     medicalAssistance: {
@@ -29,7 +25,7 @@ const packageSchema = new Schema(
       ref: 'MedicalAssistance',
       required: false,
     },
-    nameImage: {
+    image: {
       type: String,
       required: false,
     },

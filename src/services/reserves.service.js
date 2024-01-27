@@ -80,22 +80,6 @@ const getReservesToRemind = async () => {
           as: 'property',
         },
       },
-      {
-        $lookup: {
-          from: 'localities',
-          localField: 'property.location',
-          foreignField: '_id',
-          as: 'location',
-        },
-      },
-      {
-        $addFields: {
-          'property.location': { $arrayElemAt: ['$location', 0] },
-        },
-      },
-      {
-        $unset: 'location',
-      },
     ]);
 
     reserves = reserves.map((r) => ({

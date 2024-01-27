@@ -6,7 +6,7 @@ import Car from '../models/car.js';
 const listCars = async (req, res) => {
   try {
     const filter = req.query;
-    const cars = await Car.find({ ...filter }).populate(['locality']);
+    const cars = await Car.find({ ...filter });
     res.status(200).json({
       message: 'Lista de Vehiculos',
       data: cars,
@@ -39,11 +39,8 @@ const updateCar = (req, res) => {
     model: car.model,
     year: car.year,
     plate: car.plate,
-    price: {
-      date: car.price.date,
-      value: car.price.value,
-    },
-    locality: car.locality,
+    price: car.price,
+    location: car.location,
   }, { new: true })
     .then((result) => {
       res.json({ message: 'Vehiculo actualizado', data: result, error: false });
@@ -86,11 +83,8 @@ const createCar = (req, res) => {
     model: car.model,
     year: car.year,
     plate: car.plate,
-    price: {
-      date: car.price.date,
-      value: car.price.value,
-    },
-    locality: car.locality,
+    price: car.price,
+    location: car.location,
   });
 
   newCar.save().then((savedCar) => res.json({ message: 'Vehiculo creado', data: savedCar, error: false }))

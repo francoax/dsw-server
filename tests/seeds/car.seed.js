@@ -7,11 +7,8 @@ export default [
     model: 'Hilux',
     year: 2011,
     plate: 'aaa111',
-    price: {
-      date: '2023-08-14T22:37:55.248+00:00',
-      value: 77779,
-    },
-    locality: new mongoose.Types.ObjectId('655cd416c0687cd75f307495'),
+    price: 1400,
+    location: 'Casa de nico, AR',
   },
   {
     _id: new mongoose.Types.ObjectId('6545c23e7010457f8a26cc39'),
@@ -19,11 +16,8 @@ export default [
     model: 'gtr amg',
     year: 2012,
     plate: 'afg123',
-    price: {
-      date: '2023-12-05T00:00:00.000+00:00',
-      value: 12000,
-    },
-    locality: new mongoose.Types.ObjectId('655cd422c0687cd75f307499'),
+    price: 12000,
+    location: 'Casa de octa, AR',
   },
   {
     _id: new mongoose.Types.ObjectId('6545c23e7010457f8a26cc30'),
@@ -31,11 +25,8 @@ export default [
     model: 'golf',
     year: 2014,
     plate: 'pge143',
-    price: {
-      date: '2023-12-05T00:00:00.000+00:00',
-      value: 10000,
-    },
-    locality: new mongoose.Types.ObjectId('655cd422c0687cd75f307499'),
+    price: 1450,
+    location: 'Casa de tomi, AR',
   },
   {
     _id: new mongoose.Types.ObjectId('6545c23e7010457f8a26cc31'),
@@ -43,10 +34,7 @@ export default [
     model: 'cruce',
     year: 2018,
     plate: 'lfg443',
-    price: {
-      date: '2023-12-05T00:00:00.000+00:00',
-      value: 9000,
-    },
-    locality: new mongoose.Types.ObjectId('655cd416c0687cd75f307495'),
+    price: 15005,
+    location: 'Casa de franco, AR',
   },
 ];

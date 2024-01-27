@@ -19,9 +19,8 @@ const PropertiesSchema = new mongoose.Schema({
     ref: 'propertyType',
   },
   location: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: true,
-    ref: 'locality',
   },
   image: {
     type: String,

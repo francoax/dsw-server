@@ -4,7 +4,7 @@ import Property from '../models/Property.js';
 
 const getAll = async (req, res) => {
   try {
-    const properties = await Property.find().populate(['location', 'propertyType']);
+    const properties = await Property.find().populate(['propertyType']);
     res.status(200).json({
       message: 'Lista de propiedades',
       data: properties,
@@ -29,7 +29,7 @@ const create = async (req, res) => {
       image: req.body.image,
     });
 
-    const propertyCreated = await Property.findOne({ _id: newProperty._id }).populate(['propertyType', 'location']);
+    const propertyCreated = await Property.findOne({ _id: newProperty._id }).populate(['propertyType']);
 
     return res.status(200).json({
       message: 'Propiedad creada',
@@ -48,10 +48,11 @@ const create = async (req, res) => {
 const editData = async (req, res) => {
   const { id } = req.params;
   try {
-    const prop = await Property.findByIdAndUpdate(id, { ...req.body }, { new: true }).populate(['propertyType', 'location']);
+    const prop = await Property.findByIdAndUpdate(id, { ...req.body }, { new: true }).populate(['propertyType']);
     res.status(201).json({
       message: 'Propiedad editada',
       data: prop,
+      error: false,
     });
   } catch (e) {
     res.status(400).json({
@@ -72,11 +73,13 @@ const deleteData = async (req, res) => {
 
     res.status(200).json({
       message: 'Propiedad eliminada',
+      data: propertyDeleted,
       error: false,
     });
   } catch (e) {
     res.status(400).json({
       message: 'Error al eliminar propiedad',
+      data: e,
       error: true,
     });
   }
@@ -85,7 +88,7 @@ const deleteData = async (req, res) => {
 const getOne = async (req, res) => {
   const { id } = req.params;
   try {
-    const property = await Property.findOne({ _id: id }).populate(['location', 'propertyType']).lean();
+    const property = await Property.findOne({ _id: id }).populate(['propertyType']).lean();
 
     res.status(200).json({
       message: 'Propiedad encontrada',

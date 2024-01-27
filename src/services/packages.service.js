@@ -4,7 +4,7 @@ const getPackageById = async (id) => {
   try {
     const packageSearched = await Package.findById(id).populate(
       [
-        { path: 'property', populate: 'location' },
+        { path: 'property' },
       ],
     );
 

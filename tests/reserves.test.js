@@ -5,9 +5,7 @@ import app from '../src/app';
 import reserve from '../src/models/reserve';
 import reserveSeed from './seeds/reserve.seed';
 import propertiesTypesSeeds from './seeds/property-type.seed';
-import locationsSeed from './seeds/locality.seed';
 import propertieType from '../src/models/propertieType';
-import locality from '../src/models/locality';
 
 const mockNewReserve = {
   _id: new mongoose.Types.ObjectId('6580ce85751be545d7bebad3'),
@@ -23,7 +21,6 @@ const mockWrongReserve = {
 };
 
 beforeAll(async () => {
-  await locality.collection.insertMany(locationsSeed);
   await propertieType.collection.insertMany(propertiesTypesSeeds);
   await reserve.insertMany(reserveSeed);
 });

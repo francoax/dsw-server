@@ -2,35 +2,30 @@ import request from 'supertest';
 import app from '../src/app.js';
 import propertyseed from './seeds/property.seed.js';
 import propertyTypeseed from './seeds/property-type.seed.js';
-import locationseed from './seeds/locality.seed.js';
 import Property from '../src/models/Property.js';
 import propertieType from '../src/models/propertieType.js';
-import locality from '../src/models/locality.js';
 import mongoose from 'mongoose';
 
 const mockProperty = {
-  _id: new mongoose.Types.ObjectId('65b17fc9b7b9d7b66f31740c'),
   capacity: 123,
   address: "Fake street 123",
   pricePerNight: 240,
   propertyType: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf2'),
-  location: new mongoose.Types.ObjectId('655428e63b3608e49996f231'),
-  image: 'http://localhost:4000/api/properties/65b17fc9b7b9d7b66f31740c/image'
+  location: 'Palermo, AR',
+  image: 'testing.png'
 };
 
 const mockPropertyBad= {
-  _id: new mongoose.Types.ObjectId('65b17fc9b7b9d7b66f31740c'),
   capacity: 123,
   address: "Fake street 123",
   pricePerNight: 240,
   propertyType: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf2'),
-  location: new mongoose.Types.ObjectId('655428e63b3608e49996f231'),
+  location: 'Bariloche, AR',
 }
 
 
 beforeAll(async () => {
   await propertieType.collection.insertMany(propertyTypeseed);
-  await locality.collection.insertMany(locationseed);
   await Property.collection.insertMany(propertyseed);
 });
 
@@ -63,10 +58,9 @@ describe('GET one property /api/properties/:id', () => {
     const property = response.body.data;
     expect(property).toBeDefined();
   });
-  test('should return a propertie with their type and location', async () => {
+  test('should return a propertie with their type', async () => {
     const response = await request(app).get('/api/properties/65b17fc9b7b9d7b66f31740c').send();
     expect(response.body.data.propertyType).toBeDefined();
-    expect(response.body.data.location).toBeDefined();
   });
 });
 

@@ -3,19 +3,6 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const priceCarSchema = new Schema(
-  {
-    date: {
-      type: Date,
-      required: true,
-    },
-    value: {
-      type: Number,
-      required: true,
-    },
-  },
-);
-
 const carSchema = new Schema(
   {
     brand: {
@@ -34,8 +21,11 @@ const carSchema = new Schema(
       type: String,
       required: true,
     },
-    price: priceCarSchema,
-    locality: {
+    price: {
+      type: Number,
+      required: true,
+    },
+    location: {
       type: String,
       required: true,
     },

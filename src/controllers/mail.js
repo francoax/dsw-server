@@ -81,7 +81,7 @@ export const sendReminder = ({
                   <b>Propiedad:</b> ${property.address},
                 </li>
                 <li style="margin-bottom: 10px;">
-                  <b>Ubicación:</b> ${property.location.name}
+                  <b>Ubicación:</b> ${property.location}
                 </li>
                 <li style="margin-bottom: 10px;">
                   <b>Capacidad:</b> ${property.capacity} personas
@@ -199,7 +199,7 @@ export const sendReserveConfirmation = ({
                   <b>Propiedad:</b> ${packageReserved.property.address},
                 </li>
                 <li style="margin-bottom: 10px;">
-                  <b>Ubicación:</b> ${packageReserved.property.location.name}
+                  <b>Ubicación:</b> ${packageReserved.property.location}
                 </li>
                 <li style="margin-bottom: 10px;">
                   <b>Capacidad:</b> ${packageReserved.property.capacity} personas

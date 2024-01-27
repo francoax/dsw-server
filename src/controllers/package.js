@@ -7,7 +7,7 @@ const listConcept = async (req, res) => {
   const filter = req.query;
   try {
     let packages = await Package.find({ ...filter }).populate(['property', 'car', 'medicalAssistance']).lean();
-    if (!packages) {
+    if (packages.length === 0) {
       return res.status(404).json({
         message: 'Sin paquetes por el momento',
         data: packages,
@@ -53,22 +53,50 @@ const updatePackage = (req, res) => {
   Package.findByIdAndUpdate(req.params.id, {
     type: pack.type,
     property: pack.property,
-    reserve: pack.reserve,
     car: pack.car,
     medicalAssistance: pack.medicalAssistance,
+    image: pack.image,
   }, { new: true })
     .then((result) => {
-      res.status(200).json({ message: 'Paquete actualizado', data: result, error: false });
+      res.status(200).json({
+        message: 'Paquete actualizado',
+        data: result,
+        error: false,
+      });
     })
-    .catch(() => {
-      res.status(400).send({ message: 'Error al actualizar paquete', data: null, error: true }).end();
+    .catch((e) => {
+      res.status(400).send({
+        message: 'Error al actualizar paquete',
+        data: e,
+        error: true,
+      }).end();
     });
 };
 
 const deletePackage = (req, res) => {
-  Package.findByIdAndDelete(req.params.id).then(() => res.status(204).end()).catch(() => {
-    res.status(500).send({ message: 'Error al eliminar paquete', data: null, error: true }).end();
-  });
+  Package.findByIdAndDelete(req.params.id)
+    .then((packageDeleted) => {
+      if (!packageDeleted) {
+        res.status(404).json({
+          message: 'Paquete no encontrado o ya fue eliminado.',
+          data: packageDeleted,
+          error: false,
+        });
+      } else {
+        res.status(200).json({
+          message: 'Paquete eliminado',
+          data: packageDeleted,
+          error: false,
+        });
+      }
+    })
+    .catch((e) => {
+      res.status(400).json({
+        message: 'Error al eliminar paquete',
+        data: e,
+        error: true,
+      });
+    });
 };
 
 const createPackage = (req, res) => {
@@ -77,14 +105,25 @@ const createPackage = (req, res) => {
   const newCar = new Package({
     type: pack.type,
     property: pack.property,
-    reserve: pack.reserve,
     car: pack.car === '' ? null : pack.car,
     medicalAssistance: pack.medicalAssistance === '' ? null : pack.medicalAssistance,
+    image: pack.image === '' ? null : pack.image,
   });
 
-  newCar.save().then((savedCar) => res.json({ message: 'Paquete creado', data: savedCar, error: false }))
+  newCar.save()
+    .then((savedCar) => {
+      res.status(200).json({
+        message: 'Paquete creado',
+        data: savedCar,
+        error: false,
+      });
+    })
     .catch((e) => {
-      res.status(400).send({ message: 'Error al crear paquete', data: e.message, error: true }).end();
+      res.status(400).send({
+        message: 'Error al crear paquete',
+        data: e,
+        error: true,
+      });
     });
 };
 

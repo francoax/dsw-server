@@ -1,6 +1,7 @@
 /* eslint-disable import/extensions */
 import { Router } from 'express';
 import packageController from '../controllers/package.js';
+import verifyMongoId from '../middlewares/mongoIdField.js';
 
 const router = Router();
 
@@ -85,7 +86,7 @@ router.get('/', packageController.listConcept);
  *      404:
  *        description:
  */
-router.get('/:id', packageController.getPackage);
+router.get('/:id', [verifyMongoId], packageController.getPackage);
 
 /**
  * @openapi
@@ -134,7 +135,7 @@ router.post('/', packageController.createPackage);
  *      400:
  *        description: Error during update
  */
-router.put('/:id', packageController.updatePackage);
+router.put('/:id', [verifyMongoId], packageController.updatePackage);
 
 /**
  * @openapi
@@ -156,6 +157,6 @@ router.put('/:id', packageController.updatePackage);
  *      500:
  *        description: Error at delete
  */
-router.delete('/:id', packageController.deletePackage);
+router.delete('/:id', [verifyMongoId], packageController.deletePackage);
 
 export default router;

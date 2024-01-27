@@ -8,13 +8,13 @@ export default [
     pricePerNight: 123,
     propertyType: {
       _id: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf1'),
-      description : "casa",
+      description: 'casa',
     },
     location: {
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f230'),
       name: 'Mar del Plata',
     },
-    image: 'http://localhost:4000/api/properties/65b17fc9b7b9d7b66f31740c/image',
+    image: 'tests.png',
     status: 'available',
   },
   {
@@ -24,13 +24,13 @@ export default [
     pricePerNight: 562,
     propertyType: {
       _id: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf3'),
-      description : "casa",
+      description: 'casa',
     },
     location: {
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f232'),
       name: 'Mar del Plata',
     },
-    image: '',
+    image: 'tests.png',
     status: 'available',
   },
   {
@@ -40,13 +40,13 @@ export default [
     pricePerNight: 500,
     propertyType: {
       _id: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf3'),
-      description : "casa",
+      description: 'casa',
     },
     location: {
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f231'),
       name: 'Mar del Plata',
     },
-    image: '',
+    image: 'tests.png',
     status: 'available',
   },
   {
@@ -56,13 +56,13 @@ export default [
     pricePerNight: 782,
     propertyType: {
       _id: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf2'),
-      description : "casa",
+      description: 'casa',
     },
     location: {
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f231'),
       name: 'Mar del Plata',
     },
-    image: '',
+    image: 'tests.png',
     status: 'occupied',
   },
 ];

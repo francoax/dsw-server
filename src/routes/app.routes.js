@@ -30,6 +30,14 @@ const options = {
         name: 'Users',
         description: 'Documentation about user endpoints',
       },
+      {
+        name: 'Reserves',
+        description: 'Documentation about reserves endpoints',
+      },
+      {
+        name: 'Packages',
+        description: 'Documentation about package endpoints.',
+      },
     ],
   },
   apis: ['./src/routes/*.js'],

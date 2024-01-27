@@ -14,7 +14,7 @@ export default [
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f230'),
       name: 'Mar del Plata',
     },
-    image: 'http://localhost:4000/api/properties/65b17fc9b7b9d7b66f31740c/image',
+    image: 'tests.png',
     status: 'available',
   },
   {
@@ -30,7 +30,7 @@ export default [
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f232'),
       name: 'Mar del Plata',
     },
-    image: '',
+    image: 'tests.png',
     status: 'available',
   },
   {
@@ -46,7 +46,7 @@ export default [
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f231'),
       name: 'Mar del Plata',
     },
-    image: '',
+    image: 'tests.png',
     status: 'available',
   },
   {
@@ -62,7 +62,7 @@ export default [
       _id: new mongoose.Types.ObjectId('655428e63b3608e49996f231'),
       name: 'Mar del Plata',
     },
-    image: '',
+    image: 'tests.png',
     status: 'occupied',
   },
 ];

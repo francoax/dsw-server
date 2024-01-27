@@ -7,7 +7,7 @@ export default [
     property: new mongoose.Types.ObjectId('65b17fc9b7b9d7b66f31740c'),
     car: new mongoose.Types.ObjectId('6545c23e7010457f8a26cc31'),
     medicalAssistance: new mongoose.Types.ObjectId('6581c007feeb428fa846203b'),
-    nameImage: 'image.png',
+    image: 'image.png',
   },
   {
     _id: new mongoose.Types.ObjectId('652dd48c82681f59fdc830a2'),

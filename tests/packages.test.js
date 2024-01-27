@@ -25,7 +25,7 @@ const mockNewCompletePackage = {
   property: '65b17f725dbefe507285b207',
   car: '6545c23e7010457f8a26cc38',
   medicalAssistance: '6581c007feeb428fa84620ff',
-  nameImage: 'tests.png',
+  image: 'tests.png',
 };
 
 // Custom package created by the reserve of the user
@@ -170,7 +170,7 @@ describe('PUT /api/packages/{id}', () => {
       property: '65b17e1012459c3108bc808d',
       car: '6545c23e7010457f8a26cc31',
       medicalAssistance: '6581c007feeb428fa84620dd',
-      nameImage: 'updated.png',
+      image: 'updated.png',
     };
     const { status, body } = await request(app)
       .put(`/api/packages/${firstPackage._id}`)

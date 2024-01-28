@@ -74,7 +74,17 @@ const get = async (req, res) => {
 const getByUser = async (req, res) => {
   try {
     const { userId } = req.user;
-    const reserves = await Reserve.find({ user: userId });
+    const reserves = await Reserve.find({ user: userId })
+      .populate([
+        { path: 'user' },
+        {
+          path: 'packageReserved',
+          populate: [
+            { path: 'property', populate: 'propertyType' },
+            { path: 'car' }, { path: 'medicalAssistance' },
+          ],
+        },
+      ]);
     return res.status(200).json({
       message: 'Reserva encontrada',
       data: reserves,

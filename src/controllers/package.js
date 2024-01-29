@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
 /* eslint-disable import/extensions */
@@ -57,6 +58,7 @@ const updatePackage = (req, res) => {
     medicalAssistance: pack.medicalAssistance,
     image: pack.image,
   }, { new: true })
+    .populate(['property', 'car', 'medicalAssistance'])
     .then((result) => {
       res.status(200).json({
         message: 'Paquete actualizado',
@@ -99,32 +101,37 @@ const deletePackage = (req, res) => {
     });
 };
 
-const createPackage = (req, res) => {
+const createPackage = async (req, res) => {
   const pack = req.body;
 
-  const newCar = new Package({
+  /* const newCar = new Package({
     type: pack.type,
     property: pack.property,
     car: pack.car === '' ? null : pack.car,
     medicalAssistance: pack.medicalAssistance === '' ? null : pack.medicalAssistance,
     image: pack.image === '' ? null : pack.image,
-  });
-
-  newCar.save()
-    .then((savedCar) => {
-      res.status(200).json({
-        message: 'Paquete creado',
-        data: savedCar,
-        error: false,
-      });
-    })
-    .catch((e) => {
-      res.status(400).send({
-        message: 'Error al crear paquete',
-        data: e,
-        error: true,
-      });
+  }); */
+  try {
+    const newPackage = await Package.create({
+      type: pack.type,
+      property: pack.property,
+      car: pack.car === '' ? null : pack.car,
+      medicalAssistance: pack.medicalAssistance === '' ? null : pack.medicalAssistance,
+      image: pack.image === '' ? null : pack.image,
     });
+    const packageCreated = await Package.findOne({ _id: newPackage._id }).populate(['property', 'car', 'medicalAssistance']);
+    return res.status(200).json({
+      message: 'Paquete creado',
+      data: packageCreated,
+      error: false,
+    });
+  } catch (e) {
+    return res.status(400).json({
+      message: 'Error al crear propiedad',
+      data: e,
+      error: true,
+    });
+  }
 };
 
 export default {

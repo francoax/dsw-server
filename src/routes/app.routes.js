@@ -11,6 +11,7 @@ import usersRouter from './users.routes.js';
 import reserveRouter from './reserves.routes.js';
 import propertyTypeRouter from './propertieType.routes.js';
 import packageRouter from './package.routes.js';
+import locationsRouter from './locations.routes.js';
 
 // Swagger
 import swaggerUi from 'swagger-ui-express';
@@ -52,6 +53,7 @@ router.use('/cars', carsRouter);
 router.use('/users', usersRouter);
 router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);
+router.use('/locations', locationsRouter);
 
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

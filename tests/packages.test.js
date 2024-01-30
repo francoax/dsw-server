@@ -26,6 +26,7 @@ const mockNewCompletePackage = {
   car: '6545c23e7010457f8a26cc38',
   medicalAssistance: '6581c007feeb428fa84620ff',
   image: 'tests.png',
+  discount: 0.6,
 };
 
 // Custom package created by the reserve of the user

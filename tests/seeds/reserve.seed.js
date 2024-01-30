@@ -7,6 +7,7 @@ export default [
     date_end: '2022-01-31',
     user: new mongoose.Types.ObjectId('65270324a6ecc0ccbf909cb5'),
     packageReserved: new mongoose.Types.ObjectId('652dd48c82681f59fdc830a1'),
+    totalPrice: 4500,
   },
   {
     _id: new mongoose.Types.ObjectId('6580ce85751be545d7bebad2'),
@@ -14,5 +15,6 @@ export default [
     date_end: '2022-01-01',
     user: new mongoose.Types.ObjectId('65270324a6ecc0ccbf909cb6'),
     packageReserved: new mongoose.Types.ObjectId('652dd48c82681f59fdc830a2'),
+    totalPrice: 6500,
   },
 ];

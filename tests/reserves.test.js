@@ -13,6 +13,7 @@ const mockNewReserve = {
   date_end: '2022-02-11',
   user: new mongoose.Types.ObjectId('65270324a6ecc0ccbf909cb5'),
   packageReserved: new mongoose.Types.ObjectId('652dd48c82681f59fdc830a1'),
+  totalPrice: 1500,
 };
 const mockWrongReserve = {
   _id: new mongoose.Types.ObjectId('6580ce85751be545d7bebad1'),

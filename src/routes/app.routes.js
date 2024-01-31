@@ -38,6 +38,10 @@ const options = {
         name: 'Packages',
         description: 'Documentation about package endpoints.',
       },
+      {
+        name: 'Properties',
+        description: 'Documentation about properties endpoints.',
+      },
     ],
   },
   apis: ['./src/routes/*.js'],
@@ -45,6 +49,8 @@ const options = {
 
 const router = Router();
 const swaggerSpec = swaggerJSDoc(options);
+const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.2/swagger-ui.css';
+const optionsSwagger = { customCssUrl: CSS_URL };
 
 router.use('/property-types', propertyTypeRouter);
 router.use('/medicalAssistances', medicalAssistanceRouter);
@@ -55,6 +61,7 @@ router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);
 router.use('/locations', locationsRouter);
 
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+router.use('/api-docs', swaggerUi.serve);
+router.get('/api-docs', swaggerUi.setup(swaggerSpec, optionsSwagger));
 
 export default router;

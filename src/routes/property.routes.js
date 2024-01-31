@@ -84,7 +84,7 @@ const router = express.Router();
  *     summary: Get all properties
  *     description: List all existent properties
  *     tags:
- *       - Property
+ *       - Properties
  *     responses:
  *       200:
  *         description: Success
@@ -100,7 +100,7 @@ router.get('/', PropertiesController.getAll);
  *   post:
  *     summary: creates a new property
  *     tags:
- *       - Property
+ *       - Properties
  *     requestBody:
  *        required: true
  *        content:
@@ -122,7 +122,7 @@ router.post('/', PropertiesController.create);
  *   put:
  *     summary: Edit property data.
  *     tags:
- *       - Property
+ *       - Properties
  *     parameters:
  *      - in: path
  *        name: id
@@ -153,7 +153,7 @@ router.put('/:id', PropertiesController.editData);
  *   delete:
  *     summary: Delete property.
  *     tags:
- *       - Property
+ *       - Properties
  *     parameters:
  *      - in: path
  *        name: id
@@ -179,7 +179,7 @@ router.delete('/:id', PropertiesController.deleteData);
  *     summary: Get property by id
  *     description: List property with input id
  *     tags:
- *       - Property
+ *       - Properties
  *     parameters:
  *      - in: path
  *        name: id

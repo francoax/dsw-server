@@ -45,7 +45,7 @@ const options = {
 
 const router = Router();
 const swaggerSpec = swaggerJSDoc(options);
-const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.2/swagger-ui.css';
 const optionsSwagger = { customCssUrl: CSS_URL };
 
 router.use('/property-types', propertyTypeRouter);

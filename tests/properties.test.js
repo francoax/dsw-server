@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
 const mockProperty = {
   capacity: 123,
   address: "Fake street 123",
-  pricePerNight: 240,
+  pricePerNight: '240',
   propertyType: new mongoose.Types.ObjectId('655cb7f26940c09944cdfdf2'),
   location: 'Palermo, AR',
   image: 'testing.png'

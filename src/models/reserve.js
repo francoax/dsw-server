@@ -21,6 +21,10 @@ const reserveSchema = new Schema({
     ref: 'Package',
     required: true,
   },
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
 }, {
   timeseries: true,
 });

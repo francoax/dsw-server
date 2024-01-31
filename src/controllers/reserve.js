@@ -6,19 +6,7 @@ import Reserve from '../models/reserve.js';
 import getPackageById from '../services/packages.service.js';
 import getUserById from '../services/users.service.js';
 import { sendReserveConfirmation } from './mail.js';
-/*
 
-const getAll = async (req, res) => {
-  res.status(200).json({
-    message: 'Lista de reservas',
-    data: await Reserve.find().populate([
-      { path: 'user' },
-      { path: 'packageReserved', populate: 'property' },
-    ]),
-    error: false,
-  });
-};
-*/
 const getAll = async (req, res) => {
   try {
     const reserves = await Reserve.find().populate([
@@ -101,12 +89,12 @@ const getByUser = async (req, res) => {
 const post = async (req, res) => {
   const { userId } = req.user;
   const {
-    date_start, date_end, packageReserved,
+    date_start, date_end, packageReserved, totalPrice,
   } = req.body;
 
   try {
     const newReserve = await Reserve.create({
-      date_start, date_end, user: userId, packageReserved,
+      date_start, date_end, user: userId, packageReserved, totalPrice,
     });
 
     const user = await getUserById(userId);
@@ -133,7 +121,7 @@ const post = async (req, res) => {
 const put = async (req, res) => {
   const { id } = req.params;
   const {
-    date_start, date_end, packageReserved,
+    date_start, date_end, packageReserved, totalPrice,
   } = req.body;
   const { userId } = req.user;
   try {
@@ -146,7 +134,7 @@ const put = async (req, res) => {
     }
     const user = userId;
     const reserveUpdated = await Reserve.findByIdAndUpdate(id, {
-      date_start, date_end, user, packageReserved,
+      date_start, date_end, user, packageReserved, totalPrice,
     }, { new: true });
     if (!reserveUpdated) {
       res.status(404).json({

@@ -57,6 +57,7 @@ const updatePackage = (req, res) => {
     car: pack.car,
     medicalAssistance: pack.medicalAssistance,
     image: pack.image,
+    discount: pack.discount,
   }, { new: true })
     .populate(['property', 'car', 'medicalAssistance'])
     .then((result) => {
@@ -104,13 +105,6 @@ const deletePackage = (req, res) => {
 const createPackage = async (req, res) => {
   const pack = req.body;
 
-  /* const newCar = new Package({
-    type: pack.type,
-    property: pack.property,
-    car: pack.car === '' ? null : pack.car,
-    medicalAssistance: pack.medicalAssistance === '' ? null : pack.medicalAssistance,
-    image: pack.image === '' ? null : pack.image,
-  }); */
   try {
     const newPackage = await Package.create({
       type: pack.type,
@@ -118,6 +112,7 @@ const createPackage = async (req, res) => {
       car: pack.car === '' ? null : pack.car,
       medicalAssistance: pack.medicalAssistance === '' ? null : pack.medicalAssistance,
       image: pack.image === '' ? null : pack.image,
+      discount: pack.discount === '' ? null : pack.discount,
     });
     const packageCreated = await Package.findOne({ _id: newPackage._id }).populate(['property', 'car', 'medicalAssistance']);
     return res.status(200).json({

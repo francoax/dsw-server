@@ -55,6 +55,7 @@ router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);
 router.use('/locations', locationsRouter);
 
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+router.use('/api-docs', swaggerUi.serve);
+router.get('/api-docs', swaggerUi.setup(swaggerSpec));
 
 export default router;

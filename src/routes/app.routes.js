@@ -45,7 +45,6 @@ const options = {
 
 const router = Router();
 const swaggerSpec = swaggerJSDoc(options);
-const optionsSwagger = { customCssUrl: './swagger-ui.css' };
 
 router.use('/property-types', propertyTypeRouter);
 router.use('/medicalAssistances', medicalAssistanceRouter);
@@ -57,6 +56,6 @@ router.use('/packages', packageRouter);
 router.use('/locations', locationsRouter);
 
 router.use('/api-docs', swaggerUi.serve);
-router.get('/api-docs', swaggerUi.setup(swaggerSpec, optionsSwagger));
+router.get('/api-docs', swaggerUi.setup(swaggerSpec));
 
 export default router;

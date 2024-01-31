@@ -45,7 +45,8 @@ const options = {
 
 const router = Router();
 const swaggerSpec = swaggerJSDoc(options);
-const optionsSwagger = { customCssUrl: './swagger-ui.css' };
+const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
+const optionsSwagger = { customCssUrl: CSS_URL };
 
 router.use('/property-types', propertyTypeRouter);
 router.use('/medicalAssistances', medicalAssistanceRouter);

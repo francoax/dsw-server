@@ -20,6 +20,7 @@ const getAll = async (req, res) => {
 
 const create = async (req, res) => {
   try {
+    req.body.pricePerNight = parseFloat(req.body.pricePerNight.replace(',', '.'));
     const newProperty = await Property.create({
       capacity: req.body.capacity,
       address: req.body.address,

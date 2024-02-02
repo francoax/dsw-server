@@ -31,6 +31,9 @@ const router = Router();
  */
 router.get('/', reserveController.getAll);
 
+router.get('/validate-dates', reserveController.validateDates);
+router.get('/property-reserves/:id', [verifyMongoId], reserveController.propertyReserves);
+
 /**
  * @openapi
  * /api/reserves/user:

@@ -12,6 +12,7 @@ import reserveRouter from './reserves.routes.js';
 import propertyTypeRouter from './propertieType.routes.js';
 import packageRouter from './package.routes.js';
 import locationsRouter from './locations.routes.js';
+import chatbotRouter from './chatbot.routes.js';
 
 // Swagger
 import swaggerUi from 'swagger-ui-express';
@@ -54,6 +55,7 @@ router.use('/users', usersRouter);
 router.use('/reserves', reserveRouter);
 router.use('/packages', packageRouter);
 router.use('/locations', locationsRouter);
+router.use('/chatbot', chatbotRouter);
 
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

@@ -246,7 +246,7 @@ const propertyReserves = async (req, res) => {
 
   try {
     const { ObjectId } = mongoose.Types;
-    const currentMonth = new Date().getMonth() + 1; // 2
+    const currentMonth = new Date().getMonth() + 1;
     const nextTwoMonths = [currentMonth, ((currentMonth + 1) % 12), ((currentMonth + 2) % 12)];
 
     const reserves = await Reserve.aggregate([

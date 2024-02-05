@@ -200,15 +200,15 @@ const validateCarDates = async (req, res) => {
     const reservesOnDates = await Reserve.find({
       $or: [
         {
-          date_start: { $gte: moment(start).format('YYYY/MM/DD'), $lt: moment(end).format('YYYY/MM/DD') },
+          date_start: { $gte: new Date(start), $lt: new Date(end) },
         },
         {
-          date_end: { $gt: moment(start).format('YYYY/MM/DD'), $lte: moment(end).format('YYYY/MM/DD') },
+          date_end: { $gt: new Date(start), $lte: new Date(end) },
         },
         {
           $and: [
-            { date_start: { $lte: moment(start).format('YYYY/MM/DD') } },
-            { date_end: { $gte: moment(end).format('YYYY/MM/DD') } },
+            { date_start: { $lte: new Date(start) } },
+            { date_end: { $gte: new Date(end) } },
           ],
         },
       ],

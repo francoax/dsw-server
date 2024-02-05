@@ -193,7 +193,7 @@ const remove = async (req, res) => {
   }
 };
 
-const validateDates = async (req, res) => {
+const validateCarDates = async (req, res) => {
   try {
     const { idCar, start, end } = req.query;
 
@@ -215,7 +215,7 @@ const validateDates = async (req, res) => {
     }).populate(['packageReserved']);
 
     const reservesWithCarRequested = reservesOnDates.filter(
-      (r) => r.packageReserved.car.toString() === idCar,
+      (r) => r.packageReserved.car?.toString() === idCar,
     )
       .length > 0;
 

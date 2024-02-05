@@ -310,6 +310,6 @@ export default {
   post,
   put,
   remove,
-  validateDates,
+  validateCarDates,
   propertyReserves,
 };

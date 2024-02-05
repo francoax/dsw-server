@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(cors(process.env.CORS_PROD));
 }
 
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use('/api', mainRouter);
 

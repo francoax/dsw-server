@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import moment from 'moment-timezone';
 import jwt from 'jsonwebtoken';
-import { getUserByEmail } from '../services/users.service';
+import { getUserByEmail } from '../services/users.service.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

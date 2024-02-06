@@ -12,7 +12,7 @@ const getUserById = async (id) => {
 
 export const getUserByEmail = async (email) => {
   try {
-    const user = await User.find({ email });
+    const user = await User.findOne({ email });
 
     return user;
   } catch (error) {

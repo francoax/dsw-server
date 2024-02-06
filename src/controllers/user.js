@@ -214,13 +214,20 @@ const login = async (req, res) => {
   }
 };
 
-const recoverPassword = (req, res) => {
+const recoverPassword = async (req, res) => {
   const { email } = req.body;
   const host = req.get('host');
   const { protocol } = req;
 
   try {
-    sendPasswordRecoveryMail(email, { protocol, host });
+    const sended = await sendPasswordRecoveryMail(email, { protocol, host });
+
+    if (!sended) {
+      return res.status(404).json({
+        message: 'No se encontro un usuario con ese mail.',
+        error: true,
+      });
+    }
 
     return res.status(200).json({
       message: 'Email enviado. Recibe su correo. Si no aparece, revise tambien su carpeta de spam',
@@ -237,7 +244,7 @@ const recoverPassword = (req, res) => {
 const redirectForRecoverPassword = (req, res) => {
   const { token } = req.params;
 
-  jwt.verify(token, 'secreto', (err, decoded) => {
+  jwt.verify(token, process.env.SECRET_RP, (err, decoded) => {
     if (err) {
       return res.status(403).json({ mensaje: 'Enlace inválido o expirado' });
     }

@@ -1,13 +1,22 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import request from 'supertest';
-import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 import app from '../src/app';
 import User from '../src/models/user';
 import userSeed from './seeds/user.seed';
 
+let tokenUser;
+let tokenSuperAdmin;
+
 beforeAll(async () => {
   await User.collection.insertMany(userSeed);
+
+  const { body: { data: dataUser } } = await request(app).post('/api/users/login').send({ email: 'Bottoni@Gmail.com', password: '12345678' });
+  tokenUser = dataUser.token;
+
+  const { body: { data: dataSuperAdmin } } = await request(app).post('/api/users/login').send({ email: 'superAdmin@gmail.com', password: '12345678' });
+  tokenSuperAdmin = dataSuperAdmin.token;
 });
 
 const mockUser = {
@@ -34,19 +43,17 @@ const mockNewUser = {
 
 describe('Get logged user /api/users/me', () => {
   test('should return status 200', async () => {
-    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909cb5' }, 'holi');
     const response = await request(app)
       .get('/api/users/me')
-      .set('Authorization', `Bearer ${authToken}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send();
     expect(response.status).toBe(200);
     expect(response.error).toBeFalsy();
   });
   test('should return an user that is logged in', async () => {
-    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909cb6' }, 'holi');
     const response = await request(app)
       .get('/api/users/me')
-      .set('Authorization', `Bearer ${authToken}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send();
     const user = response.body.data;
     expect(user).toBeDefined();
@@ -78,7 +85,7 @@ describe('GET all users /api/users', () => {
 });
 
 describe('log in user /api/users/login', () => {
-  test('should return token with name and role', async () => {
+  test('should return tokenUser with name and role', async () => {
     const response = await request(app)
       .post('/api/users/login')
       .send({ email: mockUser.email, password: mockUser.password });
@@ -117,17 +124,16 @@ describe('register new user /api/users/', () => {
 
 describe('edit user /api/users/', () => {
   test('should return user with updated data', async () => {
-    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909cb5' }, 'holi');
     const response = await request(app)
       .put('/api/users/')
-      .set('Authorization', `Bearer ${authToken}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send(mockNewUser);
     expect(response.status).toBe(200);
     expect(response.error).toBeFalsy();
     expect(response.body.data).toBeDefined();
   });
   test('should return status code 404 (user not found)', async () => {
-    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909ca0' }, 'holi');
+    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909ca0', role: 'user' }, 'holi');
     const response = await request(app)
       .put('/api/users/')
       .set('Authorization', `Bearer ${authToken}`)
@@ -140,30 +146,27 @@ describe('edit user /api/users/', () => {
 
 describe('delete user /api/users/', () => {
   test('should delete user logged in', async () => {
-    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909cb5' }, 'holi');
     const response = await request(app)
       .delete('/api/users/')
-      .set('Authorization', `Bearer ${authToken}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send();
     expect(response.status).toBe(200);
     expect(response.error).toBeFalsy();
     expect(response.body.data).toBeDefined();
   });
   test('should delete user passed by parameter', async () => {
-    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909cb6' }, 'holi');
     const response = await request(app)
       .delete('/api/users/65270324a6ecc0ccbf909cb6')
-      .set('Authorization', `Bearer ${authToken}`)
+      .set('Authorization', `Bearer ${tokenSuperAdmin}`)
       .send();
     expect(response.status).toBe(200);
     expect(response.error).toBeFalsy();
     expect(response.body.data).toBeDefined();
   });
   test('should return status code 404 (user not found)', async () => {
-    const authToken = jwt.sign({ userId: '65270324a6ecc0ccbf909ca0' }, 'holi');
     const response = await request(app)
       .delete('/api/users/')
-      .set('Authorization', `Bearer ${authToken}`)
+      .set('Authorization', `Bearer ${tokenUser}`)
       .send();
     expect(response.status).toBe(404);
     expect(response.error).toBeTruthy();

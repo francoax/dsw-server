@@ -198,18 +198,16 @@ const login = async (req, res) => {
   } else {
     const userForToken = {
       userId: user._id,
+      name: user.name,
       email: user.email,
+      role: user.role,
     };
 
     const token = jwt.sign(userForToken, process.env.SECRET);
 
     res.status(200).json({
       message: 'Usuario logueado',
-      data: {
-        name: user.name,
-        role: user.role,
-        token,
-      },
+      data: { token },
       error: false,
     });
   }

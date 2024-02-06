@@ -3,6 +3,8 @@ import { Router } from 'express';
 import usersController from '../controllers/user.js';
 
 import authenticateToken from '../middlewares/authenticateToken.js';
+import authenticateRole from '../middlewares/authenticateRole.js';
+import { ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_USER } from '../utils/constants.js';
 
 const router = Router();
 
@@ -114,7 +116,7 @@ const router = Router();
  *
  */
 
-router.get('/me', [authenticateToken], usersController.get);
+router.get('/me', [authenticateToken, authenticateRole([ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN])], usersController.get);
 
 /**
  * @openapi
@@ -195,7 +197,7 @@ router.post('/', usersController.create);
  *         description: Unauthorized
  *
  */
-router.put('/', [authenticateToken], usersController.edit);
+router.put('/', [authenticateToken, authenticateRole([ROLE_USER, ROLE_SUPER_ADMIN])], usersController.edit);
 /**
  * @swagger
  * /api/users:
@@ -212,15 +214,7 @@ router.put('/', [authenticateToken], usersController.edit);
  *         description: Unauthorized
  *
  */
-router.delete('/', [authenticateToken], usersController.remove);
-router
-  .get('/me', [authenticateToken], usersController.get)
-  .get('/', usersController.getAll)
-  .post('/login', usersController.login)
-  .post('/', usersController.create)
-  .put('/', [authenticateToken], usersController.edit)
-  .put('/:id', usersController.edit)
-  .delete('/:id', [authenticateToken], usersController.remove)
-  .delete('/', [authenticateToken], usersController.remove);
+router.delete('/', [authenticateToken, authenticateRole([ROLE_USER])], usersController.remove);
+router.delete('/:id', [authenticateToken, authenticateRole([ROLE_SUPER_ADMIN])], usersController.remove);
 
 export default router;

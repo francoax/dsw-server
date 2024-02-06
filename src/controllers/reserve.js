@@ -12,7 +12,6 @@ import { sendReserveConfirmation } from './mail.js';
 const getAll = async (req, res) => {
   try {
     const filter = req.query;
-    console.log(filter);
     const reserves = await Reserve.find({ ...filter }).populate([
       { path: 'user' },
       { path: 'packageReserved', populate: 'property' },

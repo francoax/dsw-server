@@ -9,6 +9,10 @@ import packageSeed from './seeds/package.seed';
 import Car from '../src/models/car';
 import MedicalAssistance from '../src/models/MedicalAssistance';
 import Property from '../src/models/Property';
+import User from '../src/models/user';
+import userSeed from './seeds/user.seed';
+
+let tokenAdmin;
 
 beforeAll(async () => {
   await Promise.all([
@@ -16,7 +20,11 @@ beforeAll(async () => {
     Car.insertMany(carSeed),
     Property.insertMany(propertySeed),
     MedicalAssistance.insertMany(medicalAssistanceSeed),
+    User.insertMany(userSeed),
   ]);
+
+  const { body: { data: dataAdmin } } = await request(app).post('/api/users/login').send({ email: 'JhonDoe@Gmail.com', password: '12345678' });
+  tokenAdmin = dataAdmin.token;
 });
 
 // Complete package offered
@@ -101,7 +109,7 @@ describe('GET /api/packages/filter', () => {
 describe('GET /api/packages/{id}', () => {
   test('should return status 200 and the package requested with the id sent', async () => {
     const idTest = packageSeed.at(0)._id;
-    const response = await request(app).get(`/api/packages/${idTest}`);
+    const response = await request(app).get(`/api/packages/${idTest}`).set('Authorization', `Bearer ${tokenAdmin}`);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBeDefined();
@@ -111,7 +119,7 @@ describe('GET /api/packages/{id}', () => {
 
   test('should return status 400 if the id sent is invalid', async () => {
     const idTest = '123';
-    const response = await request(app).get(`/api/packages/${idTest}`);
+    const response = await request(app).get(`/api/packages/${idTest}`).set('Authorization', `Bearer ${tokenAdmin}`);
 
     expect(response.status).toBe(400);
     expect(response.body.message).toBeDefined();
@@ -122,7 +130,7 @@ describe('GET /api/packages/{id}', () => {
 
 describe('POST /api/packages', () => {
   test('should return status 200 at the creation of a complete package', async () => {
-    const { status, body } = await request(app).post('/api/packages').send(mockNewCompletePackage);
+    const { status, body } = await request(app).post('/api/packages').set('Authorization', `Bearer ${tokenAdmin}`).send(mockNewCompletePackage);
 
     expect(status).toBe(200);
     expect(body.message).toBeDefined();
@@ -133,7 +141,7 @@ describe('POST /api/packages', () => {
   });
 
   test('should return status 200 at the creation of a custom package with all attributes', async () => {
-    const { status, body } = await request(app).post('/api/packages').send(mockNewCustomPackageWithAll);
+    const { status, body } = await request(app).post('/api/packages').set('Authorization', `Bearer ${tokenAdmin}`).send(mockNewCustomPackageWithAll);
 
     expect(status).toBe(200);
     expect(body.message).toBeDefined();
@@ -144,7 +152,7 @@ describe('POST /api/packages', () => {
   });
 
   test('should return status 200 at the creation of custom package with a few attributes', async () => {
-    const { status, body } = await request(app).post('/api/packages').send(mockNewCustomPackageWithFew);
+    const { status, body } = await request(app).post('/api/packages').set('Authorization', `Bearer ${tokenAdmin}`).send(mockNewCustomPackageWithFew);
 
     expect(status).toBe(200);
     expect(body.message).toBeDefined();
@@ -155,7 +163,7 @@ describe('POST /api/packages', () => {
   });
 
   test('should return status 400 if the package is wrong', async () => {
-    const { status, body } = await request(app).post('/api/packages').send(mockNewBadPackage);
+    const { status, body } = await request(app).post('/api/packages').set('Authorization', `Bearer ${tokenAdmin}`).send(mockNewBadPackage);
 
     expect(status).toBe(400);
     expect(body.message).toBeDefined();
@@ -175,6 +183,7 @@ describe('PUT /api/packages/{id}', () => {
     };
     const { status, body } = await request(app)
       .put(`/api/packages/${firstPackage._id}`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
       .send(firstPackageEdited);
 
     expect(status).toBe(200);
@@ -187,7 +196,7 @@ describe('PUT /api/packages/{id}', () => {
 
   test('should return status 400 if the ID is wrong', async () => {
     const wrongId = '123456';
-    const { status, body } = await request(app).put(`/api/packages/${wrongId}`).send();
+    const { status, body } = await request(app).put(`/api/packages/${wrongId}`).set('Authorization', `Bearer ${tokenAdmin}`).send();
 
     expect(status).toBe(400);
     expect(body.message).toBeDefined();
@@ -200,7 +209,7 @@ describe('DELETE /api/packages/{id}', () => {
   test('should return status 200 if the package is deleted', async () => {
     const firstPackage = packageSeed.at(0);
     const { _id: packageToDelete } = firstPackage;
-    const { status, body } = await request(app).delete(`/api/packages/${packageToDelete}`).send();
+    const { status, body } = await request(app).delete(`/api/packages/${packageToDelete}`).set('Authorization', `Bearer ${tokenAdmin}`).send();
 
     const packagesLeft = (await Package.find());
 
@@ -216,7 +225,7 @@ describe('DELETE /api/packages/{id}', () => {
   test('should return status 404 if the package is already deleted or not found', async () => {
     const firstPackageDeleted = packageSeed.at(0);
     const { _id: packageAlreadyDeleted } = firstPackageDeleted;
-    const { status, body } = await request(app).delete(`/api/packages/${packageAlreadyDeleted}`).send();
+    const { status, body } = await request(app).delete(`/api/packages/${packageAlreadyDeleted}`).set('Authorization', `Bearer ${tokenAdmin}`).send();
 
     expect(status).toBe(404);
     expect(body.message).toBeDefined();
@@ -226,7 +235,7 @@ describe('DELETE /api/packages/{id}', () => {
 
   test('should return status 400 if the ID is wrong', async () => {
     const wrongId = '123456';
-    const { status, body } = await request(app).delete(`/api/packages/${wrongId}`).send();
+    const { status, body } = await request(app).delete(`/api/packages/${wrongId}`).set('Authorization', `Bearer ${tokenAdmin}`).send();
 
     expect(status).toBe(400);
     expect(body.message).toBeDefined();

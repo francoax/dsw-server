@@ -3,6 +3,8 @@ import { Router } from 'express';
 import reserveController from '../controllers/reserve.js';
 import verifyMongoId from '../middlewares/mongoIdField.js';
 import authenticateToken from '../middlewares/authenticateToken.js';
+import authenticateRole from '../middlewares/authenticateRole.js';
+import { ROLE_USER } from '../utils/constants.js';
 
 const router = Router();
 /**
@@ -31,8 +33,8 @@ const router = Router();
  */
 router.get('/', reserveController.getAll);
 
-router.get('/validate-dates', reserveController.validateCarDates);
-router.get('/property-reserves/:id', [verifyMongoId], reserveController.propertyReserves);
+router.get('/validate-dates', [authenticateToken, authenticateRole([ROLE_USER])], reserveController.validateCarDates);
+router.get('/property-reserves/:id', [verifyMongoId, authenticateToken, authenticateRole([ROLE_USER])], reserveController.propertyReserves);
 
 /**
  * @openapi
@@ -50,15 +52,15 @@ router.get('/property-reserves/:id', [verifyMongoId], reserveController.property
  *
  */
 
-router.get('/user', [authenticateToken], reserveController.getByUser);
+router.get('/user', [authenticateToken, authenticateRole([ROLE_USER])], reserveController.getByUser);
 /**
  * @openapi
  * /api/reserves/{id}:
  *   get:
- *     summary: Get reserves from User id
+ *     summary: Get the reserve by his id
  *     security:
  *      - bearerAuth: []
- *     description: Get reserves from User id
+ *     description: Get the reserve by his id
  *     parameters:
  *       - in: path
  *         name: id
@@ -72,7 +74,7 @@ router.get('/user', [authenticateToken], reserveController.getByUser);
  *         description: Success
  *
  */
-router.get('/:id', [verifyMongoId], reserveController.get);
+router.get('/:id', [verifyMongoId, authenticateToken, authenticateRole([ROLE_USER])], reserveController.get);
 /**
  * @swagger
  * /api/reserves:
@@ -115,7 +117,7 @@ router.get('/:id', [verifyMongoId], reserveController.get);
  *         description: Unauthorized
  *
  */
-router.post('/', [authenticateToken], reserveController.post);
+router.post('/', [authenticateToken, authenticateRole([ROLE_USER])], reserveController.post);
 /**
  * @swagger
  * /api/reserves/{id}:
@@ -164,7 +166,7 @@ router.post('/', [authenticateToken], reserveController.post);
  *         description: Unauthorized
  *
  */
-router.put('/:id', [verifyMongoId, authenticateToken], reserveController.put);
+router.put('/:id', [verifyMongoId, authenticateToken, authenticateRole([ROLE_USER])], reserveController.put);
 /**
  * @swagger
  * /api/reserves/{id}:
@@ -187,6 +189,6 @@ router.put('/:id', [verifyMongoId, authenticateToken], reserveController.put);
  *         description: Unauthorized
  *
  */
-router.delete('/:id', [verifyMongoId, authenticateToken], reserveController.remove);
+router.delete('/:id', [verifyMongoId, authenticateToken, authenticateRole([ROLE_USER])], reserveController.remove);
 
 export default router;

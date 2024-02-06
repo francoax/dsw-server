@@ -3,6 +3,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
+import { sendPasswordRecoveryMail } from './mail.js';
 
 const get = async (req, res) => {
   const { userId } = req.user;
@@ -198,23 +199,93 @@ const login = async (req, res) => {
   } else {
     const userForToken = {
       userId: user._id,
+      name: user.name,
       email: user.email,
+      role: user.role,
     };
 
     const token = jwt.sign(userForToken, process.env.SECRET);
 
     res.status(200).json({
       message: 'Usuario logueado',
-      data: {
-        name: user.name,
-        role: user.role,
-        token,
-      },
+      data: { token },
       error: false,
     });
   }
 };
 
+const recoverPassword = async (req, res) => {
+  const { email } = req.body;
+  const host = req.get('host');
+  const { protocol } = req;
+
+  try {
+    const sended = await sendPasswordRecoveryMail(email, { protocol, host });
+
+    if (!sended) {
+      return res.status(404).json({
+        message: 'No se encontro un usuario con ese mail.',
+        error: true,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Email enviado. Recibe su correo. Si no aparece, revise tambien su carpeta de spam',
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Ocurrio un error al intentar enviar el mail',
+      error: true,
+    });
+  }
+};
+
+const redirectForRecoverPassword = (req, res) => {
+  const { token } = req.params;
+
+  jwt.verify(token, process.env.SECRET_RP, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ mensaje: 'Enlace inválido o expirado' });
+    }
+
+    return res.redirect(`http://localhost:4200/password-reset/${token}`);
+  });
+};
+
+const setNewPassword = async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  try {
+    const userUpdated = await User.findByIdAndUpdate(
+      id,
+      {
+        password: await bcrypt.hash(password, 10),
+      },
+      { new: true },
+    ).select('email');
+
+    if (!userUpdated) {
+      return res.status(404).json({
+        message: 'Usuario no encontrado',
+        data: userUpdated,
+        error: true,
+      });
+    }
+
+    return res.status(200).json({
+      message: `Contraseña reestablecida con exito para ${userUpdated.email}`,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Ocurrio un error al reestablecer la contraseña',
+      error: true,
+    });
+  }
+};
+
 export default {
-  get, getAll, create, edit, remove, login,
+  get, getAll, create, edit, remove, login, recoverPassword, redirectForRecoverPassword, setNewPassword,
 };

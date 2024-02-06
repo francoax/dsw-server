@@ -2,12 +2,20 @@
 import { Router } from 'express';
 import packageController from '../controllers/package.js';
 import verifyMongoId from '../middlewares/mongoIdField.js';
+import authenticateToken from '../middlewares/authenticateToken.js';
+import authenticateRole from '../middlewares/authenticateRole.js';
+import { ROLE_USER, ROLE_ADMIN } from '../utils/constants.js';
 
 const router = Router();
 
 /**
  * @openapi
  * components:
+ *  securitySchemes:
+ *    bearerAuth:
+ *      type: http
+ *      scheme: bearer
+ *      bearerFormat: JWT
  *  schemas:
  *    CreatePackage:
  *      type: object
@@ -69,6 +77,8 @@ router.get('/', packageController.listConcept);
  * /api/packages/{id}:
  *  get:
  *    summary: Get a package by id
+ *    security:
+ *      - bearerAuth: []
  *    parameters:
  *      - in: path
  *        name: id
@@ -86,13 +96,15 @@ router.get('/', packageController.listConcept);
  *      404:
  *        description:
  */
-router.get('/:id', [verifyMongoId], packageController.getPackage);
+router.get('/:id', [verifyMongoId, authenticateToken, authenticateRole([ROLE_USER, ROLE_ADMIN])], packageController.getPackage);
 
 /**
  * @openapi
  * /api/packages:
  *  post:
  *    summary: Create a complet or custom package
+ *    security:
+ *      - bearerAuth: []
  *    tags:
  *      - Packages
  *    requestBody:
@@ -107,13 +119,15 @@ router.get('/:id', [verifyMongoId], packageController.getPackage);
  *      400:
  *        description: Error during creation
  */
-router.post('/', packageController.createPackage);
+router.post('/', [authenticateToken, authenticateRole([ROLE_ADMIN, ROLE_USER])], packageController.createPackage);
 
 /**
  * @openapi
  * /api/packages/{id}:
  *  put:
  *    summary: Update package
+ *    security:
+ *      - bearerAuth: []
  *    tags:
  *      - Packages
  *    parameters:
@@ -135,13 +149,15 @@ router.post('/', packageController.createPackage);
  *      400:
  *        description: Error during update
  */
-router.put('/:id', [verifyMongoId], packageController.updatePackage);
+router.put('/:id', [verifyMongoId, authenticateToken, authenticateRole([ROLE_ADMIN])], packageController.updatePackage);
 
 /**
  * @openapi
  * /api/packages/{id}:
  *  delete:
  *    summary: Delete a package
+ *    security:
+ *      - bearerAuth: []
  *    tags:
  *      - Packages
  *    parameters:
@@ -157,6 +173,6 @@ router.put('/:id', [verifyMongoId], packageController.updatePackage);
  *      500:
  *        description: Error at delete
  */
-router.delete('/:id', [verifyMongoId], packageController.deletePackage);
+router.delete('/:id', [verifyMongoId, authenticateToken, authenticateRole([ROLE_ADMIN])], packageController.deletePackage);
 
 export default router;

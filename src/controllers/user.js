@@ -253,6 +253,39 @@ const redirectForRecoverPassword = (req, res) => {
   });
 };
 
+const setNewPassword = async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  try {
+    const userUpdated = await User.findByIdAndUpdate(
+      id,
+      {
+        password,
+      },
+      { new: true },
+    ).select('email');
+
+    if (!userUpdated) {
+      return res.status(404).json({
+        message: 'Usuario no encontrado',
+        data: userUpdated,
+        error: true,
+      });
+    }
+
+    return res.status(200).json({
+      message: `Contraseña reestablecida con exito para ${userUpdated.email}`,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Ocurrio un error al reestablecer la contraseña',
+      error: true,
+    });
+  }
+};
+
 export default {
-  get, getAll, create, edit, remove, login, recoverPassword, redirectForRecoverPassword,
+  get, getAll, create, edit, remove, login, recoverPassword, redirectForRecoverPassword, setNewPassword,
 };

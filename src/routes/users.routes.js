@@ -5,6 +5,7 @@ import usersController from '../controllers/user.js';
 import authenticateToken from '../middlewares/authenticateToken.js';
 import authenticateRole from '../middlewares/authenticateRole.js';
 import { ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_USER } from '../utils/constants.js';
+import verifyMongoId from '../middlewares/mongoIdField.js';
 
 const router = Router();
 
@@ -138,6 +139,7 @@ router.get('/', usersController.getAll);
 // Routes for password recovery
 router.post('/password-reset', usersController.recoverPassword);
 router.get('/password-reset/:token', usersController.redirectForRecoverPassword);
+router.put('/password-reset/:id', [verifyMongoId], usersController.setNewPassword);
 
 /**
  * @swagger

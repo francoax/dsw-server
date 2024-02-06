@@ -3,6 +3,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
+import { sendPasswordRecoveryMail } from './mail.js';
 
 const get = async (req, res) => {
   const { userId } = req.user;
@@ -213,6 +214,38 @@ const login = async (req, res) => {
   }
 };
 
+const recoverPassword = (req, res) => {
+  const { email } = req.body;
+  const host = req.get('host');
+  const { protocol } = req;
+
+  try {
+    sendPasswordRecoveryMail(email, { protocol, host });
+
+    return res.status(200).json({
+      message: 'Email enviado. Recibe su correo. Si no aparece, revise tambien su carpeta de spam',
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Ocurrio un error al intentar enviar el mail',
+      error: true,
+    });
+  }
+};
+
+const redirectForRecoverPassword = (req, res) => {
+  const { token } = req.params;
+
+  jwt.verify(token, 'secreto', (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ mensaje: 'Enlace inválido o expirado' });
+    }
+
+    return res.redirect(`http://localhost:4200/password-reset/${token}`);
+  });
+};
+
 export default {
-  get, getAll, create, edit, remove, login,
+  get, getAll, create, edit, remove, login, recoverPassword, redirectForRecoverPassword,
 };

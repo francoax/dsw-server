@@ -10,4 +10,14 @@ const getUserById = async (id) => {
   }
 };
 
+export const getUserByEmail = async (email) => {
+  try {
+    const user = await User.find({ email });
+
+    return user;
+  } catch (error) {
+    return error;
+  }
+};
+
 export default getUserById;

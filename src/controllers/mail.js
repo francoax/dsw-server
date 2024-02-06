@@ -5,6 +5,8 @@ import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import moment from 'moment-timezone';
+import jwt from 'jsonwebtoken';
+import { getUserByEmail } from '../services/users.service';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -271,7 +273,34 @@ export const sendReserveConfirmation = ({
   }
 };
 
+export const sendPasswordRecoveryMail = async (email, { protocol, host }) => {
+  const user = await getUserByEmail(email);
+
+  if (!user) return null;
+
+  const token = jwt.sign({ userId: user._id, email }, process.env.SECRET_RP, { expiresIn: '10m' });
+  const link = `${protocol}://${host}/api/users/password-reset/${token}`;
+
+  const mailOptions = {
+    from: {
+      name: 'Poncho Home & Stay',
+      address: process.env.EU_SENDER,
+    },
+    to: user.email,
+    subject: 'Recuperar contraseña',
+    html:
+    `
+      <p>Se solicito recuperar la contraseña para la cuenta al mail asociado: ${user.email}</p>
+      <p>Haga click en el siguiente enlace y se le redireccionara a la pagina para reestablecer su contraseña:</p>
+      <a href="${link}" target="_blank">Reestablecer contraseña</a>
+    `,
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
 export default {
   sendReminder,
   sendReserveConfirmation,
+  sendPasswordRecoveryMail,
 };

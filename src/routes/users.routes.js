@@ -134,6 +134,11 @@ router.get('/me', [authenticateToken, authenticateRole([ROLE_USER, ROLE_ADMIN, R
  *
  */
 router.get('/', usersController.getAll);
+
+// Routes for password recovery
+router.post('/password-reset', usersController.recoverPassword);
+router.get('/password-reset/:token', usersController.redirectForRecoverPassword);
+
 /**
  * @swagger
  * /api/users/login:

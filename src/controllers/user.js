@@ -261,7 +261,7 @@ const setNewPassword = async (req, res) => {
     const userUpdated = await User.findByIdAndUpdate(
       id,
       {
-        password,
+        password: await bcrypt.hash(password, 10),
       },
       { new: true },
     ).select('email');

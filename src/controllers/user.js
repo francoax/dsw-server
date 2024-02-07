@@ -249,7 +249,7 @@ const redirectForRecoverPassword = (req, res) => {
       return res.status(403).json({ mensaje: 'Enlace inválido o expirado' });
     }
 
-    return res.redirect(`http://localhost:4200/password-reset/${token}`);
+    return res.redirect(`https://poncho-home-and-stay.vercel.app/password-reset/${token}`);
   });
 };
 
